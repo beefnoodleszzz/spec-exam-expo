@@ -14,6 +14,10 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 
+  transformIgnorePatterns: [
+    'node_modules/(?!(.pnpm|(jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|expo-router|@react-navigation/.*|react-native-svg|nativewind))',
+  ],
+
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.test.{ts,tsx}',
@@ -22,7 +26,7 @@ module.exports = {
     '!src/shared/utils/magic-sign.ts',
   ],
 
-  clearMocks: false,
-  restoreMocks: false,
+  clearMocks: true,
+  restoreMocks: true,
   resetMocks: false,
 }

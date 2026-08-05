@@ -89,6 +89,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundler: 'metro',
   },
   plugins: [
+    'expo-font',
     'expo-router',
     'expo-secure-store',
     [
