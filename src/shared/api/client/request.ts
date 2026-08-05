@@ -44,7 +44,7 @@ export type QueryValue = QueryPrimitive | QueryPrimitive[] | null | undefined
  * Register an abstract unauthorized (401) handler.
  * Keeps HTTP transport decoupled from direct Zustand store mutations.
  */
-export function setUnauthorizedHandler(handler: () => void): void {
+export function setUnauthorizedHandler(handler: (() => void) | null): void {
   onUnauthorizedHandler = handler
 }
 
@@ -138,6 +138,12 @@ export type RequestOptions = {
   responseType?: 'json' | 'arraybuffer'
 }
 
+interface TransportResult {
+  rawData: unknown
+  status: number
+  headers: Headers
+}
+
 export interface RequestResult<T> {
   data: T
   status: number
@@ -145,12 +151,30 @@ export interface RequestResult<T> {
 }
 
 /**
- * Core HTTP executor — shared by request() and requestWithMetadata().
- * Returns parsed data, HTTP status, and response headers.
+ * Validate envelope without unwrapping.
+ * Throws business/401 errors but does not extract data.
  */
-async function executeRequest<T>(
+function validateEnvelope(raw: unknown): void {
+  try {
+    parseEnvelope<unknown>(raw)
+  } catch (error) {
+    if (isUnauthorizedError(error)) {
+      if (onUnauthorizedHandler) {
+        onUnauthorizedHandler()
+      }
+    }
+    throw error
+  }
+}
+
+/**
+ * Core HTTP executor — shared by request() and requestWithMetadata().
+ * Returns raw response body, HTTP status, and response headers.
+ * Does NOT unwrap the legacy envelope.
+ */
+async function executeRequest(
   options: RequestOptions,
-): Promise<RequestResult<T>> {
+): Promise<TransportResult> {
   const {
     url,
     method,
@@ -278,7 +302,7 @@ async function executeRequest<T>(
   if (responseType === 'arraybuffer') {
     const buffer = await response.arrayBuffer()
     return {
-      data: buffer as unknown as T,
+      rawData: buffer,
       status: response.status,
       headers: response.headers,
     }
@@ -292,41 +316,44 @@ async function executeRequest<T>(
     raw = null
   }
 
-  // Unwrap legacy envelope (may throw AppError for business failures)
-  let parsedData: T
-  try {
-    parsedData = parseEnvelope<T>(raw)
-  } catch (error) {
-    // Intercept envelope-level 401 (HTTP 200 + status: false + code: 401)
-    if (isUnauthorizedError(error)) {
-      if (onUnauthorizedHandler) {
-        onUnauthorizedHandler()
-      }
-    }
-    throw error
-  }
+  // Validate envelope (may throw AppError for business failures or 401)
+  // But do NOT unwrap — return raw data for caller to decide
+  validateEnvelope(raw)
 
   return {
-    data: parsedData,
+    rawData: raw,
     status: response.status,
     headers: response.headers,
   }
 }
 
 /**
- * Main request function — returns only business data.
+ * Main request function — returns only unwrapped business data.
+ * Internally parses the legacy envelope and extracts the data field.
  */
 export async function request<T>(options: RequestOptions): Promise<T> {
-  const result = await executeRequest<T>(options)
-  return result.data
+  const result = await executeRequest(options)
+
+  if (options.responseType === 'arraybuffer') {
+    return result.rawData as T
+  }
+
+  return parseEnvelope<T>(result.rawData)
 }
 
 /**
  * Request function with HTTP metadata — used by Orval mutator.
- * Returns the complete response structure including data, status, and headers.
+ * Returns the complete response structure including raw Swagger Body, status, and headers.
+ * The raw body is the original envelope from the backend (NOT unwrapped).
  */
 export async function requestWithMetadata<T>(
   options: RequestOptions,
 ): Promise<RequestResult<T>> {
-  return executeRequest<T>(options)
+  const result = await executeRequest(options)
+
+  return {
+    data: result.rawData as T,
+    status: result.status,
+    headers: result.headers,
+  }
 }
