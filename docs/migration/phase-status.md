@@ -9,7 +9,7 @@
 | Phase | Name | Status | Commit | Test Coverage | Notes |
 |-------|------|--------|--------|---------------|-------|
 | 0 | Project Scaffold & UI Foundation | ✅ Done | 2d7730e | 78 tests passing | Bootstrap, Routing, Theme setup |
-| 1 | Foundation Hardening | ✅ Done | 2d5d75e | All tests passing | Splash handling, error recovery, logger sanitization |
+| 1 | Foundation Hardening | 🔄 In Review | ae1b47f | Hook tests being rewritten | Splash handling, error recovery, logger sanitization |
 | 2 | Swagger / OpenAPI Pipeline | ⏳ Pending | — | — | Awaiting Swagger source |
 | 3 | Auth & Session Management | ⏳ Pending | — | — | Depends on Phase 2 |
 | 4 | Home & Exam Profile | ⏳ Pending | — | — | Depends on Phase 3 |
@@ -141,18 +141,17 @@ First task: Confirm Swagger source URL and auth method
 
 ## Quality Gate Status
 
-- [x] Splash 隐藏失败进入可恢复错误状态
-- [x] Splash 未隐藏时绝不进入 ready
-- [x] Bootstrap Hook 测试使用真实 React Runtime
-- [x] AppBootstrap 测试使用合理的测试模式
-- [x] 测试不再手工 Mock React
-- [x] 测试不再使用任意 setTimeout 等待
-- [x] Bootstrap 逻辑有真实测试
-- [x] Logger 使用脱敏错误
-- [x] 根目录 review.md 已归档
-- [ ] GitHub Actions 实际通过 (awaiting CI run)
-- [ ] Dev UI 生产行为已验证 (manual verification needed)
-- [ ] `pnpm validate` 全部通过 (in progress)
+- [x] Splash 隐藏失败进入可恢复错误状态 ✅ 代码修复
+- [x] Splash 未隐藏时绝不进入 ready ✅ 代码修复
+- [ ] Bootstrap Hook 测试使用真实 React Runtime ⏳ 重写中
+- [ ] AppBootstrap 测试使用真实 render() ⏳ 重写中
+- [ ] 测试调用真实 useAppBootstrap() ⏳ 重写中
+- [ ] 测试不复制生产逻辑 ⏳ 重写中
+- [ ] Logger 使用脱敏错误 ✅ 代码修复
+- [ ] 根目录 review.md 已归档 ✅ 完成
+- [ ] GitHub Actions 实际通过 ⏳ 等待 CI
+- [ ] Dev UI 生产行为已验证 ⏳ 需要手动验证
+- [ ] `pnpm validate` 全部通过 ⏳ 测试修复后验证
 
 ## Related Documentation
 

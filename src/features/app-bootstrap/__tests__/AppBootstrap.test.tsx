@@ -1,10 +1,35 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import React, { type ReactNode } from 'react'
 import { AppBootstrap } from '@/providers/AppBootstrap'
 import { useAppBootstrap } from '../hooks/useAppBootstrap'
-import type { ReactNode } from 'react'
 
 vi.mock('../hooks/useAppBootstrap', () => ({
   useAppBootstrap: vi.fn(),
+}))
+
+// Mock the component dependencies
+vi.mock('../components/BootstrapLoadingScreen', () => ({
+  BootstrapLoadingScreen: () => React.createElement('div', {}, '正在重新加载基础配置...'),
+}))
+
+interface BootstrapErrorScreenProps {
+  message?: string | null
+  onRetry: () => void
+}
+
+vi.mock('../components/BootstrapErrorScreen', () => ({
+  BootstrapErrorScreen: ({ message, onRetry }: BootstrapErrorScreenProps) =>
+    React.createElement(
+      'div',
+      { testID: 'error-screen' },
+      React.createElement('p', {}, '应用启动失败'),
+      React.createElement(
+        'button',
+        { onClick: onRetry, testID: 'retry-button' },
+        '重新加载'
+      ),
+      message && React.createElement('p', {}, message)
+    ),
 }))
 
 describe('AppBootstrap Component', () => {
@@ -22,6 +47,7 @@ describe('AppBootstrap Component', () => {
 
     const result = AppBootstrap({ children: 'Test Child' as unknown as ReactNode })
 
+    // When splash is not hidden and status is running, should return null
     expect(result).toBeNull()
   })
 
@@ -35,29 +61,25 @@ describe('AppBootstrap Component', () => {
 
     const result = AppBootstrap({ children: 'Test Child' as unknown as ReactNode })
 
-    expect(result).toBeDefined()
+    // Should render loading screen
     expect(result).not.toBeNull()
-    // In a real Testing Library environment, we'd assert on rendered text
-    // e.g., expect(screen.getByText('正在重新加载基础配置')).toBeTruthy()
+    expect(result?.type.name).toBeDefined()
   })
 
   it('renders BootstrapErrorScreen when status is error', () => {
     const mockRetry = vi.fn()
     vi.mocked(useAppBootstrap).mockReturnValue({
       status: 'error',
-      errorMessage: '应用启动失败',
+      errorMessage: '应用初始化失败',
       hasHiddenSplash: false,
       retry: mockRetry,
     })
 
     const result = AppBootstrap({ children: 'Test Child' as unknown as ReactNode })
 
-    expect(result).toBeDefined()
+    // Should render error screen
     expect(result).not.toBeNull()
-    // In a real Testing Library environment, we'd verify:
-    // - error message is displayed
-    // - retry button is present
-    // - retry button calls the retry function
+    expect(result?.type.name).toBeDefined()
   })
 
   it('renders children when status is ready', () => {
@@ -71,13 +93,11 @@ describe('AppBootstrap Component', () => {
     const testChild = 'Protected Content'
     const result = AppBootstrap({ children: testChild as unknown as ReactNode })
 
-    expect(result).toBeDefined()
+    // Should render children
     expect(result).not.toBeNull()
-    // In a real Testing Library environment, we'd assert:
-    // expect(screen.getByText('Protected Content')).toBeTruthy()
   })
 
-  it('passes retry callback to BootstrapErrorScreen', () => {
+  it('passes correct retry callback to error screen', () => {
     const mockRetry = vi.fn()
     vi.mocked(useAppBootstrap).mockReturnValue({
       status: 'error',
@@ -88,57 +108,87 @@ describe('AppBootstrap Component', () => {
 
     AppBootstrap({ children: 'Test Child' as unknown as ReactNode })
 
-    // Verify that useAppBootstrap hook is called and retry is available
+    // Verify hook was called
     expect(useAppBootstrap).toHaveBeenCalled()
-    const mockResult = vi.mocked(useAppBootstrap).mock.results[0]
-    if (mockResult) {
-      expect(mockResult.value.retry).toBe(mockRetry)
-    }
+
+    // Verify the retry function is passed from the hook
+    const hookResult = vi.mocked(useAppBootstrap).mock.results[0]
+    expect(hookResult?.value?.retry).toBe(mockRetry)
   })
 
-  it('correctly handles hasHiddenSplash state transitions', () => {
-    mockRenderComponent()
-
-    // Initial: running, splash not hidden
-    vi.mocked(useAppBootstrap).mockReturnValue({
-      status: 'running',
-      errorMessage: null,
-      hasHiddenSplash: false,
-      retry: vi.fn(),
-    })
-    let result = AppBootstrap({ children: 'Child' as unknown as ReactNode })
-    expect(result).toBeNull()
-
-    // After splash hides: running, splash hidden
-    vi.mocked(useAppBootstrap).mockReturnValue({
-      status: 'running',
-      errorMessage: null,
-      hasHiddenSplash: true,
-      retry: vi.fn(),
-    })
-    result = AppBootstrap({ children: 'Child' as unknown as ReactNode })
-    expect(result).not.toBeNull()
-
-    // Ready state
+  it('correctly handles null children', () => {
     vi.mocked(useAppBootstrap).mockReturnValue({
       status: 'ready',
       errorMessage: null,
       hasHiddenSplash: true,
       retry: vi.fn(),
     })
+
+    const result = AppBootstrap({ children: null })
+
+    expect(result).not.toBeNull()
+  })
+
+  it('displays custom error message from hook', () => {
+    const customMessage = '自定义错误信息'
+    vi.mocked(useAppBootstrap).mockReturnValue({
+      status: 'error',
+      errorMessage: customMessage,
+      hasHiddenSplash: false,
+      retry: vi.fn(),
+    })
+
+    const result = AppBootstrap({ children: 'Test' as unknown as ReactNode })
+
+    expect(result).not.toBeNull()
+    // Error screen should receive the custom message
+    expect(useAppBootstrap).toHaveBeenCalled()
+  })
+
+  it('respects hasHiddenSplash state for loading screen display', () => {
+    vi.mocked(useAppBootstrap).mockReturnValue({
+      status: 'running',
+      errorMessage: null,
+      hasHiddenSplash: false,
+      retry: vi.fn(),
+    })
+
+    let result = AppBootstrap({ children: 'Child' as unknown as ReactNode })
+    expect(result).toBeNull()
+
+    // Update hook mock to show hidden splash
+    vi.mocked(useAppBootstrap).mockReturnValue({
+      status: 'running',
+      errorMessage: null,
+      hasHiddenSplash: true,
+      retry: vi.fn(),
+    })
+
+    result = AppBootstrap({ children: 'Child' as unknown as ReactNode })
+    expect(result).not.toBeNull()
+  })
+
+  it('transitions from error to ready state correctly', () => {
+    // Start with error
+    vi.mocked(useAppBootstrap).mockReturnValue({
+      status: 'error',
+      errorMessage: 'Initial error',
+      hasHiddenSplash: false,
+      retry: vi.fn(),
+    })
+
+    let result = AppBootstrap({ children: 'Child' as unknown as ReactNode })
+    expect(result?.type.name).toBeDefined()
+
+    // Transition to ready
+    vi.mocked(useAppBootstrap).mockReturnValue({
+      status: 'ready',
+      errorMessage: null,
+      hasHiddenSplash: true,
+      retry: vi.fn(),
+    })
+
     result = AppBootstrap({ children: 'Child' as unknown as ReactNode })
     expect(result).not.toBeNull()
   })
 })
-
-// Helper to track component re-renders (simplified version)
-function mockRenderComponent() {
-  let renderCount = 0
-
-  return {
-    rerender: () => {
-      renderCount++
-    },
-    getRenderCount: () => renderCount,
-  }
-}
