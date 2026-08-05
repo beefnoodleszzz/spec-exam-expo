@@ -34,9 +34,12 @@ jobs:
         
       - name: Lint
         run: pnpm lint
-        
-      - name: Test
-        run: pnpm test
-        
+
+      - name: Test (Vitest)
+        run: pnpm test:unit
+
+      - name: Test (Jest)
+        run: pnpm test:react
+
       - name: Expo Doctor
         run: pnpm doctor

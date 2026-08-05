@@ -22,7 +22,7 @@ module.exports = {
     '!src/shared/utils/magic-sign.ts',
   ],
 
-  clearMocks: true,
-  restoreMocks: true,
+  clearMocks: false,
+  restoreMocks: false,
   resetMocks: false,
 }
