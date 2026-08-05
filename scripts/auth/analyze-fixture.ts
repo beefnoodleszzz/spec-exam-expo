@@ -11,124 +11,135 @@
  *   Does NOT print sensitive values (they should be redacted).
  */
 
-import path from 'node:path'
-import fs from 'node:fs/promises'
+import {
+  readFile,
+} from 'node:fs/promises'
+import {
+  resolve,
+} from 'node:path'
 
-function getType(value: unknown): string {
-  if (value === null) return 'null'
-  if (Array.isArray(value)) {
-    if (value.length === 0) return 'array<unknown>'
-    const first = getType(value[0])
-    const allSame = value.every((v) => getType(v) === first)
-    return allSame ? `array<${first}>` : 'array<mixed>'
+function typeOfValue(
+  value: unknown,
+): string {
+  if (value === null) {
+    return 'null'
   }
+
+  if (Array.isArray(value)) {
+    return 'array'
+  }
+
   return typeof value
 }
 
-function analyzeObject(
-  obj: unknown,
-  indent = 0,
-): string[] {
-  const lines: string[] = []
-  const prefix = ' '.repeat(indent)
+function analyze(
+  value: unknown,
+  path: string,
+  lines: string[],
+): void {
+  if (Array.isArray(value)) {
+    lines.push(
+      `${path}: array length=${value.length}`,
+    )
 
-  if (typeof obj !== 'object' || obj === null) {
-    return [`${prefix}: ${getType(obj)}`]
-  }
-
-  if (Array.isArray(obj)) {
-    lines.push(`${prefix}: array (${obj.length} items)`)
-    if (obj.length > 0) {
-      lines.push(
-        `${prefix}  [0]: ${getType(obj[0])}`,
+    if (value.length > 0) {
+      analyze(
+        value[0],
+        `${path}[0]`,
+        lines,
       )
     }
-    return lines
+
+    return
   }
 
-  for (const [key, value] of Object.entries(obj)) {
-    const type = getType(value)
-    const nullable =
+  if (
+    typeof value === 'object' &&
+    value !== null
+  ) {
+    lines.push(
+      `${path}: object`,
+    )
+
+    const entries =
+      Object.entries(value)
+
+    if (entries.length === 0) {
+      lines.push(
+        `${path}: empty-object`,
+      )
+
+      return
+    }
+
+    for (
+      const [key, child]
+      of entries
+    ) {
+      analyze(
+        child,
+        `${path}.${key}`,
+        lines,
+      )
+    }
+
+    return
+  }
+
+  lines.push(
+    `${path}: ${typeOfValue(
+      value,
+    )}${
       value === null
-        ? ' (nullable)'
+        ? ' nullable'
         : ''
-
-    if (type === 'object') {
-      lines.push(
-        `${prefix}${key}: object${nullable}`,
-      )
-      const nested = analyzeObject(value, indent + 2)
-      lines.push(...nested)
-    } else if (type.startsWith('array')) {
-      lines.push(
-        `${prefix}${key}: ${type}${nullable}`,
-      )
-    } else {
-      lines.push(
-        `${prefix}${key}: ${type}${nullable}`,
-      )
-    }
-  }
-
-  return lines
+    }`,
+  )
 }
 
-async function main() {
-  const filePath = process.argv[2]
+async function main(): Promise<void> {
+  const argument =
+    process.argv[2]
 
-  if (!filePath) {
-    console.error('Error: fixture file path is required')
+  if (!argument) {
+    throw new Error(
+      'Usage: pnpm auth:analyze-fixture <file>',
+    )
+  }
+
+  const filePath =
+    resolve(argument)
+
+  const content =
+    await readFile(
+      filePath,
+      'utf8',
+    )
+
+  const parsed: unknown =
+    JSON.parse(content)
+
+  const lines: string[] = []
+
+  analyze(
+    parsed,
+    '$',
+    lines,
+  )
+
+  console.log(
+    lines.join('\n'),
+  )
+}
+
+main().catch(
+  (error: unknown) => {
     console.error(
-      'Usage: pnpm auth:analyze-fixture <path>',
+      error instanceof Error
+        ? error.message
+        : String(error),
     )
+
     process.exit(1)
-  }
-
-  const absolutePath = path.resolve(filePath)
-
-  try {
-    const content = await fs.readFile(
-      absolutePath,
-      'utf-8',
-    )
-    const fixture = JSON.parse(content)
-
-    console.log(`Analyzing: ${filePath}`)
-    console.log('')
-    console.log('Response structure:')
-    console.log('')
-
-    const lines = analyzeObject(fixture)
-    for (const line of lines) {
-      console.log(line)
-    }
-
-    console.log('')
-    console.log('Notes:')
-    console.log(
-      '- Redacted values appear as <REDACTED_*> and are hidden',
-    )
-    console.log(
-      '- Null values indicate nullable fields',
-    )
-    console.log(
-      '- Object nesting shows data structure',
-    )
-    console.log(
-      '- Use this structure to define Domain types',
-    )
-  } catch (err) {
-    const error = err as NodeJS.ErrnoException
-    if (error.code === 'ENOENT') {
-      console.error(`Error: File not found: ${filePath}`)
-    } else {
-      console.error(`Error: ${error.message}`)
-    }
-    process.exit(1)
-  }
-}
-
-main().catch((err) => {
-  console.error('Unexpected error:', err.message)
-  process.exit(1)
-})
+  },
+)

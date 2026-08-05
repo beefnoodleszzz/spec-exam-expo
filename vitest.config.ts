@@ -10,6 +10,7 @@ export default defineConfig({
       'src/**/*.test.ts',
       'src/**/*.test.tsx',
       'scripts/openapi/**/*.test.ts',
+      'scripts/auth/**/*.test.ts',
     ],
     exclude: [
       'src/**/*.react.test.ts',

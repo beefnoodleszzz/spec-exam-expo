@@ -31,6 +31,7 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
 .env*.local
 
 # typescript
@@ -49,3 +50,6 @@ eas.local.json
 
 # Keep generated API code in git (CI needs it for diff check)
 # src/shared/api/generated/ — NOT ignored
+
+# Temporary contract evidence storage (not ready for git)
+.tmp/
