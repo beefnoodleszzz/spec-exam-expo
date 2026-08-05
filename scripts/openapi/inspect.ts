@@ -23,8 +23,9 @@ async function inspect(): Promise<void> {
     asRecord(
       source.definitions ?? {},
     ) ?? {}
+  const components = asRecord(source.components)
   const schemas =
-    asRecord(source.components?.schemas) ??
+    asRecord(components.schemas) ??
     asRecord(source.definitions) ??
     {}
   const tags = Array.isArray(source.tags)
@@ -39,11 +40,16 @@ async function inspect(): Promise<void> {
     typeof source.basePath === 'string'
       ? source.basePath
       : null
-  const servers = Array.isArray(source.servers)
-    ? (source.servers as JsonObject[]).map(
-        (s) =>
-          s.url ?? 'unknown',
-      )
+  const servers: string[] = Array.isArray(
+    source.servers,
+  )
+    ? (source.servers as JsonObject[])
+        .map((s) => {
+          const url = s.url
+          return typeof url === 'string'
+            ? url
+            : 'unknown'
+        })
     : []
 
   const httpMethods = new Set([
@@ -82,13 +88,14 @@ async function inspect(): Promise<void> {
         (methods[method] ?? 0) + 1
 
       const operationId =
-        op.operationId ??
-        `${method}${path}`.replace(
-          /[{}\/]/g,
-          '',
-        )
+        typeof op.operationId === 'string'
+          ? op.operationId
+          : `${method}${path}`.replace(
+              /[{}\/]/g,
+              '',
+            )
 
-      if (!op.operationId) {
+      if (typeof op.operationId !== 'string') {
         missingOperationIds.push(operationId)
       }
 

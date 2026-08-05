@@ -14,6 +14,7 @@
     "src/**/*.react.test.ts",
     "src/**/*.react.test.tsx",
     "src/testing/**/*.ts",
+    "scripts/openapi/**/*.test.ts",
     "jest.setup.ts",
     "vitest.config.ts",
     ".expo/types/**/*.d.ts",

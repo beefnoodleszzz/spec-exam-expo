@@ -92,3 +92,23 @@ export function asRecord(
 
   return value as JsonObject
 }
+
+export function writeTextFile(
+  filePath: string,
+  content: string,
+): void {
+  mkdirSync(dirname(filePath), {
+    recursive: true,
+  })
+
+  const normalized =
+    content.endsWith('\n')
+      ? content
+      : `${content}\n`
+
+  writeFileSync(
+    filePath,
+    normalized,
+    'utf8',
+  )
+}

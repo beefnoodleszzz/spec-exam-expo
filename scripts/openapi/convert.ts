@@ -13,17 +13,21 @@ interface SwaggerConversionResult {
   openapi: JsonObject
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function convertSwagger2(
   source: JsonObject,
 ): Promise<JsonObject> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const imported = await import(
     'swagger2openapi'
   )
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const converter = imported.default
 
   return new Promise<JsonObject>(
     (resolve, reject) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       converter.convertObj(
         source,
         {
