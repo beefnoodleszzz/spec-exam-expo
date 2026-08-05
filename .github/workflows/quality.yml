@@ -3,12 +3,18 @@ name: Quality Gate CI
 on:
   push:
     branches: [ master, main ]
+
   pull_request:
     branches: [ master, main ]
+
+  workflow_dispatch:
 
 concurrency:
   group: quality-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   validate:
@@ -38,10 +44,10 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Test (Vitest)
+      - name: Test Vitest
         run: pnpm test:unit
 
-      - name: Test (Jest)
+      - name: Test React Native
         run: pnpm test:react
 
       - name: Expo Doctor
