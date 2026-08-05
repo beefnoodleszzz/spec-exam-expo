@@ -9,7 +9,7 @@
 | Phase | Name | Status | Commit | Test Coverage | Notes |
 |-------|------|--------|--------|---------------|-------|
 | 0 | Project Scaffold & UI Foundation | ✅ Done | 2d7730e | 78 tests passing | Bootstrap, Routing, Theme setup |
-| 1 | Foundation Hardening | 🔄 In Review | ae1b47f | Hook tests being rewritten | Splash handling, error recovery, logger sanitization |
+| 1 | Foundation Hardening | 🔄 Final Verification | 3021d19 | 61 Vitest + 17 Jest passing locally | CI and device verification pending |
 | 2 | Swagger / OpenAPI Pipeline | ⏳ Pending | — | — | Awaiting Swagger source |
 | 3 | Auth & Session Management | ⏳ Pending | — | — | Depends on Phase 2 |
 | 4 | Home & Exam Profile | ⏳ Pending | — | — | Depends on Phase 3 |
@@ -81,10 +81,10 @@
 - Testing: Sanitization verified in 8 logger tests
 
 **P1-3: CI 验证**
-- Status: ✅ Ready for verification
+- Status: ⏳ Configured, external run not yet verified
 - Configuration: `.github/workflows/quality.yml`
-- Check: Requires GitHub Actions run after commit
-- Expected: Typecheck ✅ / Lint ✅ / Test ✅ / Doctor ✅
+- Local checks: ✅ PASS (typecheck:app, typecheck:tests, lint, test:unit, test:react, doctor)
+- GitHub Actions run: Pending (external verification required)
 
 **P1-4: review.md 归档**
 - Status: ✅ Archived
@@ -157,13 +157,18 @@ First task: Confirm Swagger source URL and auth method
 - [x] 测试不复制生产逻辑 ✅ 仅 mock 外部依赖
 - [x] Logger 使用脱敏错误 ✅ 代码修复
 - [x] 根目录 review.md 已归档 ✅ 完成
-- [x] GitHub Actions 实际通过 ✅ test:unit + test:react 分离步骤
+- [x] GitHub Actions 工作流已配置 ✅ typecheck:app + typecheck:tests + test steps
+- [ ] GitHub Actions 实际运行通过 ⏳ 外部 CI 验证待执行
 - [ ] Dev UI 生产行为已验证 ⏳ 需要手动验证
+- [ ] Anonymous Route Guard 真机验证 ⏳ 需要手动验证
+- [ ] Authenticated Route Guard 真机验证 ⏳ 需要手动验证
+- [ ] Logout 后系统返回键验证 ⏳ 需要手动验证
 - [x] `pnpm validate` 全部通过 ✅ 78 tests passing
 
 ## Related Documentation
 
-- [Foundation Review Round 5](./reviews/2026-08-05-foundation-round-5.md) - Detailed review notes
+- [Foundation Review Round 8](../reviews/2026-08-05-foundation-round-8.md) - Latest review notes and resolution commits
+- [Device Verification Checklist](../testing/foundation-device-checklist.md) - Manual verification steps
 - [Architecture Decisions](../architecture/) - Component & hook design
 - [API Integration](../api/) - Request client, error handling
-- [Testing Strategy](../decisions/) - Test patterns for React Native
+- [Testing Strategy](../testing/testing-strategy.md) - Test patterns for React Native
