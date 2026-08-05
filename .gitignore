@@ -39,3 +39,13 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Secrets — never commit these
+.env.secrets
+eas.local.json
+
+# OpenAPI snapshots (keep source and normalized, ignore snapshots that are auto-saved)
+# openapi/snapshots/* — actually keep snapshots in git for contract tracking
+
+# Keep generated API code in git (CI needs it for diff check)
+# src/shared/api/generated/ — NOT ignored

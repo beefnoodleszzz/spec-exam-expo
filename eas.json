@@ -1,0 +1,49 @@
+{
+  "cli": {
+    "version": ">= 10.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "development"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "production"
+      }
+    },
+    "production": {
+      "env": {
+        "APP_VARIANT": "production"
+      },
+      "autoIncrement": true
+    },
+    "kaozhengtong-development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "kaozhengtong"
+      }
+    },
+    "kaozhengtong-preview": {
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "kaozhengtong"
+      }
+    },
+    "kaozhengtong-production": {
+      "env": {
+        "APP_VARIANT": "kaozhengtong"
+      },
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {},
+    "kaozhengtong-production": {}
+  }
+}
