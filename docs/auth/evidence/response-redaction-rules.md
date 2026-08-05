@@ -6,7 +6,7 @@ All sensitive data must be redacted before committing fixtures to git.
 
 | Data | Replace With | Example |
 |---|---|---|
-| Phone number | `138****0000` | 13812340000 → 138****0000 |
+| Phone number | Last 4 digits → `****` | 13812340000 → 1381234**** |
 | Access token | `<ACCESS_TOKEN>` | eyJhbGci... → `<ACCESS_TOKEN>` |
 | Refresh token | `<REFRESH_TOKEN>` | refresh_xxx → `<REFRESH_TOKEN>` |
 | User ID | `<USER_ID>` | 12345 or user-uuid → `<USER_ID>` |

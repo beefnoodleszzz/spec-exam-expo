@@ -31,13 +31,43 @@ Expected fixtures (sanitized):
 
 ## Capturing Evidence
 
-Do NOT commit live responses. Use:
+Evidence collection is performed manually by developers in controlled environments.
+
+Raw responses should never be stored in git. Use this workflow:
+
+### 1. Capture Raw Response
+
+Use Postman, Charles Proxy, Proxyman, or device debugging to capture the raw API response.
+
+Save to: `.tmp/auth-contract/raw/v2-login-success.json`
+
+### 2. Sanitize
 
 ```bash
-pnpm auth:capture-contract --endpoint getUserInfoByToken --token '<AUTH_TEST_TOKEN>'
+pnpm auth:sanitize-contract .tmp/auth-contract/raw/v2-login-success.json
 ```
 
-The capture script automatically redacts sensitive values.
+Output: `.tmp/auth-contract/sanitized/v2-login-success.json`
+
+### 3. Validate
+
+Verify that no sensitive data remains:
+
+```bash
+pnpm auth:validate-contract .tmp/auth-contract/sanitized/v2-login-success.json
+```
+
+### 4. Review
+
+Manually inspect the sanitized fixture before committing.
+
+### 5. Copy to Evidence
+
+```bash
+cp .tmp/auth-contract/sanitized/v2-login-success.json docs/auth/evidence/
+```
+
+Do NOT commit any fixtures from `.tmp/` directory directly.
 
 ## Analysis
 
