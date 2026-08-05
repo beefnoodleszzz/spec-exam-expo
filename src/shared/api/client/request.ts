@@ -3,12 +3,13 @@
  *
  * Hardened Features:
  * 1. Safe URL joining (joinUrl) avoiding double or missing slashes.
- * 2. Strict query parameter serialization with object contract error check.
- * 3. Dynamic Content-Type (skips for GET/HEAD and FormData).
- * 4. Distinct timeout vs external cancellation vs network error handling.
- * 5. Clean AbortSignal listener registration & removal.
- * 6. Decoupled 401 handler for both HTTP 401 and Envelope 200 + code:401.
- * 7. Support for responseType: 'arraybuffer'.
+ * 2. Strict query parameter serialization with deep array element validation.
+ * 3. Case-insensitive header handling & protected header override prevention.
+ * 4. Dynamic Content-Type (skips for GET/HEAD and FormData).
+ * 5. Distinct timeout vs external cancellation vs network error handling.
+ * 6. Clean AbortSignal listener registration & removal.
+ * 7. Decoupled 401 handler for both HTTP 401 and Envelope 200 + code:401.
+ * 8. Support for responseType: 'arraybuffer'.
  */
 import { AppConfig } from '@/shared/config/app.config'
 import { parseEnvelope } from './envelope'
@@ -28,6 +29,17 @@ import { appStore } from '@/shared/auth/app-store'
 
 let onUnauthorizedHandler: (() => void) | null = null
 
+const PROTECTED_HEADERS = new Set([
+  'examtoken',
+  'examtypeid',
+  'random1',
+  'random2',
+  'checkresult',
+])
+
+export type QueryPrimitive = string | number | boolean
+export type QueryValue = QueryPrimitive | QueryPrimitive[] | null | undefined
+
 /**
  * Register an abstract unauthorized (401) handler.
  * Keeps HTTP transport decoupled from direct Zustand store mutations.
@@ -46,10 +58,9 @@ export function joinUrl(baseUrl: string, path: string): string {
 }
 
 /**
- * Serialize query parameters safely.
- * Throws contract error if plain object or function is passed as a param value.
+ * Serialize query parameters safely with deep array element validation.
  */
-export function serializeQueryParams(params?: Record<string, unknown>): string {
+export function serializeQueryParams(params?: Record<string, QueryValue>): string {
   if (!params || Object.keys(params).length === 0) return ''
 
   const searchParams = new URLSearchParams()
@@ -59,9 +70,14 @@ export function serializeQueryParams(params?: Record<string, unknown>): string {
 
     if (Array.isArray(value)) {
       for (const item of value) {
-        if (item != null) {
-          searchParams.append(key, String(item))
+        if (item == null) continue
+        if (typeof item === 'object') {
+          throw createContractError(`Array item in query parameter '${key}' cannot be a plain object`)
         }
+        if (typeof item === 'function') {
+          throw createContractError(`Array item in query parameter '${key}' cannot be a function`)
+        }
+        searchParams.append(key, String(item))
       }
     } else if (typeof value === 'object') {
       throw createContractError(`Query parameter '${key}' cannot be a plain object`)
@@ -114,7 +130,7 @@ function buildAuthHeaders(): Record<string, string> {
 export type RequestOptions = {
   url: string
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD'
-  params?: Record<string, unknown>
+  params?: Record<string, QueryValue>
   data?: unknown
   headers?: Record<string, string>
   signal?: AbortSignal
@@ -142,10 +158,19 @@ export async function request<T>(options: RequestOptions): Promise<T> {
   const queryString = serializeQueryParams(params)
   const fullUrl = fullPath.includes('?') && queryString ? `${fullPath}&${queryString.slice(1)}` : `${fullPath}${queryString}`
 
+  // Check custom headers for protected header override attempts
+  if (customHeaders) {
+    for (const key of Object.keys(customHeaders)) {
+      if (PROTECTED_HEADERS.has(key.toLowerCase())) {
+        throw createContractError(`Cannot override protected header: ${key}`)
+      }
+    }
+  }
+
   const authHeaders = buildAuthHeaders()
   const mergedHeaders: Record<string, string> = {
     ...customHeaders,
-    ...authHeaders, // Protected signature headers take precedence
+    ...authHeaders,
   }
 
   // Dynamic Content-Type & Body handling
@@ -157,8 +182,12 @@ export async function request<T>(options: RequestOptions): Promise<T> {
       body = data as FormData
       // Do NOT set Content-Type for FormData — React Native handles boundary automatically
       delete mergedHeaders['Content-Type']
+      delete mergedHeaders['content-type']
     } else {
-      if (!mergedHeaders['Content-Type']) {
+      const hasContentType = Object.keys(mergedHeaders).some(
+        (k) => k.toLowerCase() === 'content-type',
+      )
+      if (!hasContentType) {
         mergedHeaders['Content-Type'] = 'application/json'
       }
       body = typeof data === 'string' ? data : JSON.stringify(data)

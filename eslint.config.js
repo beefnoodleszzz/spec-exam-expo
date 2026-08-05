@@ -8,7 +8,6 @@ module.exports = [
       'dist/**',
       '.expo/**',
       'src/shared/api/generated/**',
-      'src/shared/utils/magic-sign.ts',
       'openapi/**',
       'scripts/**',
     ],
@@ -16,8 +15,17 @@ module.exports = [
   {
     files: ['**/*.ts', '**/*.tsx'],
     rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+    },
+  },
+  {
+    files: ['src/shared/utils/magic-sign.ts', 'src/shared/api/signature/legacy-signature.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      'no-var': 'off',
+      'eqeqeq': 'off',
     },
   },
 ]

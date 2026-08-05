@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { joinUrl, serializeQueryParams } from '../request'
+import { joinUrl, serializeQueryParams, type QueryValue } from '../request'
+
 
 describe('request transport helpers', () => {
   describe('joinUrl', () => {
@@ -43,9 +44,10 @@ describe('request transport helpers', () => {
     it('throws contract error when plain object is passed as a query param', () => {
       expect(() =>
         serializeQueryParams({
-          filter: { invalid: true },
+          filter: { invalid: true } as unknown as QueryValue,
         }),
       ).toThrowError(/cannot be a plain object/)
     })
+
   })
 })

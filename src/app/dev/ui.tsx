@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
+import { Redirect } from 'expo-router'
 import { AppScreen } from '@/shared/components/layout/AppScreen'
+
 import { AppHeader } from '@/shared/components/layout/AppHeader'
 import { AppSection } from '@/shared/components/layout/AppSection'
 import { AppCard } from '@/shared/components/layout/AppCard'
@@ -31,7 +33,8 @@ import { useToast } from '@/shared/components/feedback/AppToast'
 
 /**
  * Development UI Preview Showcase Screen (/dev/ui)
- * Required by Section 22.4 of ui-guide.md
+ * Required by Section 22.4 of ui-guide.md.
+ * Shielded in production builds.
  */
 export default function DevUiPreviewRoute() {
   const { showToast } = useToast()
@@ -40,6 +43,11 @@ export default function DevUiPreviewRoute() {
   const [radioSelected, setRadioSelected] = useState('a')
   const [switchValue, setSwitchValue] = useState(true)
   const [selectValue, setSelectValue] = useState<string | number>('1')
+
+  if (!__DEV__) {
+    return <Redirect href="/+not-found" />
+  }
+
 
   return (
     <AppScreen scrollable={true}>

@@ -29,8 +29,8 @@ export interface AppState {
   themeMode: ThemeMode
 
   setExamProfile: (profile: ExamProfileSummary) => Promise<void>
-  clearExamProfileMemory: () => void
-  clearPersistedExamProfile: () => Promise<void>
+  resetExamProfileState: () => void
+  removePersistedExamProfile: () => Promise<void>
   clearExamProfile: () => Promise<void>
   restoreExamProfile: () => Promise<void>
   setThemeMode: (mode: ThemeMode) => void
@@ -45,11 +45,11 @@ export const appStore = create<AppState>((set) => ({
     await setAsync(AsyncKeys.EXAM_PROFILE_SUMMARY, profile)
   },
 
-  clearExamProfileMemory: () => {
+  resetExamProfileState: () => {
     set({ currentExamProfile: null })
   },
 
-  clearPersistedExamProfile: async () => {
+  removePersistedExamProfile: async () => {
     await removeAsync(AsyncKeys.EXAM_PROFILE_SUMMARY)
   },
 
