@@ -1,10 +1,9 @@
-import { Stack } from 'expo-router'
+import { Stack, Redirect } from 'expo-router'
 import { sessionStore } from '@/shared/auth/session-store'
-import { Redirect } from 'expo-router'
 
 /**
  * Protected group layout — requires authentication.
- * SessionProvider handles the actual redirect; this is the Expo Router guard.
+ * Layout-level auth guard redirects anonymous users to sign-in.
  */
 export default function ProtectedLayout() {
   const status = sessionStore((s) => s.status)

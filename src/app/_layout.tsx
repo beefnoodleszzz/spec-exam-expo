@@ -1,5 +1,4 @@
 import { Stack } from 'expo-router'
-import { useEffect } from 'react'
 import * as SplashScreen from 'expo-splash-screen'
 import { AppProviders } from '@/providers/AppProviders'
 import { AppBootstrap, SessionProvider } from '@/providers/SessionProvider'
@@ -22,4 +21,3 @@ export default function RootLayout() {
     </AppProviders>
   )
 }
-

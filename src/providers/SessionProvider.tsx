@@ -1,69 +1,83 @@
-import React, { useEffect, useCallback, useRef } from 'react'
-import { useRouter, useSegments } from 'expo-router'
+import React, { useEffect, useState, useCallback } from 'react'
+import { View } from 'react-native'
 import * as SplashScreen from 'expo-splash-screen'
+
 import { sessionStore } from '@/shared/auth/session-store'
 import { appStore } from '@/shared/auth/app-store'
 import { registerUnauthorizedHandler } from '@/shared/auth/session-service'
+import { AppText } from '@/shared/components/primitives/AppText'
+import { AppButton } from '@/shared/components/actions/AppButton'
+import { AppIcon } from '@/shared/components/primitives/AppIcon'
 
 /**
- * SessionProvider — observes session status and drives route protection.
- *
- * Navigation is done HERE, not in the HTTP client or session store.
- * This keeps routing as a UI concern and keeps the data layer clean.
+ * SessionProvider — observes session status for reactive route state.
+ * Primary route gating is handled by layout-level guards in (public)/_layout.tsx and (protected)/_layout.tsx.
  */
 export function SessionProvider({ children }: { children: React.ReactNode }) {
-  const router = useRouter()
-  const segments = useSegments()
-  const status = sessionStore((s) => s.status)
-  const initialized = useRef(false)
-
-  const redirect = useCallback(() => {
-    if (status === 'booting') return
-
-    const inPublicGroup = (segments as string[])[0] === '(public)'
-    const inProtectedGroup = (segments as string[])[0] === '(protected)'
-
-    if (status === 'anonymous' && inProtectedGroup) {
-      router.replace('/(public)/sign-in')
-    } else if (status === 'authenticated' && inPublicGroup) {
-      router.replace('/(protected)/(tabs)')
-    }
-
-    initialized.current = true
-  }, [status, segments, router])
-
-  useEffect(() => {
-    redirect()
-  }, [redirect])
-
-  return <>{children}</>
-}
-
-/**
- * AppBootstrap — loads session + exam profile from storage during startup.
- * Keeps Splash Screen visible until ALL startup tasks finish.
- */
-export function AppBootstrap({ children }: { children: React.ReactNode }) {
-  const restoreSession = sessionStore((s) => s.restoreSession)
-  const restoreExamProfile = appStore((s) => s.restoreExamProfile)
   const status = sessionStore((s) => s.status)
 
-  useEffect(() => {
-    async function init() {
-      try {
-        registerUnauthorizedHandler()
-        await Promise.all([restoreSession(), restoreExamProfile()])
-      } finally {
-        await SplashScreen.hideAsync().catch(() => {})
-      }
-    }
-    void init()
-  }, [restoreSession, restoreExamProfile])
-
-
-  // Still booting — show nothing (splash screen handles the visual until hideAsync is called)
   if (status === 'booting') return null
 
   return <>{children}</>
 }
 
+
+export type BootstrapStatus = 'idle' | 'running' | 'ready' | 'error'
+
+/**
+ * AppBootstrap — manages startup state machine:
+ * 'running' -> restores session & profile -> 'ready' -> hides Splash Screen.
+ * If failure occurs -> 'error' -> hides Splash Screen & shows BootstrapErrorScreen.
+ */
+export function AppBootstrap({ children }: { children: React.ReactNode }) {
+  const restoreSession = sessionStore((s) => s.restoreSession)
+  const restoreExamProfile = appStore((s) => s.restoreExamProfile)
+  const [bootstrapStatus, setBootstrapStatus] = useState<BootstrapStatus>('running')
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const runBootstrap = useCallback(async () => {
+    setBootstrapStatus('running')
+    setErrorMessage(null)
+    try {
+      registerUnauthorizedHandler()
+      await Promise.all([restoreSession(), restoreExamProfile()])
+      setBootstrapStatus('ready')
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : '初始化失败，请稍后重试'
+      setErrorMessage(msg)
+      setBootstrapStatus('error')
+    } finally {
+      await SplashScreen.hideAsync().catch(() => {})
+    }
+  }, [restoreSession, restoreExamProfile])
+
+  useEffect(() => {
+    void runBootstrap()
+  }, [runBootstrap])
+
+  if (bootstrapStatus === 'error') {
+    return (
+      <View className="flex-1 items-center justify-center p-6 bg-background">
+        <View className="w-16 h-16 rounded-full bg-red-50 items-center justify-center mb-4">
+          <AppIcon name="alert-circle-outline" size={36} color="#F53F3F" />
+        </View>
+        <AppText variant="heading" tone="danger" align="center">
+          应用启动失败
+        </AppText>
+        <AppText variant="body-secondary" tone="muted" align="center" className="mt-2 mb-6 max-w-xs">
+          {errorMessage || '加载本地配置异常，请试重新打开应用'}
+        </AppText>
+        <AppButton variant="primary" size="md" onPress={() => void runBootstrap()}>
+          重新加载
+        </AppButton>
+      </View>
+    )
+  }
+
+  // Still running — return null while native Splash Screen covers the viewport
+  if (bootstrapStatus !== 'ready') {
+    return null
+  }
+
+  return <>{children}</>
+}

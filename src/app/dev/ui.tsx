@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, ScrollView } from 'react-native'
+import { View } from 'react-native'
 import { AppScreen } from '@/shared/components/layout/AppScreen'
 import { AppHeader } from '@/shared/components/layout/AppHeader'
 import { AppSection } from '@/shared/components/layout/AppSection'
@@ -23,11 +23,11 @@ import { AppStat } from '@/shared/components/data-display/AppStat'
 import { AppProgress } from '@/shared/components/feedback/AppProgress'
 import { AppAlert } from '@/shared/components/feedback/AppAlert'
 import { AppDialog } from '@/shared/components/feedback/AppDialog'
-import { AppLoading } from '@/shared/components/feedback/AppLoading'
 import { AppSkeleton } from '@/shared/components/feedback/AppSkeleton'
 import { AppEmptyState } from '@/shared/components/feedback/AppEmptyState'
 import { AppErrorState } from '@/shared/components/feedback/AppErrorState'
 import { useToast } from '@/shared/components/feedback/AppToast'
+
 
 /**
  * Development UI Preview Showcase Screen (/dev/ui)

@@ -1,20 +1,15 @@
 /**
  * App Store — Zustand store for non-auth client-side global state.
  *
- * Stores only what cannot live in TanStack Query:
+ * Single source of truth for:
  * - Current exam profile summary (drives request headers)
- * - App variant
  * - Theme mode
- *
- * Rules:
- * - Do NOT store server data (user details, questions, scores, etc.)
- * - Do NOT store per-page loading or error state
  */
 import { create } from 'zustand'
-import type { AppVariantType } from '@/shared/config/app.config'
 import {
   getAsync,
   setAsync,
+  removeAsync,
   AsyncKeys,
 } from '@/shared/persistence/async-storage'
 
@@ -34,6 +29,8 @@ export interface AppState {
   themeMode: ThemeMode
 
   setExamProfile: (profile: ExamProfileSummary) => Promise<void>
+  clearExamProfileMemory: () => void
+  clearPersistedExamProfile: () => Promise<void>
   clearExamProfile: () => Promise<void>
   restoreExamProfile: () => Promise<void>
   setThemeMode: (mode: ThemeMode) => void
@@ -44,13 +41,21 @@ export const appStore = create<AppState>((set) => ({
   themeMode: 'light',
 
   setExamProfile: async (profile) => {
-    await setAsync(AsyncKeys.EXAM_PROFILE_SUMMARY, profile)
     set({ currentExamProfile: profile })
+    await setAsync(AsyncKeys.EXAM_PROFILE_SUMMARY, profile)
+  },
+
+  clearExamProfileMemory: () => {
+    set({ currentExamProfile: null })
+  },
+
+  clearPersistedExamProfile: async () => {
+    await removeAsync(AsyncKeys.EXAM_PROFILE_SUMMARY)
   },
 
   clearExamProfile: async () => {
-    await setAsync(AsyncKeys.EXAM_PROFILE_SUMMARY, null)
     set({ currentExamProfile: null })
+    await removeAsync(AsyncKeys.EXAM_PROFILE_SUMMARY)
   },
 
   restoreExamProfile: async () => {

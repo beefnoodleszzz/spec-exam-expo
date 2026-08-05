@@ -15,6 +15,11 @@ export type AppError =
       retryable: true
     }
   | {
+      type: 'cancelled'
+      message: string
+      retryable: false
+    }
+  | {
       type: 'unauthorized'
       message: string
       retryable: false
@@ -59,8 +64,24 @@ export function isAppError(e: unknown): e is AppError {
   )
 }
 
-export function createNetworkError(message: string): AppError {
+export function isUnauthorizedError(e: unknown): boolean {
+  return isAppError(e) && e.type === 'unauthorized'
+}
+
+export function isCancelledError(e: unknown): boolean {
+  return isAppError(e) && e.type === 'cancelled'
+}
+
+export function createNetworkError(message = '网络连接失败，请检查网络'): AppError {
   return { type: 'network', message, retryable: true }
+}
+
+export function createTimeoutError(message = '请求超时，请检查网络后再试'): AppError {
+  return { type: 'timeout', message, retryable: true }
+}
+
+export function createCancelledError(message = '请求已取消'): AppError {
+  return { type: 'cancelled', message, retryable: false }
 }
 
 export function createUnauthorizedError(): AppError {
@@ -78,6 +99,15 @@ export function createBusinessError(message: string, code?: string, retryable = 
 
 export function createServerError(status: number, message: string): AppError {
   return { type: 'server', status, message, retryable: status >= 500 }
+}
+
+export function createContractError(message: string, details?: unknown): AppError {
+  return {
+    type: 'contract',
+    message,
+    ...(details !== undefined ? { details } : {}),
+    retryable: false,
+  }
 }
 
 export function getErrorMessage(error: unknown): string {

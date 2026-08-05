@@ -1,6 +1,11 @@
 /**
+ * Signature Utility for Legacy Request Check Result
+ */
+import { FuckingDSign } from './magic-sign'
+
+/**
  * Converts a string to a byte array (UTF-8 encoded).
- * Matches the legacy implementation used for CHECK_KEY conversion.
+ * Matches the legacy implementation used for LEGACY_CHECK_KEY conversion.
  */
 export function stringToByte(str: string): number[] {
   const bytes: number[] = []
@@ -21,4 +26,16 @@ export function stringToByte(str: string): number[] {
   return bytes
 }
 
-export { FuckingDSign } from './magic-sign'
+/**
+ * Generates the legacy request signature hash.
+ * Wraps the legacy signature algorithm without altering its output.
+ */
+export function generateLegacyCheckResult(
+  pid: number,
+  cid: number,
+  keyBytes: number[],
+): string {
+  return FuckingDSign(pid, cid, keyBytes)
+}
+
+export { FuckingDSign }

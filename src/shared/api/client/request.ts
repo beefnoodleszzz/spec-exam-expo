@@ -1,15 +1,14 @@
 /**
  * Custom Orval Mutator — single HTTP transport used by all generated endpoints.
  *
- * Responsibilities:
- * 1. Resolve target host (business API vs map API).
- * 2. Attach auth token from sessionStore & examTypeId from appStore (single source of truth).
- * 3. Compute random1, random2, checkResult signature headers using AppConfig.LEGACY_CHECK_KEY.
- * 4. Apply default request timeout (15s) with custom timeoutMs support.
- * 5. Handle responseType: 'arraybuffer' vs 'json'.
- * 6. Unwrap legacy envelope via parseEnvelope (JSON only).
- * 7. Call registered onUnauthorized handler on 401 without direct store coupling.
- * 8. Throw typed AppError on failure.
+ * Hardened Features:
+ * 1. Safe URL joining (joinUrl) avoiding double or missing slashes.
+ * 2. Strict query parameter serialization with object contract error check.
+ * 3. Dynamic Content-Type (skips for GET/HEAD and FormData).
+ * 4. Distinct timeout vs external cancellation vs network error handling.
+ * 5. Clean AbortSignal listener registration & removal.
+ * 6. Decoupled 401 handler for both HTTP 401 and Envelope 200 + code:401.
+ * 7. Support for responseType: 'arraybuffer'.
  */
 import { AppConfig } from '@/shared/config/app.config'
 import { parseEnvelope } from './envelope'
@@ -17,9 +16,13 @@ import {
   createNetworkError,
   createServerError,
   createUnauthorizedError,
+  createTimeoutError,
+  createCancelledError,
+  createContractError,
+  isUnauthorizedError,
   type AppError,
 } from '../errors/app-error'
-import { FuckingDSign, stringToByte } from '@/shared/utils/signature'
+import { generateLegacyCheckResult, stringToByte } from '@/shared/utils/signature'
 import { sessionStore } from '@/shared/auth/session-store'
 import { appStore } from '@/shared/auth/app-store'
 
@@ -31,6 +34,46 @@ let onUnauthorizedHandler: (() => void) | null = null
  */
 export function setUnauthorizedHandler(handler: () => void): void {
   onUnauthorizedHandler = handler
+}
+
+/**
+ * Safely join base URL and path without double or missing slashes.
+ */
+export function joinUrl(baseUrl: string, path: string): string {
+  const cleanBase = baseUrl.replace(/\/+$/, '')
+  const cleanPath = path.replace(/^\/+/, '')
+  return `${cleanBase}/${cleanPath}`
+}
+
+/**
+ * Serialize query parameters safely.
+ * Throws contract error if plain object or function is passed as a param value.
+ */
+export function serializeQueryParams(params?: Record<string, unknown>): string {
+  if (!params || Object.keys(params).length === 0) return ''
+
+  const searchParams = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value == null) continue
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        if (item != null) {
+          searchParams.append(key, String(item))
+        }
+      }
+    } else if (typeof value === 'object') {
+      throw createContractError(`Query parameter '${key}' cannot be a plain object`)
+    } else if (typeof value === 'function') {
+      throw createContractError(`Query parameter '${key}' cannot be a function`)
+    } else {
+      searchParams.append(key, String(value))
+    }
+  }
+
+  const queryStr = searchParams.toString()
+  return queryStr ? `?${queryStr}` : ''
 }
 
 function resolveHost(url: string): string {
@@ -46,12 +89,12 @@ function buildAuthHeaders(): Record<string, string> {
 
   const random1 = Math.floor(Math.random() * 100)
   const random2 = Math.floor(Math.random() * 100)
-  // Create a copy of the key bytes — FuckingDSign mutates the array in place
+
+  // Create a copy of key bytes — signature function mutates array in place
   const keyBytes = stringToByte(AppConfig.LEGACY_CHECK_KEY)
-  const checkResult = FuckingDSign(random1, random2, keyBytes)
+  const checkResult = generateLegacyCheckResult(random1, random2, keyBytes)
 
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
     random1: String(random1),
     random2: String(random2),
     checkResult,
@@ -70,9 +113,10 @@ function buildAuthHeaders(): Record<string, string> {
 
 export type RequestOptions = {
   url: string
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD'
   params?: Record<string, unknown>
   data?: unknown
+  headers?: Record<string, string>
   signal?: AbortSignal
   timeoutMs?: number
   responseType?: 'json' | 'arraybuffer'
@@ -87,37 +131,58 @@ export async function request<T>(options: RequestOptions): Promise<T> {
     method,
     params,
     data,
+    headers: customHeaders,
     signal,
     timeoutMs = 15_000,
     responseType = 'json',
   } = options
 
   const baseUrl = resolveHost(url)
-  let fullUrl = baseUrl + url
+  const fullPath = joinUrl(baseUrl, url)
+  const queryString = serializeQueryParams(params)
+  const fullUrl = fullPath.includes('?') && queryString ? `${fullPath}&${queryString.slice(1)}` : `${fullPath}${queryString}`
 
-  // Append query params for GET/DELETE
-  if (params && Object.keys(params).length > 0) {
-    const search = new URLSearchParams(
-      Object.entries(params)
-        .filter(([, v]) => v != null)
-        .map(([k, v]) => [k, String(v)]),
-    )
-    fullUrl = `${fullUrl}?${search.toString()}`
+  const authHeaders = buildAuthHeaders()
+  const mergedHeaders: Record<string, string> = {
+    ...customHeaders,
+    ...authHeaders, // Protected signature headers take precedence
   }
 
-  const headers = buildAuthHeaders()
-  const body = data != null ? JSON.stringify(data) : undefined
+  // Dynamic Content-Type & Body handling
+  let body: BodyInit | undefined
+  const isFormData = typeof FormData !== 'undefined' && data instanceof FormData
 
-  // Setup timeout controller
+  if (method !== 'GET' && method !== 'HEAD' && data != null) {
+    if (isFormData) {
+      body = data as FormData
+      // Do NOT set Content-Type for FormData — React Native handles boundary automatically
+      delete mergedHeaders['Content-Type']
+    } else {
+      if (!mergedHeaders['Content-Type']) {
+        mergedHeaders['Content-Type'] = 'application/json'
+      }
+      body = typeof data === 'string' ? data : JSON.stringify(data)
+    }
+  }
+
+  // Setup abort controller and timeout tracking
   const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
+  let didTimeout = false
 
-  // Listen to external signal if provided
+  const timeoutId = setTimeout(() => {
+    didTimeout = true
+    controller.abort()
+  }, timeoutMs)
+
+  const handleExternalAbort = () => {
+    controller.abort()
+  }
+
   if (signal) {
     if (signal.aborted) {
       controller.abort()
     } else {
-      signal.addEventListener('abort', () => controller.abort())
+      signal.addEventListener('abort', handleExternalAbort)
     }
   }
 
@@ -125,7 +190,7 @@ export async function request<T>(options: RequestOptions): Promise<T> {
   try {
     const fetchInit: RequestInit = {
       method,
-      headers,
+      headers: mergedHeaders,
       signal: controller.signal,
     }
 
@@ -135,19 +200,24 @@ export async function request<T>(options: RequestOptions): Promise<T> {
 
     response = await fetch(fullUrl, fetchInit)
   } catch (error: unknown) {
-    const isTimeout = controller.signal.aborted
-    const message = isTimeout
-      ? '请求超时，请检查网络后再试'
-      : error instanceof Error && error.name === 'AbortError'
-      ? '请求已取消'
-      : '网络连接失败，请检查网络'
+    if (didTimeout) {
+      throw createTimeoutError() satisfies AppError
+    }
 
+    if (signal?.aborted || (error instanceof Error && error.name === 'AbortError')) {
+      throw createCancelledError() satisfies AppError
+    }
+
+    const message = error instanceof Error ? error.message : undefined
     throw createNetworkError(message) satisfies AppError
   } finally {
     clearTimeout(timeoutId)
+    if (signal) {
+      signal.removeEventListener('abort', handleExternalAbort)
+    }
   }
 
-  // Handle 401 Unauthorized
+  // Handle HTTP 401 Unauthorized
   if (response.status === 401) {
     if (onUnauthorizedHandler) {
       onUnauthorizedHandler()
@@ -182,5 +252,15 @@ export async function request<T>(options: RequestOptions): Promise<T> {
   }
 
   // Unwrap legacy envelope (may throw AppError for business failures)
-  return parseEnvelope<T>(raw)
+  try {
+    return parseEnvelope<T>(raw)
+  } catch (error) {
+    // Intercept envelope-level 401 (HTTP 200 + status: false + code: 401)
+    if (isUnauthorizedError(error)) {
+      if (onUnauthorizedHandler) {
+        onUnauthorizedHandler()
+      }
+    }
+    throw error
+  }
 }

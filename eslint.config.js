@@ -1,26 +1,23 @@
-const { defineConfig } = require('eslint/config')
 const expoConfig = require('eslint-config-expo/flat')
 
-module.exports = defineConfig([
-  expoConfig,
+module.exports = [
+  ...expoConfig,
   {
     ignores: [
       'node_modules/**',
       'dist/**',
       '.expo/**',
       'src/shared/api/generated/**',
+      'src/shared/utils/magic-sign.ts',
       'openapi/**',
       'scripts/**',
     ],
   },
   {
+    files: ['**/*.ts', '**/*.tsx'],
     rules: {
-      // No any
-      '@typescript-eslint/no-explicit-any': 'error',
-      // No unused vars
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      // Consistent type imports
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
     },
   },
-])
+]

@@ -1,10 +1,19 @@
-import { Stack } from 'expo-router'
+import { Stack, Redirect } from 'expo-router'
+import { sessionStore } from '@/shared/auth/session-store'
 
 /**
  * Public group layout — accessible without authentication.
- * Screens: privacy, onboarding, sign-in, sms-login, one-click-login.
+ * Layout-level auth guard redirects authenticated users to protected tabs.
  */
 export default function PublicLayout() {
+  const status = sessionStore((s) => s.status)
+
+  if (status === 'booting') return null
+
+  if (status === 'authenticated') {
+    return <Redirect href="/(protected)/(tabs)" />
+  }
+
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="privacy" />

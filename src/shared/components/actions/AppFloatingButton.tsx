@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { AppIcon, type IconName } from '../primitives/AppIcon'
 import { AppText } from '../primitives/AppText'
 import { cn } from '@/shared/utils/cn'
