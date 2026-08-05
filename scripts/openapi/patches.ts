@@ -286,6 +286,21 @@ function normalizePathParameterNames(
   return changed
 }
 
+function createShortSchemaName(
+  originalName: string,
+): string {
+  const hash = createHash('sha256')
+    .update(originalName)
+    .digest('hex')
+    .slice(0, 12)
+
+  const readablePrefix = originalName
+    .replace(/[^a-zA-Z0-9]/g, '')
+    .slice(0, 48)
+
+  return `${readablePrefix}_${hash}`
+}
+
 function normalizeSchemaNames(
   document: JsonObject,
 ): boolean {
@@ -298,12 +313,7 @@ function normalizeSchemaNames(
   // First pass: identify schema names that need shortening
   for (const schemaName of Object.keys(schemas)) {
     if (schemaName.length > 128) {
-      const hash = createHash('sha256')
-        .update(schemaName)
-        .digest('hex')
-        .slice(0, 16)
-
-      const shortName = `Schema${hash}`
+      const shortName = createShortSchemaName(schemaName)
       nameMapping.set(schemaName, shortName)
       changed = true
     }
@@ -361,6 +371,16 @@ function normalizeSchemaNames(
   }
 
   updateRefs(document)
+
+  // Store mapping in document for reporting
+  if (!document['x-client-schema-name-mapping']) {
+    document['x-client-schema-name-mapping'] = {}
+  }
+
+  const mapping = document['x-client-schema-name-mapping'] as Record<string, string>
+  for (const [originalName, shortName] of nameMapping.entries()) {
+    mapping[shortName] = originalName
+  }
 
   return changed
 }

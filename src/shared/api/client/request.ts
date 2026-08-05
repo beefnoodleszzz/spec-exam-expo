@@ -138,10 +138,19 @@ export type RequestOptions = {
   responseType?: 'json' | 'arraybuffer'
 }
 
+export interface RequestResult<T> {
+  data: T
+  status: number
+  headers: Headers
+}
+
 /**
- * Main request function — used as Orval mutator.
+ * Core HTTP executor — shared by request() and requestWithMetadata().
+ * Returns parsed data, HTTP status, and response headers.
  */
-export async function request<T>(options: RequestOptions): Promise<T> {
+async function executeRequest<T>(
+  options: RequestOptions,
+): Promise<RequestResult<T>> {
   const {
     url,
     method,
@@ -180,7 +189,6 @@ export async function request<T>(options: RequestOptions): Promise<T> {
   if (method !== 'GET' && method !== 'HEAD' && data != null) {
     if (isFormData) {
       body = data as FormData
-      // Do NOT set Content-Type for FormData — React Native handles boundary automatically
       delete mergedHeaders['Content-Type']
       delete mergedHeaders['content-type']
     } else {
@@ -269,7 +277,11 @@ export async function request<T>(options: RequestOptions): Promise<T> {
   // Handle Binary Response (arraybuffer)
   if (responseType === 'arraybuffer') {
     const buffer = await response.arrayBuffer()
-    return buffer as unknown as T
+    return {
+      data: buffer as unknown as T,
+      status: response.status,
+      headers: response.headers,
+    }
   }
 
   // Handle JSON Response Body
@@ -281,8 +293,9 @@ export async function request<T>(options: RequestOptions): Promise<T> {
   }
 
   // Unwrap legacy envelope (may throw AppError for business failures)
+  let parsedData: T
   try {
-    return parseEnvelope<T>(raw)
+    parsedData = parseEnvelope<T>(raw)
   } catch (error) {
     // Intercept envelope-level 401 (HTTP 200 + status: false + code: 401)
     if (isUnauthorizedError(error)) {
@@ -292,4 +305,28 @@ export async function request<T>(options: RequestOptions): Promise<T> {
     }
     throw error
   }
+
+  return {
+    data: parsedData,
+    status: response.status,
+    headers: response.headers,
+  }
+}
+
+/**
+ * Main request function — returns only business data.
+ */
+export async function request<T>(options: RequestOptions): Promise<T> {
+  const result = await executeRequest<T>(options)
+  return result.data
+}
+
+/**
+ * Request function with HTTP metadata — used by Orval mutator.
+ * Returns the complete response structure including data, status, and headers.
+ */
+export async function requestWithMetadata<T>(
+  options: RequestOptions,
+): Promise<RequestResult<T>> {
+  return executeRequest<T>(options)
 }

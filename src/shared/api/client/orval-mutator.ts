@@ -1,5 +1,5 @@
 import type { RequestOptions } from './request'
-import { request } from './request'
+import { requestWithMetadata } from './request'
 
 export async function orvalRequest<T>(
   url: string,
@@ -35,5 +35,8 @@ export async function orvalRequest<T>(
     options.signal = config.signal as AbortSignal
   }
 
-  return request<T>(options)
+  // T is the response wrapper type with { data: BusinessData, status, headers }
+  // requestWithMetadata returns exactly this structure
+  const result = await requestWithMetadata<unknown>(options)
+  return result as T
 }

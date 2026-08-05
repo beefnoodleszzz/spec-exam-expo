@@ -4,7 +4,7 @@
  * i车保WebApi中间件
  * OpenAPI spec version: v1
  */
-import type { Schemae9f7d51100c4d031 } from './schemae9f7d51100c4d031';
+import type { DynamicCorePagedList1ExaminationManageContractDtE9f7d51100c4 } from './dynamicCorePagedList1ExaminationManageContractDtE9f7d51100c4';
 
 /**
  * 特种作恶首页
@@ -22,5 +22,5 @@ export interface ExaminationManageContractDtoHomeExamDto {
   totalAnswer?: number;
   /** 答题率 */
   answerRate?: string;
-  informationList?: Schemae9f7d51100c4d031;
+  informationList?: DynamicCorePagedList1ExaminationManageContractDtE9f7d51100c4;
 }

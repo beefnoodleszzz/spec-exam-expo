@@ -41,6 +41,27 @@ import type {
   ApiExamShortMessageLoginGetParams,
   ApiExamTeacherDetailGetParams,
   DynamicCoreDResult,
+  DynamicCoreDResult1AliyunSmsPluginContractDtoAli2de2168ca5fe,
+  DynamicCoreDResult1DynamicCorePagedList1Examinat0726669d19d3,
+  DynamicCoreDResult1DynamicCorePagedList1Examinat3290c9819ad9,
+  DynamicCoreDResult1DynamicCorePagedList1ExaminatD20526ceeaf6,
+  DynamicCoreDResult1DynamicCorePagedList1ExaminatF9bf1a5710c6,
+  DynamicCoreDResult1ExaminationManageContractDtoCF64284d6f945,
+  DynamicCoreDResult1ExaminationManageContractDtoED1cec901fb46,
+  DynamicCoreDResult1ExaminationManageContractDtoH183608374d6c,
+  DynamicCoreDResult1ExaminationManageContractDtoHC28c3722f9b9,
+  DynamicCoreDResult1ExaminationManageContractDtoHC36baf67f06c,
+  DynamicCoreDResult1ExaminationManageContractDtoL75136586623d,
+  DynamicCoreDResult1ExaminationManageContractDtoOA5006d696e85,
+  DynamicCoreDResult1ExaminationManageContractDtoP42263c75babb,
+  DynamicCoreDResult1ExaminationManageContractDtoQ602904a2ee4d,
+  DynamicCoreDResult1ExaminationManageContractDtoT3d843522564f,
+  DynamicCoreDResult1ExaminationManageContractDtoUA95ebc90d12e,
+  DynamicCoreDResult1ExaminationManageContractDtoUB2f7f049032a,
+  DynamicCoreDResult1ExaminationManageContractDtoWD3b934246b38,
+  DynamicCoreDResult1SystemCollectionsGenericList12b7b36692779,
+  DynamicCoreDResult1SystemCollectionsGenericList13504b446ae67,
+  DynamicCoreDResult1SystemCollectionsGenericList13a51a185f193,
   DynamicCoreDResult1SystemStringSystemPrivateCoreLibVersion4000CultureNeutralPublicKeyToken7cec85d7bea7798e,
   ExaminationManageContractDtoGroupInput,
   ExaminationManageContractDtoGroupRelationInput,
@@ -53,28 +74,7 @@ import type {
   ExaminationManageContractDtoTeacherInput,
   ExaminationManageContractDtoTopicInput,
   ExaminationManageContractDtoUserUserTerminalInfoInput,
-  ExaminationManageContractDtoWeChatOneClickInput,
-  Schema0726669d19d32bf0,
-  Schema183608374d6c8ff8,
-  Schema2b7b366927796099,
-  Schema2de2168ca5febfc1,
-  Schema3290c9819ad9acfb,
-  Schema3504b446ae67ebfe,
-  Schema3a51a185f19368c1,
-  Schema3d843522564f6b83,
-  Schema42263c75babbef29,
-  Schema602904a2ee4d35e5,
-  Schema75136586623dc3ae,
-  Schemaa5006d696e8587ce,
-  Schemaa95ebc90d12e343c,
-  Schemab2f7f049032af686,
-  Schemac28c3722f9b97101,
-  Schemac36baf67f06cc9c7,
-  Schemad1cec901fb461884,
-  Schemad20526ceeaf6d600,
-  Schemad3b934246b3851d8,
-  Schemaf64284d6f9458045,
-  Schemaf9bf1a5710c657aa
+  ExaminationManageContractDtoWeChatOneClickInput
 } from '../../models';
 
 import { orvalRequest } from '../../../client/orval-mutator';
@@ -88,7 +88,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  * @summary 少儿主持首页
  */
 export type apiExamHomeChairGetResponse200 = {
-  data: Schema183608374d6c8ff8
+  data: DynamicCoreDResult1ExaminationManageContractDtoH183608374d6c
   status: 200
 }
     
@@ -200,7 +200,7 @@ export function useApiExamHomeChairGet<TData = Awaited<ReturnType<typeof apiExam
  * @summary 组列表
  */
 export type apiExamQueryGroupPagedListPostResponse200 = {
-  data: Schema3290c9819ad9acfb
+  data: DynamicCoreDResult1DynamicCorePagedList1Examinat3290c9819ad9
   status: 200
 }
     
@@ -283,7 +283,7 @@ export const useApiExamQueryGroupPagedListPost = <TError = unknown,
  * @summary 题列表
  */
 export type apiExamQueryTopicPagedListPostResponse200 = {
-  data: Schemaf9bf1a5710c657aa
+  data: DynamicCoreDResult1DynamicCorePagedList1ExaminatF9bf1a5710c6
   status: 200
 }
     
@@ -443,7 +443,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
  * @summary 首页
  */
 export type apiExamHomeGetResponse200 = {
-  data: Schemac28c3722f9b97101
+  data: DynamicCoreDResult1ExaminationManageContractDtoHC28c3722f9b9
   status: 200
 }
     
@@ -555,7 +555,7 @@ export function useApiExamHomeGet<TData = Awaited<ReturnType<typeof apiExamHomeG
  * @summary 题库列表
  */
 export type apiExamQueryQuestionsPostResponse200 = {
-  data: Schema602904a2ee4d35e5
+  data: DynamicCoreDResult1ExaminationManageContractDtoQ602904a2ee4d
   status: 200
 }
     
@@ -638,7 +638,7 @@ export const useApiExamQueryQuestionsPost = <TError = unknown,
  * @summary 顺序练习刷题率统计信息
  */
 export type apiExamQueryExerciseLearnStatisticsPostResponse200 = {
-  data: Schemad1cec901fb461884
+  data: DynamicCoreDResult1ExaminationManageContractDtoED1cec901fb46
   status: 200
 }
     
@@ -721,7 +721,7 @@ export const useApiExamQueryExerciseLearnStatisticsPost = <TError = unknown,
  * @summary 我的错题库
  */
 export type apiExamQueryUserWrongInfoListGetResponse200 = {
-  data: Schemad3b934246b3851d8
+  data: DynamicCoreDResult1ExaminationManageContractDtoWD3b934246b38
   status: 200
 }
     
@@ -840,7 +840,7 @@ export function useApiExamQueryUserWrongInfoListGet<TData = Awaited<ReturnType<t
  * @summary 我的收藏库
  */
 export type apiExamQueryUserCollectInfoListGetResponse200 = {
-  data: Schemaf64284d6f9458045
+  data: DynamicCoreDResult1ExaminationManageContractDtoCF64284d6f945
   status: 200
 }
     
@@ -959,7 +959,7 @@ export function useApiExamQueryUserCollectInfoListGet<TData = Awaited<ReturnType
  * @summary 科目一模拟题列表
  */
 export type apiExamQueryKmyMockListPostResponse200 = {
-  data: Schema602904a2ee4d35e5
+  data: DynamicCoreDResult1ExaminationManageContractDtoQ602904a2ee4d
   status: 200
 }
     
@@ -1042,7 +1042,7 @@ export const useApiExamQueryKmyMockListPost = <TError = unknown,
  * @summary 科目四模拟题列表
  */
 export type apiExamQueryKmsMockListPostResponse200 = {
-  data: Schema602904a2ee4d35e5
+  data: DynamicCoreDResult1ExaminationManageContractDtoQ602904a2ee4d
   status: 200
 }
     
@@ -1125,7 +1125,7 @@ export const useApiExamQueryKmsMockListPost = <TError = unknown,
  * @summary 用户学习数据
  */
 export type apiExamQueryLearningDataGetResponse200 = {
-  data: Schema75136586623dc3ae
+  data: DynamicCoreDResult1ExaminationManageContractDtoL75136586623d
   status: 200
 }
     
@@ -1244,7 +1244,7 @@ export function useApiExamQueryLearningDataGet<TData = Awaited<ReturnType<typeof
  * @summary 历史成绩
  */
 export type apiExamQueryHistoryResultDataGetResponse200 = {
-  data: Schemac36baf67f06cc9c7
+  data: DynamicCoreDResult1ExaminationManageContractDtoHC36baf67f06c
   status: 200
 }
     
@@ -1479,7 +1479,7 @@ export function useApiExamDeveloperModeGet<TData = Awaited<ReturnType<typeof api
 
 
 export type apiExamLoginGetResponse200 = {
-  data: Schemaa95ebc90d12e343c
+  data: DynamicCoreDResult1ExaminationManageContractDtoUA95ebc90d12e
   status: 200
 }
     
@@ -1592,7 +1592,7 @@ export function useApiExamLoginGet<TData = Awaited<ReturnType<typeof apiExamLogi
 
 
 export type apiExamShortMessageLoginGetResponse200 = {
-  data: Schemaa95ebc90d12e343c
+  data: DynamicCoreDResult1ExaminationManageContractDtoUA95ebc90d12e
   status: 200
 }
     
@@ -1708,7 +1708,7 @@ export function useApiExamShortMessageLoginGet<TData = Awaited<ReturnType<typeof
  * @summary 发送验证码
  */
 export type apiExamSendShortMessageGetResponse200 = {
-  data: Schema2de2168ca5febfc1
+  data: DynamicCoreDResult1AliyunSmsPluginContractDtoAli2de2168ca5fe
   status: 200
 }
     
@@ -1939,7 +1939,7 @@ export function useApiExamDeleteUserGet<TData = Awaited<ReturnType<typeof apiExa
  * @summary 用户详情
  */
 export type apiExamDetailGetResponse200 = {
-  data: Schemab2f7f049032af686
+  data: DynamicCoreDResult1ExaminationManageContractDtoUB2f7f049032a
   status: 200
 }
     
@@ -2051,7 +2051,7 @@ export function useApiExamDetailGet<TData = Awaited<ReturnType<typeof apiExamDet
  * @summary 一键登录
  */
 export type apiExamWxOneClickLoginPostResponse200 = {
-  data: Schemaa95ebc90d12e343c
+  data: DynamicCoreDResult1ExaminationManageContractDtoUA95ebc90d12e
   status: 200
 }
     
@@ -2134,7 +2134,7 @@ export const useApiExamWxOneClickLoginPost = <TError = unknown,
  * @summary 根据token获取用户信息
  */
 export type apiExamGetUserInfoByTokenGetResponse200 = {
-  data: Schemab2f7f049032af686
+  data: DynamicCoreDResult1ExaminationManageContractDtoUB2f7f049032a
   status: 200
 }
     
@@ -2616,7 +2616,7 @@ export function useApiExamInsertUserBuryingPointGet<TData = Awaited<ReturnType<t
 
 
 export type apiExamJointLoginGetResponse200 = {
-  data: Schemaa95ebc90d12e343c
+  data: DynamicCoreDResult1ExaminationManageContractDtoUA95ebc90d12e
   status: 200
 }
     
@@ -3063,7 +3063,7 @@ export function useApiExamInsertMotoOrderGet<TData = Awaited<ReturnType<typeof a
  * @summary 查询用户摩托车订单列表
  */
 export type apiExamQueryUserMotoOrderGetResponse200 = {
-  data: Schema3a51a185f19368c1
+  data: DynamicCoreDResult1SystemCollectionsGenericList13a51a185f193
   status: 200
 }
     
@@ -3281,7 +3281,7 @@ export function useApiExamCreateOrderOldUserGet<TData = Awaited<ReturnType<typeo
  * @summary 摩托车微信APP支付
  */
 export type apiExamMotoWeChatPayPostResponse200 = {
-  data: Schema42263c75babbef29
+  data: DynamicCoreDResult1ExaminationManageContractDtoP42263c75babb
   status: 200
 }
     
@@ -3443,7 +3443,7 @@ export const useApiExamMotoPayNotifyPost = <TError = unknown,
       return useMutation(mutationOptions, queryClient);
     }
     export type apiExamQueryVipRuleListGetResponse200 = {
-  data: Schema3504b446ae67ebfe
+  data: DynamicCoreDResult1SystemCollectionsGenericList13504b446ae67
   status: 200
 }
     
@@ -3642,7 +3642,7 @@ export const useApiExamInsertOrderPost = <TError = unknown,
  * @summary 订单列表
  */
 export type apiExamOrderPagedListPostResponse200 = {
-  data: Schemad20526ceeaf6d600
+  data: DynamicCoreDResult1DynamicCorePagedList1ExaminatD20526ceeaf6
   status: 200
 }
     
@@ -3725,7 +3725,7 @@ export const useApiExamOrderPagedListPost = <TError = unknown,
  * @summary 订单详情列表
  */
 export type apiExamOrderTopicListGetResponse200 = {
-  data: Schema2b7b366927796099
+  data: DynamicCoreDResult1SystemCollectionsGenericList12b7b36692779
   status: 200
 }
     
@@ -3844,7 +3844,7 @@ export function useApiExamOrderTopicListGet<TData = Awaited<ReturnType<typeof ap
  * @summary 订单详情
  */
 export type apiExamOrderDetailGetResponse200 = {
-  data: Schemaa5006d696e8587ce
+  data: DynamicCoreDResult1ExaminationManageContractDtoOA5006d696e85
   status: 200
 }
     
@@ -3963,7 +3963,7 @@ export function useApiExamOrderDetailGet<TData = Awaited<ReturnType<typeof apiEx
  * @summary 微信APP支付
  */
 export type apiExamWeChatPayPostResponse200 = {
-  data: Schema42263c75babbef29
+  data: DynamicCoreDResult1ExaminationManageContractDtoP42263c75babb
   status: 200
 }
     
@@ -4536,7 +4536,7 @@ export function useApiExamQueryHtmlGet<TData = Awaited<ReturnType<typeof apiExam
  * @summary 老师信息列表
  */
 export type apiExamQueryTeacherPagedListPostResponse200 = {
-  data: Schema0726669d19d32bf0
+  data: DynamicCoreDResult1DynamicCorePagedList1Examinat0726669d19d3
   status: 200
 }
     
@@ -4619,7 +4619,7 @@ export const useApiExamQueryTeacherPagedListPost = <TError = unknown,
  * @summary 老师详情
  */
 export type apiExamTeacherDetailGetResponse200 = {
-  data: Schema3d843522564f6b83
+  data: DynamicCoreDResult1ExaminationManageContractDtoT3d843522564f
   status: 200
 }
     
@@ -4738,7 +4738,7 @@ export function useApiExamTeacherDetailGet<TData = Awaited<ReturnType<typeof api
  * @summary 查询老师执教课程列表
  */
 export type apiExamQueryTeacherGroupPagedListPostResponse200 = {
-  data: Schema3290c9819ad9acfb
+  data: DynamicCoreDResult1DynamicCorePagedList1Examinat3290c9819ad9
   status: 200
 }
     

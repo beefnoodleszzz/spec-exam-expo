@@ -6,7 +6,10 @@
  */
 import type { DynamicCorePagedList1ExaminationManageContractDt9386228ea3dc } from './dynamicCorePagedList1ExaminationManageContractDt9386228ea3dc';
 
-export interface ExaminationManageContractDtoNoteNoteDto {
-  userNoteList?: DynamicCorePagedList1ExaminationManageContractDt9386228ea3dc;
-  noteList?: DynamicCorePagedList1ExaminationManageContractDt9386228ea3dc;
+export interface DynamicCoreDResult1DynamicCorePagedList1Examinat5a58c7ab75a4 {
+  data?: DynamicCorePagedList1ExaminationManageContractDt9386228ea3dc;
+  readonly status?: boolean;
+  code?: number;
+  message?: string;
+  timestamp?: string;
 }

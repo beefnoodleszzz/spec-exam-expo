@@ -50,7 +50,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema15c10a739e5f526a"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_15c10a739e5f"
                 }
               }
             }
@@ -71,7 +71,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema875d46b3dc80e19f"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_875d46b3dc80"
                 }
               }
             }
@@ -170,7 +170,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema0f2928a89122ca96"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_0f2928a89122"
                 }
               }
             }
@@ -204,7 +204,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema422da7a23971f9f4"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoH_422da7a23971"
                 }
               }
             }
@@ -249,7 +249,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaac3131bbaf679179"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_ac3131bbaf67"
                 }
               }
             }
@@ -281,7 +281,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemabad27fc04e9953ab"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoI_bad27fc04e99"
                 }
               }
             }
@@ -369,7 +369,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema9141f7a0b3eeba04"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_9141f7a0b3ee"
                 }
               }
             }
@@ -414,7 +414,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaa95ebc90d12e343c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_a95ebc90d12e"
                 }
               }
             }
@@ -459,7 +459,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaa95ebc90d12e343c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_a95ebc90d12e"
                 }
               }
             }
@@ -491,7 +491,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema2de2168ca5febfc1"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1AliyunSmsPluginContractDtoAli_2de2168ca5fe"
                 }
               }
             }
@@ -536,7 +536,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaa95ebc90d12e343c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_a95ebc90d12e"
                 }
               }
             }
@@ -557,7 +557,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema8d3a42f92a85d08e"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManagePluginV2Mode_8d3a42f92a85"
                 }
               }
             }
@@ -877,7 +877,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema712f69ff1be7c8d3"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoN_712f69ff1be7"
                 }
               }
             }
@@ -922,7 +922,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema5a58c7ab75a4f01c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_5a58c7ab75a4"
                 }
               }
             }
@@ -1063,7 +1063,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema639abfcce6775bd8"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_639abfcce677"
                 }
               }
             }
@@ -1084,7 +1084,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemacc62f2cf0176dfb9"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_cc62f2cf0176"
                 }
               }
             }
@@ -1116,7 +1116,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema639abfcce6775bd8"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_639abfcce677"
                 }
               }
             }
@@ -1168,7 +1168,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemacc62f2cf0176dfb9"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_cc62f2cf0176"
                 }
               }
             }
@@ -1211,7 +1211,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema10b5ef796b27c273"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_10b5ef796b27"
                 }
               }
             }
@@ -1232,7 +1232,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemab129e7eff6709363"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_b129e7eff670"
                 }
               }
             }
@@ -1277,7 +1277,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema42263c75babbef29"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoP_42263c75babb"
                 }
               }
             }
@@ -1319,7 +1319,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema23e45bd72e90e40e"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_23e45bd72e90"
                 }
               }
             }
@@ -1351,7 +1351,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema88b60d54d7e2536c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_88b60d54d7e2"
                 }
               }
             }
@@ -1507,7 +1507,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema1af5c8605aaf4266"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_1af5c8605aaf"
                 }
               }
             }
@@ -1677,7 +1677,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaac28b9f35cd7101c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_ac28b9f35cd7"
                 }
               }
             }
@@ -1722,7 +1722,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema24a55e983c5d3d74"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_24a55e983c5d"
                 }
               }
             }
@@ -1752,7 +1752,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema80a6edb41f6aaa59"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_80a6edb41f6a"
                 }
               }
             }
@@ -1784,7 +1784,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema8b453ec590d7c765"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoS_8b453ec590d7"
                 }
               }
             }
@@ -1805,7 +1805,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema0bd8c86c26ec162f"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_0bd8c86c26ec"
                 }
               }
             }
@@ -1850,7 +1850,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema255becb34eda6438"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoS_255becb34eda"
                 }
               }
             }
@@ -1895,7 +1895,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema24a55e983c5d3d74"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_24a55e983c5d"
                 }
               }
             }
@@ -1940,7 +1940,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema6797a13c3297e0a6"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoS_6797a13c3297"
                 }
               }
             }
@@ -1972,7 +1972,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaabaccb4ad0c3de85"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoS_abaccb4ad0c3"
                 }
               }
             }
@@ -2080,7 +2080,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema3666c06f72c0dc3e"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_3666c06f72c0"
                 }
               }
             }
@@ -2124,7 +2124,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemafebcd6a6d2d3618f"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_febcd6a6d2d3"
                 }
               }
             }
@@ -2168,7 +2168,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema3666c06f72c0dc3e"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_3666c06f72c0"
                 }
               }
             }
@@ -2188,7 +2188,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema94d3f10e4cbf14c0"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_94d3f10e4cbf"
                 }
               }
             }
@@ -2286,7 +2286,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemadcf7bdca55008917"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_dcf7bdca5500"
                 }
               }
             }
@@ -2373,7 +2373,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemab2f7f049032af686"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_b2f7f049032a"
                 }
               }
             }
@@ -2511,7 +2511,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema183608374d6c8ff8"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoH_183608374d6c"
                 }
               }
             }
@@ -2556,7 +2556,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema3290c9819ad9acfb"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_3290c9819ad9"
                 }
               }
             }
@@ -2601,7 +2601,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaf9bf1a5710c657aa"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_f9bf1a5710c6"
                 }
               }
             }
@@ -2666,7 +2666,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemac28c3722f9b97101"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoH_c28c3722f9b9"
                 }
               }
             }
@@ -2711,7 +2711,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema602904a2ee4d35e5"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoQ_602904a2ee4d"
                 }
               }
             }
@@ -2756,7 +2756,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemad1cec901fb461884"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoE_d1cec901fb46"
                 }
               }
             }
@@ -2787,7 +2787,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemad3b934246b3851d8"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoW_d3b934246b38"
                 }
               }
             }
@@ -2826,7 +2826,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaf64284d6f9458045"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoC_f64284d6f945"
                 }
               }
             }
@@ -2871,7 +2871,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema602904a2ee4d35e5"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoQ_602904a2ee4d"
                 }
               }
             }
@@ -2916,7 +2916,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema602904a2ee4d35e5"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoQ_602904a2ee4d"
                 }
               }
             }
@@ -2948,7 +2948,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema75136586623dc3ae"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoL_75136586623d"
                 }
               }
             }
@@ -2980,7 +2980,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemac36baf67f06cc9c7"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoH_c36baf67f06c"
                 }
               }
             }
@@ -3085,7 +3085,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaa95ebc90d12e343c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_a95ebc90d12e"
                 }
               }
             }
@@ -3174,7 +3174,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaa95ebc90d12e343c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_a95ebc90d12e"
                 }
               }
             }
@@ -3206,7 +3206,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema2de2168ca5febfc1"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1AliyunSmsPluginContractDtoAli_2de2168ca5fe"
                 }
               }
             }
@@ -3248,7 +3248,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemab2f7f049032af686"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_b2f7f049032a"
                 }
               }
             }
@@ -3293,7 +3293,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaa95ebc90d12e343c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_a95ebc90d12e"
                 }
               }
             }
@@ -3314,7 +3314,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemab2f7f049032af686"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_b2f7f049032a"
                 }
               }
             }
@@ -3483,7 +3483,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaa95ebc90d12e343c"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoU_a95ebc90d12e"
                 }
               }
             }
@@ -3562,7 +3562,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema3a51a185f19368c1"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_3a51a185f193"
                 }
               }
             }
@@ -3627,7 +3627,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema42263c75babbef29"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoP_42263c75babb"
                 }
               }
             }
@@ -3678,7 +3678,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema3504b446ae67ebfe"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_3504b446ae67"
                 }
               }
             }
@@ -3768,7 +3768,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemad20526ceeaf6d600"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_d20526ceeaf6"
                 }
               }
             }
@@ -3800,7 +3800,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema2b7b366927796099"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1SystemCollectionsGenericList1_2b7b36692779"
                 }
               }
             }
@@ -3832,7 +3832,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schemaa5006d696e8587ce"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoO_a5006d696e85"
                 }
               }
             }
@@ -3877,7 +3877,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema42263c75babbef29"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoP_42263c75babb"
                 }
               }
             }
@@ -4059,7 +4059,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema0726669d19d32bf0"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_0726669d19d3"
                 }
               }
             }
@@ -4091,7 +4091,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema3d843522564f6b83"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1ExaminationManageContractDtoT_3d843522564f"
                 }
               }
             }
@@ -4136,7 +4136,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Schema3290c9819ad9acfb"
+                  "$ref": "#/components/schemas/DynamicCoreDResult1DynamicCorePagedList1Examinat_3290c9819ad9"
                 }
               }
             }
@@ -4608,7 +4608,7 @@
             "type": "string"
           },
           "informationList": {
-            "$ref": "#/components/schemas/Schemae9f7d51100c4d031"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_e9f7d51100c4"
           }
         }
       },
@@ -5260,10 +5260,10 @@
         "type": "object",
         "properties": {
           "userNoteList": {
-            "$ref": "#/components/schemas/Schema9386228ea3dcaf40"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_9386228ea3dc"
           },
           "noteList": {
-            "$ref": "#/components/schemas/Schema9386228ea3dcaf40"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_9386228ea3dc"
           }
         }
       },
@@ -7506,7 +7506,7 @@
           }
         }
       },
-      "Schema15c10a739e5f526a": {
+      "DynamicCoreDResult1ExaminationManageContractDtoU_15c10a739e5f": {
         "type": "object",
         "properties": {
           "data": {
@@ -7529,7 +7529,7 @@
           }
         }
       },
-      "Schema875d46b3dc80e19f": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_875d46b3dc80": {
         "type": "object",
         "properties": {
           "data": {
@@ -7555,7 +7555,7 @@
           }
         }
       },
-      "Schema0f2928a89122ca96": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_0f2928a89122": {
         "type": "object",
         "properties": {
           "data": {
@@ -7581,7 +7581,7 @@
           }
         }
       },
-      "Schema422da7a23971f9f4": {
+      "DynamicCoreDResult1ExaminationManageContractDtoH_422da7a23971": {
         "type": "object",
         "properties": {
           "data": {
@@ -7604,7 +7604,7 @@
           }
         }
       },
-      "Schemae9f7d51100c4d031": {
+      "DynamicCorePagedList1ExaminationManageContractDt_e9f7d51100c4": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -7639,11 +7639,11 @@
           }
         }
       },
-      "Schemaac3131bbaf679179": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_ac3131bbaf67": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schemae9f7d51100c4d031"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_e9f7d51100c4"
           },
           "status": {
             "type": "boolean",
@@ -7662,7 +7662,7 @@
           }
         }
       },
-      "Schemabad27fc04e9953ab": {
+      "DynamicCoreDResult1ExaminationManageContractDtoI_bad27fc04e99": {
         "type": "object",
         "properties": {
           "data": {
@@ -7685,11 +7685,11 @@
           }
         }
       },
-      "Schema9141f7a0b3eeba04": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_9141f7a0b3ee": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schema08d15775b3bce1d8"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManagePluginV2Mo_08d15775b3bc"
           },
           "status": {
             "type": "boolean",
@@ -7708,7 +7708,7 @@
           }
         }
       },
-      "Schema08d15775b3bce1d8": {
+      "DynamicCorePagedList1ExaminationManagePluginV2Mo_08d15775b3bc": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -7743,7 +7743,7 @@
           }
         }
       },
-      "Schemaa95ebc90d12e343c": {
+      "DynamicCoreDResult1ExaminationManageContractDtoU_a95ebc90d12e": {
         "type": "object",
         "properties": {
           "data": {
@@ -7766,7 +7766,7 @@
           }
         }
       },
-      "Schema2de2168ca5febfc1": {
+      "DynamicCoreDResult1AliyunSmsPluginContractDtoAli_2de2168ca5fe": {
         "type": "object",
         "properties": {
           "data": {
@@ -7789,7 +7789,7 @@
           }
         }
       },
-      "Schema8d3a42f92a85d08e": {
+      "DynamicCoreDResult1ExaminationManagePluginV2Mode_8d3a42f92a85": {
         "type": "object",
         "properties": {
           "data": {
@@ -7812,7 +7812,7 @@
           }
         }
       },
-      "Schema712f69ff1be7c8d3": {
+      "DynamicCoreDResult1ExaminationManageContractDtoN_712f69ff1be7": {
         "type": "object",
         "properties": {
           "data": {
@@ -7835,7 +7835,7 @@
           }
         }
       },
-      "Schema9386228ea3dcaf40": {
+      "DynamicCorePagedList1ExaminationManageContractDt_9386228ea3dc": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -7870,11 +7870,11 @@
           }
         }
       },
-      "Schema5a58c7ab75a4f01c": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_5a58c7ab75a4": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schema9386228ea3dcaf40"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_9386228ea3dc"
           },
           "status": {
             "type": "boolean",
@@ -7893,7 +7893,7 @@
           }
         }
       },
-      "Schema639abfcce6775bd8": {
+      "DynamicCoreDResult1ExaminationManageContractDtoU_639abfcce677": {
         "type": "object",
         "properties": {
           "data": {
@@ -7916,7 +7916,7 @@
           }
         }
       },
-      "Schemacc62f2cf0176dfb9": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_cc62f2cf0176": {
         "type": "object",
         "properties": {
           "data": {
@@ -7942,7 +7942,7 @@
           }
         }
       },
-      "Schema10b5ef796b27c273": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_10b5ef796b27": {
         "type": "object",
         "properties": {
           "data": {
@@ -7968,7 +7968,7 @@
           }
         }
       },
-      "Schemab129e7eff6709363": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_b129e7eff670": {
         "type": "object",
         "properties": {
           "data": {
@@ -7994,7 +7994,7 @@
           }
         }
       },
-      "Schema42263c75babbef29": {
+      "DynamicCoreDResult1ExaminationManageContractDtoP_42263c75babb": {
         "type": "object",
         "properties": {
           "data": {
@@ -8017,7 +8017,7 @@
           }
         }
       },
-      "Schema23e45bd72e90e40e": {
+      "DynamicCoreDResult1ExaminationManageContractDtoU_23e45bd72e90": {
         "type": "object",
         "properties": {
           "data": {
@@ -8040,7 +8040,7 @@
           }
         }
       },
-      "Schema88b60d54d7e2536c": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_88b60d54d7e2": {
         "type": "object",
         "properties": {
           "data": {
@@ -8066,7 +8066,7 @@
           }
         }
       },
-      "Schema1af5c8605aaf4266": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_1af5c8605aaf": {
         "type": "object",
         "properties": {
           "data": {
@@ -8092,11 +8092,11 @@
           }
         }
       },
-      "Schemaac28b9f35cd7101c": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_ac28b9f35cd7": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schemab7c1c6591710177a"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_b7c1c6591710"
           },
           "status": {
             "type": "boolean",
@@ -8115,7 +8115,7 @@
           }
         }
       },
-      "Schemab7c1c6591710177a": {
+      "DynamicCorePagedList1ExaminationManageContractDt_b7c1c6591710": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -8150,11 +8150,11 @@
           }
         }
       },
-      "Schema24a55e983c5d3d74": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_24a55e983c5d": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schema071b45bda9728da4"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_071b45bda972"
           },
           "status": {
             "type": "boolean",
@@ -8173,7 +8173,7 @@
           }
         }
       },
-      "Schema071b45bda9728da4": {
+      "DynamicCorePagedList1ExaminationManageContractDt_071b45bda972": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -8208,7 +8208,7 @@
           }
         }
       },
-      "Schema80a6edb41f6aaa59": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_80a6edb41f6a": {
         "type": "object",
         "properties": {
           "data": {
@@ -8234,7 +8234,7 @@
           }
         }
       },
-      "Schema8b453ec590d7c765": {
+      "DynamicCoreDResult1ExaminationManageContractDtoS_8b453ec590d7": {
         "type": "object",
         "properties": {
           "data": {
@@ -8257,7 +8257,7 @@
           }
         }
       },
-      "Schema0bd8c86c26ec162f": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_0bd8c86c26ec": {
         "type": "object",
         "properties": {
           "data": {
@@ -8283,7 +8283,7 @@
           }
         }
       },
-      "Schema255becb34eda6438": {
+      "DynamicCoreDResult1ExaminationManageContractDtoS_255becb34eda": {
         "type": "object",
         "properties": {
           "data": {
@@ -8306,7 +8306,7 @@
           }
         }
       },
-      "Schema6797a13c3297e0a6": {
+      "DynamicCoreDResult1ExaminationManageContractDtoS_6797a13c3297": {
         "type": "object",
         "properties": {
           "data": {
@@ -8329,7 +8329,7 @@
           }
         }
       },
-      "Schemaabaccb4ad0c3de85": {
+      "DynamicCoreDResult1ExaminationManageContractDtoS_abaccb4ad0c3": {
         "type": "object",
         "properties": {
           "data": {
@@ -8352,11 +8352,11 @@
           }
         }
       },
-      "Schema3666c06f72c0dc3e": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_3666c06f72c0": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schema7da56d410033e655"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManagePluginV2Mo_7da56d410033"
           },
           "status": {
             "type": "boolean",
@@ -8375,7 +8375,7 @@
           }
         }
       },
-      "Schema7da56d410033e655": {
+      "DynamicCorePagedList1ExaminationManagePluginV2Mo_7da56d410033": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -8410,11 +8410,11 @@
           }
         }
       },
-      "Schemafebcd6a6d2d3618f": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_febcd6a6d2d3": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schema2f9ed8fbd183ca5b"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManagePluginV2Mo_2f9ed8fbd183"
           },
           "status": {
             "type": "boolean",
@@ -8433,7 +8433,7 @@
           }
         }
       },
-      "Schema2f9ed8fbd183ca5b": {
+      "DynamicCorePagedList1ExaminationManagePluginV2Mo_2f9ed8fbd183": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -8468,7 +8468,7 @@
           }
         }
       },
-      "Schema94d3f10e4cbf14c0": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_94d3f10e4cbf": {
         "type": "object",
         "properties": {
           "data": {
@@ -8494,7 +8494,7 @@
           }
         }
       },
-      "Schemadcf7bdca55008917": {
+      "DynamicCoreDResult1ExaminationManageContractDtoU_dcf7bdca5500": {
         "type": "object",
         "properties": {
           "data": {
@@ -8517,7 +8517,7 @@
           }
         }
       },
-      "Schemab2f7f049032af686": {
+      "DynamicCoreDResult1ExaminationManageContractDtoU_b2f7f049032a": {
         "type": "object",
         "properties": {
           "data": {
@@ -8540,7 +8540,7 @@
           }
         }
       },
-      "Schema183608374d6c8ff8": {
+      "DynamicCoreDResult1ExaminationManageContractDtoH_183608374d6c": {
         "type": "object",
         "properties": {
           "data": {
@@ -8563,11 +8563,11 @@
           }
         }
       },
-      "Schema3290c9819ad9acfb": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_3290c9819ad9": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schema29528f88c0e4ce09"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_29528f88c0e4"
           },
           "status": {
             "type": "boolean",
@@ -8586,7 +8586,7 @@
           }
         }
       },
-      "Schema29528f88c0e4ce09": {
+      "DynamicCorePagedList1ExaminationManageContractDt_29528f88c0e4": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -8621,11 +8621,11 @@
           }
         }
       },
-      "Schemaf9bf1a5710c657aa": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_f9bf1a5710c6": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schemabf5b7cb7c14a684c"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_bf5b7cb7c14a"
           },
           "status": {
             "type": "boolean",
@@ -8644,7 +8644,7 @@
           }
         }
       },
-      "Schemabf5b7cb7c14a684c": {
+      "DynamicCorePagedList1ExaminationManageContractDt_bf5b7cb7c14a": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -8679,7 +8679,7 @@
           }
         }
       },
-      "Schemac28c3722f9b97101": {
+      "DynamicCoreDResult1ExaminationManageContractDtoH_c28c3722f9b9": {
         "type": "object",
         "properties": {
           "data": {
@@ -8702,7 +8702,7 @@
           }
         }
       },
-      "Schema602904a2ee4d35e5": {
+      "DynamicCoreDResult1ExaminationManageContractDtoQ_602904a2ee4d": {
         "type": "object",
         "properties": {
           "data": {
@@ -8725,7 +8725,7 @@
           }
         }
       },
-      "Schemad1cec901fb461884": {
+      "DynamicCoreDResult1ExaminationManageContractDtoE_d1cec901fb46": {
         "type": "object",
         "properties": {
           "data": {
@@ -8748,7 +8748,7 @@
           }
         }
       },
-      "Schemad3b934246b3851d8": {
+      "DynamicCoreDResult1ExaminationManageContractDtoW_d3b934246b38": {
         "type": "object",
         "properties": {
           "data": {
@@ -8771,7 +8771,7 @@
           }
         }
       },
-      "Schemaf64284d6f9458045": {
+      "DynamicCoreDResult1ExaminationManageContractDtoC_f64284d6f945": {
         "type": "object",
         "properties": {
           "data": {
@@ -8794,7 +8794,7 @@
           }
         }
       },
-      "Schema75136586623dc3ae": {
+      "DynamicCoreDResult1ExaminationManageContractDtoL_75136586623d": {
         "type": "object",
         "properties": {
           "data": {
@@ -8817,7 +8817,7 @@
           }
         }
       },
-      "Schemac36baf67f06cc9c7": {
+      "DynamicCoreDResult1ExaminationManageContractDtoH_c36baf67f06c": {
         "type": "object",
         "properties": {
           "data": {
@@ -8840,7 +8840,7 @@
           }
         }
       },
-      "Schema3a51a185f19368c1": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_3a51a185f193": {
         "type": "object",
         "properties": {
           "data": {
@@ -8866,7 +8866,7 @@
           }
         }
       },
-      "Schema3504b446ae67ebfe": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_3504b446ae67": {
         "type": "object",
         "properties": {
           "data": {
@@ -8892,11 +8892,11 @@
           }
         }
       },
-      "Schemad20526ceeaf6d600": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_d20526ceeaf6": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schema26795165b3481235"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_26795165b348"
           },
           "status": {
             "type": "boolean",
@@ -8915,7 +8915,7 @@
           }
         }
       },
-      "Schema26795165b3481235": {
+      "DynamicCorePagedList1ExaminationManageContractDt_26795165b348": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -8950,7 +8950,7 @@
           }
         }
       },
-      "Schema2b7b366927796099": {
+      "DynamicCoreDResult1SystemCollectionsGenericList1_2b7b36692779": {
         "type": "object",
         "properties": {
           "data": {
@@ -8976,7 +8976,7 @@
           }
         }
       },
-      "Schemaa5006d696e8587ce": {
+      "DynamicCoreDResult1ExaminationManageContractDtoO_a5006d696e85": {
         "type": "object",
         "properties": {
           "data": {
@@ -8999,11 +8999,11 @@
           }
         }
       },
-      "Schema0726669d19d32bf0": {
+      "DynamicCoreDResult1DynamicCorePagedList1Examinat_0726669d19d3": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/Schema3381859737cc5fc1"
+            "$ref": "#/components/schemas/DynamicCorePagedList1ExaminationManageContractDt_3381859737cc"
           },
           "status": {
             "type": "boolean",
@@ -9022,7 +9022,7 @@
           }
         }
       },
-      "Schema3381859737cc5fc1": {
+      "DynamicCorePagedList1ExaminationManageContractDt_3381859737cc": {
         "type": "object",
         "properties": {
           "dataList": {
@@ -9057,7 +9057,7 @@
           }
         }
       },
-      "Schema3d843522564f6b83": {
+      "DynamicCoreDResult1ExaminationManageContractDtoT_3d843522564f": {
         "type": "object",
         "properties": {
           "data": {
@@ -9081,5 +9081,68 @@
         }
       }
     }
+  },
+  "x-client-schema-name-mapping": {
+    "DynamicCoreDResult1ExaminationManageContractDtoU_15c10a739e5f": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.User.UserAssetsDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_875d46b3dc80": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Contract.Dto.User.UserCashOutRecordBase_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_0f2928a89122": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Contract.Dto.User.UserAssetsRecordBase_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1ExaminationManageContractDtoH_422da7a23971": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.HomeExamDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManageContractDt_e9f7d51100c4": "Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.Information.InformationDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_ac3131bbaf67": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.Information.InformationDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoI_bad27fc04e99": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.Information.InformationBase_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_9141f7a0b3ee": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.PluginV2.Model.TFeedback_ExaminationManage.PluginV2_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManagePluginV2Mo_08d15775b3bc": "Dynamic.Core.PagedList_1_ExaminationManage.PluginV2.Model.TFeedback_ExaminationManage.PluginV2_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoU_a95ebc90d12e": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.UserLoginDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1AliyunSmsPluginContractDtoAli_2de2168ca5fe": "Dynamic.Core.DResult_1_AliyunSmsPluginContract.Dto.AliyunSmsDto_AliyunSmsPluginContract_Version_1.0.2.5_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManagePluginV2Mode_8d3a42f92a85": "Dynamic.Core.DResult_1_ExaminationManage.PluginV2.Model.TUser_ExaminationManage.PluginV2_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoN_712f69ff1be7": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.Note.NoteDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManageContractDt_9386228ea3dc": "Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.Note.NoteBase_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_5a58c7ab75a4": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.Note.NoteBase_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoU_639abfcce677": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.User.UserOrderBase_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_cc62f2cf0176": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Contract.Dto.User.UserOrderBase_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_10b5ef796b27": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.PluginV2.View.VMyInviteRecord_ExaminationManage.PluginV2_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_b129e7eff670": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Contract.Dto.Assets.HorseRaceLampDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1ExaminationManageContractDtoP_42263c75babb": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.PayRequestEntityDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoU_23e45bd72e90": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.User.UserVipRuleDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_88b60d54d7e2": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Contract.Dto.Es.EsSubjectDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_1af5c8605aaf": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.PluginV2.Model.TExamType_ExaminationManage.PluginV2_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_ac28b9f35cd7": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.Subject.SubjectGroupDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManageContractDt_b7c1c6591710": "Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.Subject.SubjectGroupDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_24a55e983c5d": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.Subject.SubjectDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManageContractDt_071b45bda972": "Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.Subject.SubjectDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_80a6edb41f6a": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Contract.Dto.Subject.ExamTypeDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1ExaminationManageContractDtoS_8b453ec590d7": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.Subject.VMockExam_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_0bd8c86c26ec": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Contract.Dto.Subject.SubjectsTypeData_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1ExaminationManageContractDtoS_255becb34eda": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.Subject.SubjectStatics_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoS_6797a13c3297": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.Subject.SubjectResultDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoS_abaccb4ad0c3": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.Subject.VGradeHistory_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_3666c06f72c0": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.PluginV2.Model.TSubject_ExaminationManage.PluginV2_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManagePluginV2Mo_7da56d410033": "Dynamic.Core.PagedList_1_ExaminationManage.PluginV2.Model.TSubject_ExaminationManage.PluginV2_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_febcd6a6d2d3": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.PluginV2.Model.TSubjectGroup_ExaminationManage.PluginV2_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManagePluginV2Mo_2f9ed8fbd183": "Dynamic.Core.PagedList_1_ExaminationManage.PluginV2.Model.TSubjectGroup_ExaminationManage.PluginV2_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_94d3f10e4cbf": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_Acb.FileDrawingComponentManage.Contract.Dto.FileGenerateRecordDto_Acb.FileDrawingComponentManage.Contract_Version_1.0.0.6_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1ExaminationManageContractDtoU_dcf7bdca5500": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.User.UserDataDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoU_b2f7f049032a": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.User.UserInfoDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoH_183608374d6c": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.HomeChairDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_3290c9819ad9": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.GroupDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManageContractDt_29528f88c0e4": "Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.GroupDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_f9bf1a5710c6": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.TopicDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManageContractDt_bf5b7cb7c14a": "Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.TopicDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoH_c28c3722f9b9": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.HomeDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoQ_602904a2ee4d": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.QuestionsInfoDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoE_d1cec901fb46": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.ExerciseLearnDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoW_d3b934246b38": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.WrongQuestionDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoC_f64284d6f945": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.CollectQuestionDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoL_75136586623d": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.LearningDataDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoH_c36baf67f06c": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.HistoryResultDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_3a51a185f193": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Plugin.Model.TMotoOrder_ExaminationManage.Plugin_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_3504b446ae67": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Plugin.Model.TUserVipRule_ExaminationManage.Plugin_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_d20526ceeaf6": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.OrderDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManageContractDt_26795165b348": "Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.OrderDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1SystemCollectionsGenericList1_2b7b36692779": "Dynamic.Core.DResult_1_System.Collections.Generic.List_1_ExaminationManage.Contract.Dto.OrderDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_System.Private.CoreLib_Version_4.0.0.0_Culture_neutral_PublicKeyToken_7cec85d7bea7798e_",
+    "DynamicCoreDResult1ExaminationManageContractDtoO_a5006d696e85": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.OrderDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1DynamicCorePagedList1Examinat_0726669d19d3": "Dynamic.Core.DResult_1_Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.TeacherSimpleDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_Dynamic.Core_Version_2.1.8.0_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCorePagedList1ExaminationManageContractDt_3381859737cc": "Dynamic.Core.PagedList_1_ExaminationManage.Contract.Dto.TeacherSimpleDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_",
+    "DynamicCoreDResult1ExaminationManageContractDtoT_3d843522564f": "Dynamic.Core.DResult_1_ExaminationManage.Contract.Dto.TeacherDto_ExaminationManage.Contract_Version_1.0.0.1_Culture_neutral_PublicKeyToken_null_"
   }
 }
