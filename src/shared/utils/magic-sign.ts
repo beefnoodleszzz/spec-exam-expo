@@ -11,7 +11,7 @@
  *
  * To verify correctness: run `pnpm test src/shared/utils/__tests__/signature.test.ts`
  */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+ 
 import md5 from 'js-md5'
 
 /**
@@ -52,7 +52,7 @@ function arrayBufferToBase64(buffer) {
   return encode(binary)
 }
 
-function SignFun3(index: number, c: Array<any>) {
+function SignFun3(index: number, c: any[]) {
   let data = Uint8Array.from([
     0x37, 0x92, 0x44, 0x68, 0xa5, 0x3d, 0xcc, 0x7f, 0xbb, 0xf, 0xd9, 0x88, 0xee, 0x9a, 0xe9, 0x5a,
   ])

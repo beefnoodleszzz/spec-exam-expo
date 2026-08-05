@@ -45,7 +45,7 @@ export default function DevUiPreviewRoute() {
   const [selectValue, setSelectValue] = useState<string | number>('1')
 
   if (!__DEV__) {
-    return <Redirect href="/+not-found" />
+    return <Redirect href="/" />
   }
 
 

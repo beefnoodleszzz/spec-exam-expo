@@ -3,6 +3,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import { sessionStore } from '@/shared/auth/session-store'
 import { appStore } from '@/shared/auth/app-store'
 import { registerUnauthorizedHandler } from '@/shared/auth/session-service'
+import { logger } from '@/shared/logging/logger'
 
 export type BootstrapStatus = 'running' | 'ready' | 'error'
 
@@ -11,30 +12,63 @@ export function useAppBootstrap() {
   const restoreExamProfile = appStore((s) => s.restoreExamProfile)
   const [status, setStatus] = useState<BootstrapStatus>('running')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  
   const hasHiddenSplashRef = useRef(false)
+  const bootstrapPromiseRef = useRef<Promise<void> | null>(null)
+  const mountedRef = useRef(true)
 
-  const hideSplashOnce = useCallback(async () => {
-    if (!hasHiddenSplashRef.current) {
-      hasHiddenSplashRef.current = true
-      await SplashScreen.hideAsync().catch(() => {})
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
     }
   }, [])
 
-  const runBootstrap = useCallback(async () => {
-    setStatus('running')
-    setErrorMessage(null)
+  const hideSplashOnce = useCallback(async () => {
+    if (hasHiddenSplashRef.current) return
+    try {
+      await SplashScreen.hideAsync()
+      hasHiddenSplashRef.current = true
+    } catch (error) {
+      logger.warn('splash_hide_failed', { error })
+      throw error
+    }
+  }, [])
+
+  const performBootstrap = useCallback(async () => {
+    if (mountedRef.current) {
+      setStatus('running')
+      setErrorMessage(null)
+    }
+    
     try {
       registerUnauthorizedHandler()
       await Promise.all([restoreSession(), restoreExamProfile()])
-      setStatus('ready')
+      if (mountedRef.current) {
+        setStatus('ready')
+      }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : '初始化失败，请稍后重试'
-      setErrorMessage(msg)
-      setStatus('error')
+      logger.error('app_bootstrap_failed', err)
+      if (mountedRef.current) {
+        setErrorMessage('本地配置加载失败，请重新尝试')
+        setStatus('error')
+      }
     } finally {
-      await hideSplashOnce()
+      await hideSplashOnce().catch(() => {})
     }
   }, [restoreSession, restoreExamProfile, hideSplashOnce])
+
+  const runBootstrap = useCallback(() => {
+    if (bootstrapPromiseRef.current) {
+      return bootstrapPromiseRef.current
+    }
+
+    bootstrapPromiseRef.current = performBootstrap().finally(() => {
+      bootstrapPromiseRef.current = null
+    })
+
+    return bootstrapPromiseRef.current
+  }, [performBootstrap])
 
   useEffect(() => {
     void runBootstrap()

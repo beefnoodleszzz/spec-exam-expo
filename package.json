@@ -1,6 +1,7 @@
 {
   "name": "spec-exam-expo",
   "version": "1.0.0",
+  "packageManager": "pnpm@11.15.0",
   "main": "expo-router/entry",
   "private": true,
   "scripts": {

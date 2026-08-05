@@ -8,6 +8,11 @@ export default defineConfig({
     setupFiles: ['./src/testing/setup.ts'],
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     exclude: ['node_modules', '.expo'],
+    server: {
+      deps: {
+        inline: ['@testing-library/react-native', 'react-native'],
+      },
+    },
   },
   resolve: {
     alias: {

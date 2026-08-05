@@ -1,22 +1,9 @@
 import React from 'react'
-import { sessionStore } from '@/shared/auth/session-store'
 import {
   useAppBootstrap,
   BootstrapErrorScreen,
   BootstrapLoadingScreen,
 } from '@/features/app-bootstrap'
-
-/**
- * SessionProvider — observes session status for reactive route state.
- * Primary route gating is handled by layout-level guards in (public)/_layout.tsx and (protected)/_layout.tsx.
- */
-export function SessionProvider({ children }: { children: React.ReactNode }) {
-  const status = sessionStore((s) => s.status)
-
-  if (status === 'booting') return null
-
-  return <>{children}</>
-}
 
 /**
  * AppBootstrap — manages startup state machine via useAppBootstrap feature hook.

@@ -11,4 +11,7 @@ Expo Router provides file-based routing with group layouts (`(public)` and `(pro
 ## Consequences
 - Routing decisions are entirely declarative and driven by React state rendering.
 - Deep links to protected screens automatically trigger redirect to sign-in when anonymous.
-- Back navigation after logout is prevented because layout unmounts the protected stack.
+- Expected consequence:
+The protected layout should unmount after logout, which is intended to prevent returning to protected routes. This behavior must be verified through route integration tests and device E2E tests.
+
+Validation status: Pending
