@@ -7,8 +7,8 @@
 | 0 | Project Scaffold | Done | Scaffold and provider structure implemented |
 | 1 | UI Foundation | Done | Semantic tokens and shared UI primitives implemented |
 | 2 | Foundation Hardening | Final Verification | Commit `716cf607`; all local quality gates pass |
-| 3 | Swagger / OpenAPI Pipeline | Not Started | Waiting for Foundation verification |
-| 4 | Auth & Session Management | Not Started | Depends on OpenAPI Pipeline |
+| 3 | Swagger / OpenAPI Pipeline | Final Verification | Commit `04b3468`; determinism verified; awaiting GitHub Actions |
+| 4 | Auth Contract Integration | Not Started | Blocked on OpenAPI verification |
 | 5 | Home & Exam Profile | Not Started | Depends on Auth |
 | 6 | Question Bank & Practice | Not Started | Depends on Home |
 | 7 | Simulation Exam & Results | Not Started | Depends on Question Bank |
@@ -122,6 +122,69 @@ Manual test procedure:
 docs/testing/foundation-device-checklist.md
 ```
 
+## OpenAPI Pipeline (Phase 3)
+
+### Implementation
+
+Commit: `04b3468df6f76c02bbcd0019e95dcec8e77cc5b5`
+
+- Swagger to OpenAPI 3.0 conversion
+- Path parameter inference
+- Schema name normalization
+- Orval custom mutator with dual semantics
+- Envelope preservation for Orval
+- Deterministic code generation with `pnpm api:check`
+
+### Local Quality Gate
+
+All local checks pass:
+
+```text
+pnpm typecheck:app ✓
+pnpm typecheck:tests ✓
+pnpm lint ✓
+pnpm test:unit (95 tests) ✓
+pnpm test:react (17 tests) ✓
+pnpm api:check (twice) ✓
+pnpm doctor ✓
+pnpm validate ✓
+```
+
+### Type Safety Boundary
+
+Orval integration includes one generic assertion at the HTTP wrapper boundary. This is protected by:
+
+- request metadata contract tests
+- mutator integration tests
+- generated code type checking
+- deterministic re-generation
+
+No other layers may use this assertion pattern.
+
+### Completion Rule
+
+OpenAPI Pipeline may be marked `Done` only after:
+
+1. Current commit `04b3468` GitHub Actions passes.
+2. Commit hash and run ID are recorded below.
+3. Auth Contract Integration baseline is established.
+
+**Pending GitHub Actions verification:**
+
+```text
+Commit: 04b3468df6f76c02bbcd0019e95dcec8e77cc5b5
+Workflow: Quality Gate CI
+Run ID: [WAITING FOR CI TO PASS]
+OpenAPI Determinism: PENDING
+```
+
+Once verified, update to:
+
+```text
+Swagger / OpenAPI Pipeline — Done
+Auth Contract Integration — In Progress
+```
+
 ## Foundation Completion Rule
 
 Foundation Hardening may be marked `Done` only after:
@@ -134,5 +197,4 @@ Until then:
 
 ```text
 Foundation Hardening — Final Verification
-Swagger / OpenAPI Pipeline — Not Started
 ```

@@ -183,6 +183,31 @@ If routes have `{id}` placeholders but operations don't declare them:
 - Check `openapi/reports/warnings.md` for `INFERRED_PATH_PARAMETER` entries
 - These are marked with `x-client-inferred: true` in the spec
 
+## Mutator Type Boundary
+
+Orval passes the complete generated HTTP response type as the generic argument to the custom mutator.
+
+The mutator runtime response is verified to have the following shape:
+
+```ts
+{
+  data: RawSwaggerResponseBody
+  status: number
+  headers: Headers
+}
+```
+
+A generic assertion remains at the Orval integration boundary because the generated response type includes operation-specific status literals and response schemas that cannot be reconstructed from the generic request configuration alone.
+
+This assertion is permitted only at this boundary and is protected by:
+
+- request metadata contract tests (`src/shared/api/client/__tests__/request-metadata.test.ts`)
+- Orval mutator integration tests (`src/shared/api/client/__tests__/orval-envelope-contract.test.ts`)
+- generated code type checking (`pnpm typecheck`)
+- deterministic code generation (`pnpm api:check`)
+
+**Important**: Do NOT replicate this assertion elsewhere in the application. All other layers must explicitly extract and validate data through proper types, not through cast-based assumptions.
+
 ## Further Reading
 
 - [OpenAPI 3.0 Spec](https://spec.openapis.org/oas/v3.0.3)
