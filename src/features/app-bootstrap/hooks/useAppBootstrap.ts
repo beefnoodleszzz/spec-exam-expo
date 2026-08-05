@@ -3,7 +3,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import { sessionStore } from '@/shared/auth/session-store'
 import { appStore } from '@/shared/auth/app-store'
 import { registerUnauthorizedHandler } from '@/shared/auth/session-service'
-import { logger } from '@/shared/logging/logger'
+import { logger, sanitizeError } from '@/shared/logging/logger'
 
 export type BootstrapStatus = 'running' | 'ready' | 'error'
 
@@ -12,7 +12,8 @@ export function useAppBootstrap() {
   const restoreExamProfile = appStore((s) => s.restoreExamProfile)
   const [status, setStatus] = useState<BootstrapStatus>('running')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  
+  const [hasHiddenSplash, setHasHiddenSplash] = useState(false)
+
   const hasHiddenSplashRef = useRef(false)
   const bootstrapPromiseRef = useRef<Promise<void> | null>(null)
   const mountedRef = useRef(true)
@@ -29,8 +30,11 @@ export function useAppBootstrap() {
     try {
       await SplashScreen.hideAsync()
       hasHiddenSplashRef.current = true
+      if (mountedRef.current) {
+        setHasHiddenSplash(true)
+      }
     } catch (error) {
-      logger.warn('splash_hide_failed', { error })
+      logger.warn('splash_hide_failed', { error: sanitizeError(error) })
       throw error
     }
   }, [])
@@ -40,21 +44,22 @@ export function useAppBootstrap() {
       setStatus('running')
       setErrorMessage(null)
     }
-    
+
     try {
       registerUnauthorizedHandler()
       await Promise.all([restoreSession(), restoreExamProfile()])
+
+      await hideSplashOnce()
+
       if (mountedRef.current) {
         setStatus('ready')
       }
     } catch (err: unknown) {
-      logger.error('app_bootstrap_failed', err)
+      logger.error('app_bootstrap_failed', { error: sanitizeError(err) })
       if (mountedRef.current) {
-        setErrorMessage('本地配置加载失败，请重新尝试')
+        setErrorMessage('应用初始化失败，请重新尝试')
         setStatus('error')
       }
-    } finally {
-      await hideSplashOnce().catch(() => {})
     }
   }, [restoreSession, restoreExamProfile, hideSplashOnce])
 
@@ -77,7 +82,7 @@ export function useAppBootstrap() {
   return {
     status,
     errorMessage,
-    hasHiddenSplash: hasHiddenSplashRef.current,
+    hasHiddenSplash,
     retry: runBootstrap,
   }
 }

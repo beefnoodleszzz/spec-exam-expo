@@ -14,7 +14,7 @@ import { queryClient } from '@/shared/query/query-client'
 import { clearSecureCredentials } from '@/shared/persistence/secure-storage'
 import { clearUserAsyncData } from '@/shared/persistence/async-storage'
 import { setUnauthorizedHandler } from '@/shared/api/client/request'
-import { logger } from '@/shared/logging/logger'
+import { logger, sanitizeError } from '@/shared/logging/logger'
 
 let cleanupPromise: Promise<void> | null = null
 
@@ -47,7 +47,7 @@ async function performCleanup(): Promise<void> {
       const task = cleanupTasks[idx]
       logger.warn('session_cleanup_task_failed', {
         taskName: task?.name ?? 'unknown',
-        error: result.reason,
+        error: sanitizeError(result.reason),
       })
     }
   })

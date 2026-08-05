@@ -7,14 +7,27 @@ export interface LogContext {
   [key: string]: unknown
 }
 
-function sanitizeError(error: unknown): string {
+export interface SafeErrorInfo {
+  name?: string
+  message: string
+  code?: string
+}
+
+export function sanitizeError(error: unknown): SafeErrorInfo {
   if (error instanceof Error) {
-    return error.message
+    return {
+      name: error.name,
+      message: error.message,
+    }
   }
   if (typeof error === 'string') {
-    return error
+    return {
+      message: error,
+    }
   }
-  return 'Unknown error'
+  return {
+    message: 'Unknown error',
+  }
 }
 
 export const logger = {
@@ -30,10 +43,9 @@ export const logger = {
     }
   },
 
-  error(event: string, error?: unknown, context?: LogContext): void {
-    const sanitizedMsg = error ? sanitizeError(error) : undefined
+  error(event: string, context?: LogContext): void {
     if (__DEV__) {
-      console.error(`[ERROR] [${event}]`, sanitizedMsg, context ?? '')
+      console.error(`[ERROR] [${event}]`, context ?? '')
     }
     // Production Sentry integration placeholder
   },
