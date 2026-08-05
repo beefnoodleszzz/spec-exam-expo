@@ -1,54 +1,32 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { semanticColors } from '@/shared/theme/semantic-colors'
-import { typography } from '@/shared/theme/typography'
-import { spacing } from '@/shared/theme/spacing'
+import React from 'react'
+import { View } from 'react-native'
 import { sessionStore } from '@/shared/auth/session-store'
+import { clearAllSessionData } from '@/shared/auth/session-service'
+import { AppText } from '@/shared/components/primitives/AppText'
+import { AppButton } from '@/shared/components/actions/AppButton'
 
 export default function ProfileTabRoute() {
-  const clearSession = sessionStore((s) => s.clearSession)
   const userId = sessionStore((s) => s.userId)
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>我的</Text>
-      <Text style={styles.subtitle}>用户 ID: {userId ?? '未知'}</Text>
-      <Text style={styles.subtitle}>个人中心将在 Phase 10 实现</Text>
-      <TouchableOpacity
-        style={styles.logoutBtn}
-        onPress={() => void clearSession()}
+    <View className="flex-1 items-center justify-center bg-background p-6">
+      <AppText variant="title" className="font-bold">
+        我的
+      </AppText>
+      <AppText variant="body-secondary" tone="muted" className="mt-2">
+        用户 ID: {userId ?? '未知'}
+      </AppText>
+      <AppText variant="caption" tone="muted" className="mt-1">
+        个人中心将在 Phase 10 实现
+      </AppText>
+      <AppButton
+        variant="danger"
+        size="md"
+        onPress={() => void clearAllSessionData()}
+        className="mt-8 px-6"
       >
-        <Text style={styles.logoutText}>退出登录</Text>
-      </TouchableOpacity>
+        退出登录
+      </AppButton>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: semanticColors.background,
-    padding: spacing[6],
-  },
-  title: {
-    fontSize: typography.fontSize['2xl'],
-    fontWeight: typography.fontWeight.bold,
-    color: semanticColors.textPrimary,
-  },
-  subtitle: {
-    fontSize: typography.fontSize.sm,
-    color: semanticColors.textSecondary,
-    marginTop: spacing[2],
-  },
-  logoutBtn: {
-    marginTop: spacing[8],
-    padding: spacing[4],
-    backgroundColor: semanticColors.error,
-    borderRadius: 8,
-  },
-  logoutText: {
-    color: semanticColors.textInverse,
-    fontWeight: typography.fontWeight.semibold,
-  },
-})

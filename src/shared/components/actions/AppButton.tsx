@@ -1,11 +1,9 @@
 import React, { useRef } from 'react'
-import {
-  TouchableOpacity,
-  ActivityIndicator,
-  View,
-} from 'react-native'
+import { ActivityIndicator, View } from 'react-native'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { AppPressable } from '../primitives/AppPressable'
 import { AppText } from '../primitives/AppText'
+import { lightSemanticColors } from '@/shared/theme/semantic/colors'
 import { cn } from '@/shared/utils/cn'
 
 const buttonVariants = cva(
@@ -14,10 +12,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: 'bg-primary active:bg-primary-pressed',
-        secondary: 'bg-primary-soft active:bg-blue-100',
+        secondary: 'bg-primary-soft active:bg-primary-soft-pressed',
         outline: 'border border-primary bg-transparent active:bg-primary-soft',
-        danger: 'bg-danger active:bg-red-600',
-        ghost: 'bg-transparent active:bg-gray-100',
+        danger: 'bg-danger active:bg-danger-pressed',
+        ghost: 'bg-transparent active:bg-surface-pressed',
       },
       size: {
         sm: 'h-9 px-3 min-h-[36px]',
@@ -45,8 +43,7 @@ const buttonTextTones = {
   ghost: 'primary' as const,
 }
 
-export interface AppButtonProps
-  extends VariantProps<typeof buttonVariants> {
+export interface AppButtonProps extends VariantProps<typeof buttonVariants> {
   children?: React.ReactNode
   loading?: boolean
   disabled?: boolean
@@ -84,15 +81,18 @@ export function AppButton({
   }
 
   const textTone = buttonTextTones[variant ?? 'primary']
+  const spinnerColor =
+    variant === 'primary' || variant === 'danger'
+      ? lightSemanticColors.foregroundInverse
+      : lightSemanticColors.primary
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
+    <AppPressable
       disabled={!isInteractive}
       onPress={handlePress}
       className={cn(
         buttonVariants({ variant, size, fullWidth }),
-        (!isInteractive) && 'opacity-50',
+        !isInteractive && 'opacity-50',
         className,
       )}
       accessibilityRole="button"
@@ -100,10 +100,7 @@ export function AppButton({
       accessibilityLabel={accessibilityLabel}
     >
       {loading ? (
-        <ActivityIndicator
-          size="small"
-          color={variant === 'primary' || variant === 'danger' ? '#FFFFFF' : '#1677FF'}
-        />
+        <ActivityIndicator size="small" color={spinnerColor} />
       ) : (
         <View className="flex-row items-center justify-center">
           {iconLeft && <View className="mr-2">{iconLeft}</View>}
@@ -121,6 +118,6 @@ export function AppButton({
           {iconRight && <View className="ml-2">{iconRight}</View>}
         </View>
       )}
-    </TouchableOpacity>
+    </AppPressable>
   )
 }

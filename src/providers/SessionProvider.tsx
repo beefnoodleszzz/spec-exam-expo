@@ -1,7 +1,9 @@
 import React, { useEffect, useCallback, useRef } from 'react'
 import { useRouter, useSegments } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
 import { sessionStore } from '@/shared/auth/session-store'
 import { appStore } from '@/shared/auth/app-store'
+import { registerUnauthorizedHandler } from '@/shared/auth/session-service'
 
 /**
  * SessionProvider — observes session status and drives route protection.
@@ -39,6 +41,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
 /**
  * AppBootstrap — loads session + exam profile from storage during startup.
+ * Keeps Splash Screen visible until ALL startup tasks finish.
  */
 export function AppBootstrap({ children }: { children: React.ReactNode }) {
   const restoreSession = sessionStore((s) => s.restoreSession)
@@ -46,11 +49,21 @@ export function AppBootstrap({ children }: { children: React.ReactNode }) {
   const status = sessionStore((s) => s.status)
 
   useEffect(() => {
-    void Promise.all([restoreSession(), restoreExamProfile()])
+    async function init() {
+      try {
+        registerUnauthorizedHandler()
+        await Promise.all([restoreSession(), restoreExamProfile()])
+      } finally {
+        await SplashScreen.hideAsync().catch(() => {})
+      }
+    }
+    void init()
   }, [restoreSession, restoreExamProfile])
 
-  // Still booting — show nothing (splash screen handles the visual)
+
+  // Still booting — show nothing (splash screen handles the visual until hideAsync is called)
   if (status === 'booting') return null
 
   return <>{children}</>
 }
+

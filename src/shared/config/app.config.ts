@@ -8,23 +8,27 @@ const extra = Constants.expoConfig?.extra as {
   MAP_BASE_URL: string
   WEB_BASE_URL: string
   WECHAT_APP_ID: string
-  CHECK_KEY: string
+  LEGACY_CHECK_KEY: string
   UNIVERSAL_LINK_IOS: string
 }
 
 export const AppConfig = {
-  APP_VARIANT: extra.APP_VARIANT ?? 'development',
-  API_BASE_URL: extra.API_BASE_URL ?? 'https://ifch.i-cbao.com/ecsmotojk/api/',
-  MAP_BASE_URL: extra.MAP_BASE_URL ?? 'https://ifch.i-cbao.com/vcomponent/api/',
-  WEB_BASE_URL: extra.WEB_BASE_URL ?? 'https://fch.i-cbao.com/ecsmotojkweb/',
-  WECHAT_APP_ID: extra.WECHAT_APP_ID ?? '',
+  APP_VARIANT: extra?.APP_VARIANT ?? 'development',
+  API_BASE_URL: extra?.API_BASE_URL ?? 'https://ifch.i-cbao.com/ecsmotojk/api/',
+  MAP_BASE_URL: extra?.MAP_BASE_URL ?? 'https://ifch.i-cbao.com/vcomponent/api/',
+  WEB_BASE_URL: extra?.WEB_BASE_URL ?? 'https://fch.i-cbao.com/ecsmotojkweb/',
+  WECHAT_APP_ID: extra?.WECHAT_APP_ID ?? '',
   /**
-   * Request signature key.
-   * NOTE: This is a protocol parameter, not a real security secret.
-   * It cannot be truly secret in a client app. Do not log raw value.
+   * LEGACY PROTOCOL PARAMETER (Formerly CHECK_KEY)
+   *
+   * SECURITY NOTICE:
+   * This parameter is a legacy backend request signature salt shipped in client apps.
+   * It is NOT a server secret and CANNOT be kept secret in any client binary.
+   * Do NOT treat this as a confidential secret or put it into secure vault storage.
+   * Do NOT print this value in client logs.
    */
-  CHECK_KEY: extra.CHECK_KEY ?? '80306f4370b39fd5630ad0529f77adb6',
-  UNIVERSAL_LINK_IOS: extra.UNIVERSAL_LINK_IOS ?? 'https://fch.i-cbao.com/specialworker/',
+  LEGACY_CHECK_KEY: extra?.LEGACY_CHECK_KEY ?? '80306f4370b39fd5630ad0529f77adb6',
+  UNIVERSAL_LINK_IOS: extra?.UNIVERSAL_LINK_IOS ?? 'https://fch.i-cbao.com/specialworker/',
   /** Non-VIP max free practice count */
   MAX_FREE_PRACTICE: 18,
   /** Login system identifier (legacy backend expects 3) */

@@ -109,10 +109,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     MAP_BASE_URL: variant.mapBaseUrl,
     WEB_BASE_URL: variant.webBaseUrl,
     WECHAT_APP_ID: variant.wechatAppId,
-    CHECK_KEY: '80306f4370b39fd5630ad0529f77adb6',
+    /** Legacy backend signature protocol salt */
+    LEGACY_CHECK_KEY: '80306f4370b39fd5630ad0529f77adb6',
     UNIVERSAL_LINK_IOS: 'https://fch.i-cbao.com/specialworker/',
     eas: {
       projectId: variant.easProjectId,
     },
   },
 })
+

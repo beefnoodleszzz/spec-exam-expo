@@ -1,20 +1,15 @@
 /**
- * Custom Orval Mutator — the single HTTP transport used by all generated endpoints.
+ * Custom Orval Mutator — single HTTP transport used by all generated endpoints.
  *
- * Responsibilities (in order):
- * 1. Resolve the correct host based on URL pattern.
- * 2. Read auth token and examTypeId from the session store (never from params).
- * 3. Compute random1, random2, checkResult headers.
- * 4. Execute fetch.
- * 5. Parse the raw response.
- * 6. Unwrap the legacy envelope.
- * 7. Throw typed AppError on any failure.
- *
- * Prohibitions:
- * - Must NOT show Toast or UI.
- * - Must NOT navigate.
- * - Must NOT modify Zustand directly.
- * - Must NOT retry automatically.
+ * Responsibilities:
+ * 1. Resolve target host (business API vs map API).
+ * 2. Attach auth token from sessionStore & examTypeId from appStore (single source of truth).
+ * 3. Compute random1, random2, checkResult signature headers using AppConfig.LEGACY_CHECK_KEY.
+ * 4. Apply default request timeout (15s) with custom timeoutMs support.
+ * 5. Handle responseType: 'arraybuffer' vs 'json'.
+ * 6. Unwrap legacy envelope via parseEnvelope (JSON only).
+ * 7. Call registered onUnauthorized handler on 401 without direct store coupling.
+ * 8. Throw typed AppError on failure.
  */
 import { AppConfig } from '@/shared/config/app.config'
 import { parseEnvelope } from './envelope'
@@ -26,8 +21,17 @@ import {
 } from '../errors/app-error'
 import { FuckingDSign, stringToByte } from '@/shared/utils/signature'
 import { sessionStore } from '@/shared/auth/session-store'
+import { appStore } from '@/shared/auth/app-store'
 
-type ApiHostKind = 'business' | 'map'
+let onUnauthorizedHandler: (() => void) | null = null
+
+/**
+ * Register an abstract unauthorized (401) handler.
+ * Keeps HTTP transport decoupled from direct Zustand store mutations.
+ */
+export function setUnauthorizedHandler(handler: () => void): void {
+  onUnauthorizedHandler = handler
+}
 
 function resolveHost(url: string): string {
   if (url.includes('vehicleComponent') || url.includes('vcomponent')) {
@@ -36,20 +40,14 @@ function resolveHost(url: string): string {
   return AppConfig.API_BASE_URL
 }
 
-function resolveHostKind(url: string): ApiHostKind {
-  if (url.includes('vehicleComponent') || url.includes('vcomponent')) {
-    return 'map'
-  }
-  return 'business'
-}
-
 function buildAuthHeaders(): Record<string, string> {
-  const { accessToken, examTypeId } = sessionStore.getState()
+  const accessToken = sessionStore.getState().accessToken
+  const examTypeId = appStore.getState().currentExamProfile?.examTypeId
 
   const random1 = Math.floor(Math.random() * 100)
   const random2 = Math.floor(Math.random() * 100)
   // Create a copy of the key bytes — FuckingDSign mutates the array in place
-  const keyBytes = stringToByte(AppConfig.CHECK_KEY)
+  const keyBytes = stringToByte(AppConfig.LEGACY_CHECK_KEY)
   const checkResult = FuckingDSign(random1, random2, keyBytes)
 
   const headers: Record<string, string> = {
@@ -76,15 +74,23 @@ export type RequestOptions = {
   params?: Record<string, unknown>
   data?: unknown
   signal?: AbortSignal
+  timeoutMs?: number
   responseType?: 'json' | 'arraybuffer'
 }
 
 /**
  * Main request function — used as Orval mutator.
- * Exported as `request` as required by orval.config.ts.
  */
 export async function request<T>(options: RequestOptions): Promise<T> {
-  const { url, method, params, data, signal } = options
+  const {
+    url,
+    method,
+    params,
+    data,
+    signal,
+    timeoutMs = 15_000,
+    responseType = 'json',
+  } = options
 
   const baseUrl = resolveHost(url)
   let fullUrl = baseUrl + url
@@ -102,41 +108,58 @@ export async function request<T>(options: RequestOptions): Promise<T> {
   const headers = buildAuthHeaders()
   const body = data != null ? JSON.stringify(data) : undefined
 
+  // Setup timeout controller
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
+
+  // Listen to external signal if provided
+  if (signal) {
+    if (signal.aborted) {
+      controller.abort()
+    } else {
+      signal.addEventListener('abort', () => controller.abort())
+    }
+  }
+
   let response: Response
   try {
     const fetchInit: RequestInit = {
       method,
       headers,
+      signal: controller.signal,
     }
 
     if (body != null) {
       fetchInit.body = body
     }
 
-    if (signal != null) {
-      fetchInit.signal = signal
-    }
-
     response = await fetch(fullUrl, fetchInit)
   } catch (error: unknown) {
-    const message =
-      error instanceof Error && error.name === 'AbortError'
-        ? '请求已取消'
-        : '网络连接失败，请检查网络'
+    const isTimeout = controller.signal.aborted
+    const message = isTimeout
+      ? '请求超时，请检查网络后再试'
+      : error instanceof Error && error.name === 'AbortError'
+      ? '请求已取消'
+      : '网络连接失败，请检查网络'
+
     throw createNetworkError(message) satisfies AppError
+  } finally {
+    clearTimeout(timeoutId)
   }
 
-  // Handle HTTP errors
+  // Handle 401 Unauthorized
   if (response.status === 401) {
-    // Signal the session manager via a well-known event, but DO NOT navigate here
-    sessionStore.getState().handleUnauthorized()
+    if (onUnauthorizedHandler) {
+      onUnauthorizedHandler()
+    }
     throw createUnauthorizedError() satisfies AppError
   }
 
+  // Handle HTTP status errors
   if (!response.ok) {
     let message = `服务器错误 (${response.status})`
     try {
-      const errBody = await response.json() as { message?: string }
+      const errBody = (await response.json()) as { message?: string }
       if (errBody?.message) message = errBody.message
     } catch {
       // ignore
@@ -144,12 +167,17 @@ export async function request<T>(options: RequestOptions): Promise<T> {
     throw createServerError(response.status, message) satisfies AppError
   }
 
-  // Parse response body
+  // Handle Binary Response (arraybuffer)
+  if (responseType === 'arraybuffer') {
+    const buffer = await response.arrayBuffer()
+    return buffer as unknown as T
+  }
+
+  // Handle JSON Response Body
   let raw: unknown
   try {
     raw = await response.json()
   } catch {
-    // Treat non-JSON success as empty data
     raw = null
   }
 

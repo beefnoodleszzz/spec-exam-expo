@@ -8,11 +8,6 @@ import { AppBootstrap, SessionProvider } from '@/providers/SessionProvider'
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-  useEffect(() => {
-    // Hide splash once providers have mounted and fonts are ready
-    void SplashScreen.hideAsync()
-  }, [])
-
   return (
     <AppProviders>
       <AppBootstrap>
@@ -27,3 +22,4 @@ export default function RootLayout() {
     </AppProviders>
   )
 }
+

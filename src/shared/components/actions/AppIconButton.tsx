@@ -1,6 +1,7 @@
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 import { AppIcon, type IconName } from '../primitives/AppIcon'
+import { AppPressable } from '../primitives/AppPressable'
 import { lightSemanticColors } from '@/shared/theme/semantic/colors'
 import { cn } from '@/shared/utils/cn'
 
@@ -24,12 +25,11 @@ export function AppIconButton({
   accessibilityLabel,
 }: AppIconButtonProps) {
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
+    <AppPressable
       disabled={disabled}
       onPress={onPress}
       className={cn(
-        'w-11 h-11 items-center justify-center rounded-full active:bg-gray-100',
+        'w-11 h-11 items-center justify-center rounded-full active:bg-surface-pressed',
         disabled && 'opacity-40',
         className,
       )}
@@ -40,6 +40,6 @@ export function AppIconButton({
       <View>
         <AppIcon name={name} size={size} color={color} />
       </View>
-    </TouchableOpacity>
+    </AppPressable>
   )
 }

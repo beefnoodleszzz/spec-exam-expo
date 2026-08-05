@@ -11,12 +11,14 @@ module.exports = {
           DEFAULT: '#1677FF',
           pressed: '#0958D9',
           soft: '#E8F3FF',
+          'soft-pressed': '#C9E2FF',
           foreground: '#FFFFFF',
         },
         background: '#F7F8FA',
         surface: {
           DEFAULT: '#FFFFFF',
           elevated: '#FFFFFF',
+          pressed: '#F2F3F5',
         },
         foreground: {
           DEFAULT: '#1D2129',
@@ -39,6 +41,7 @@ module.exports = {
         },
         danger: {
           DEFAULT: '#F53F3F',
+          pressed: '#CB2727',
           soft: '#FFECEC',
         },
         // Question states
@@ -77,6 +80,7 @@ module.exports = {
         '9': '36px',
         '10': '40px',
         '12': '48px',
+        '13': '52px',
         '14': '56px',
         '16': '64px',
       },
