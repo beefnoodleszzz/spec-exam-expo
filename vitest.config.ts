@@ -6,8 +6,16 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     setupFiles: ['./src/testing/setup.ts'],
-    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
-    exclude: ['node_modules', '.expo'],
+    include: [
+      'src/**/*.test.ts',
+      'src/**/*.test.tsx',
+    ],
+    exclude: [
+      'src/**/*.react.test.ts',
+      'src/**/*.react.test.tsx',
+      'node_modules',
+      '.expo',
+    ],
     server: {
       deps: {
         inline: ['@testing-library/react-native', 'react-native'],
