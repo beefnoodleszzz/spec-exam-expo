@@ -1,27 +1,76 @@
-/**
- * Validate the normalized OpenAPI spec.
- *
- * Usage: pnpm api:validate
- */
-import { readFileSync } from 'fs'
-import { join } from 'path'
+import {
+  OPENAPI_NORMALIZED_PATH,
+} from './constants'
+import {
+  readJsonFile,
+  asRecord,
+} from './utils'
+import type { JsonObject } from './types'
 
-async function validate() {
-  const { default: SwaggerParser } = await import('@apidevtools/swagger-parser')
+async function validate(): Promise<void> {
+  const spec = readJsonFile(
+    OPENAPI_NORMALIZED_PATH,
+  )
 
-  const specPath = join(process.cwd(), 'openapi', 'normalized', 'openapi.json')
-  const spec = JSON.parse(readFileSync(specPath, 'utf-8'))
+  const { default: SwaggerParser } =
+    await import(
+      '@apidevtools/swagger-parser'
+    )
 
   try {
     await SwaggerParser.validate(spec)
-    console.log('✅ OpenAPI spec is valid')
-  } catch (err) {
-    console.error('❌ OpenAPI validation failed:', err)
+  } catch (error) {
+    console.error(
+      'Validation failed:',
+      error instanceof Error
+        ? error.message
+        : error,
+    )
     process.exit(1)
   }
+
+  // Custom validation rules
+  const errors: string[] = []
+
+  if (
+    typeof spec.openapi !== 'string' ||
+    !spec.openapi.startsWith('3.')
+  ) {
+    errors.push('Missing or invalid openapi version')
+  }
+
+  const paths =
+    asRecord(spec.paths) ?? {}
+
+  if (Object.keys(paths).length === 0) {
+    errors.push('No paths defined')
+  }
+
+  const schemas =
+    asRecord(spec.components?.schemas) ??
+    {}
+
+  if (Object.keys(schemas).length === 0) {
+    errors.push('No schemas defined')
+  }
+
+  if (errors.length > 0) {
+    console.error(
+      'Validation errors:',
+      errors.join('\n'),
+    )
+    process.exit(1)
+  }
+
+  console.log('API specification validated')
 }
 
-validate().catch((err) => {
-  console.error(err)
+validate().catch((error: unknown) => {
+  console.error(
+    error instanceof Error
+      ? error.message
+      : error,
+  )
+
   process.exit(1)
 })

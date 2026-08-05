@@ -20,12 +20,14 @@
     "test:unit:watch": "vitest",
     "test:react:watch": "jest --watch",
     "api:download": "tsx scripts/openapi/download.ts",
+    "api:inspect": "tsx scripts/openapi/inspect.ts",
     "api:convert": "tsx scripts/openapi/convert.ts",
     "api:patch": "tsx scripts/openapi/patch.ts",
     "api:validate": "tsx scripts/openapi/validate.ts",
+    "api:report": "tsx scripts/openapi/report.ts",
     "api:generate": "orval --config orval.config.ts",
-    "api:check": "pnpm api:generate && git diff --exit-code src/shared/api/generated openapi/normalized",
-    "api:refresh": "pnpm api:download && pnpm api:convert && pnpm api:patch && pnpm api:validate && pnpm api:generate",
+    "api:refresh": "pnpm api:download && pnpm api:inspect && pnpm api:convert && pnpm api:patch && pnpm api:validate && pnpm api:report && pnpm api:generate",
+    "api:check": "pnpm api:convert && pnpm api:patch && pnpm api:validate && pnpm api:report && pnpm api:generate && git diff --exit-code -- openapi/normalized openapi/reports src/shared/api/generated",
     "doctor": "npx expo-doctor",
     "validate:base": "pnpm typecheck && pnpm lint && pnpm test && pnpm doctor",
     "validate": "pnpm validate:base"
@@ -63,6 +65,7 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@apidevtools/swagger-parser": "^12.1.0",
     "@testing-library/react-native": "^12.4.0",
     "@types/jest": "^30.0.0",
     "@types/js-md5": "^0.8.0",
@@ -73,6 +76,7 @@
     "jest": "^29.0.0",
     "jest-expo": "~57.0.3",
     "orval": "^7.0.0",
+    "swagger2openapi": "^7.0.8",
     "tsx": "^4.0.0",
     "typescript": "~6.0.3",
     "vitest": "^3.0.0"

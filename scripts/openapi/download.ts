@@ -1,34 +1,124 @@
-/**
- * Download Swagger JSON from the backend.
- * Saves to openapi/source/swagger.json without modification.
- *
- * Usage: pnpm api:download
- */
-import { writeFileSync, mkdirSync } from 'fs'
-import { join } from 'path'
-import { AppConfig } from '../../src/shared/config/app.config'
+import {
+  mkdirSync,
+  renameSync,
+  writeFileSync,
+} from 'node:fs'
+import { dirname } from 'node:path'
 
-// Swagger endpoint — adjust if backend exposes a different path
-const SWAGGER_URL = AppConfig.API_BASE_URL.replace('/api/', '/v2/api-docs')
+import {
+  SWAGGER_SOURCE_PATH,
+  SWAGGER_SOURCE_URL,
+} from './constants'
+import { detectApiSpecVersion } from './utils'
+import type { JsonObject } from './types'
 
-async function download() {
-  console.log(`Downloading Swagger from: ${SWAGGER_URL}`)
+const DOWNLOAD_TIMEOUT_MS = 30_000
 
-  const res = await fetch(SWAGGER_URL)
-  if (!res.ok) {
-    throw new Error(`Failed to fetch Swagger: ${res.status} ${res.statusText}`)
+async function download(): Promise<void> {
+  const controller = new AbortController()
+
+  const timer = setTimeout(() => {
+    controller.abort()
+  }, DOWNLOAD_TIMEOUT_MS)
+
+  try {
+    console.log(
+      `Downloading API specification:\n${SWAGGER_SOURCE_URL}`,
+    )
+
+    const response = await fetch(
+      SWAGGER_SOURCE_URL,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+        signal: controller.signal,
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error(
+        `Swagger download failed: ${response.status} ${response.statusText}`,
+      )
+    }
+
+    const contentType =
+      response.headers.get('content-type') ?? ''
+
+    if (
+      contentType.length > 0 &&
+      !contentType.includes('json')
+    ) {
+      throw new Error(
+        `Expected JSON response but received ${contentType}`,
+      )
+    }
+
+    const text = await response.text()
+
+    let document: unknown
+
+    try {
+      document = JSON.parse(text)
+    } catch {
+      throw new Error(
+        'Swagger endpoint returned invalid JSON',
+      )
+    }
+
+    if (
+      typeof document !== 'object' ||
+      document === null ||
+      Array.isArray(document)
+    ) {
+      throw new Error(
+        'Swagger endpoint did not return a JSON object',
+      )
+    }
+
+    const spec = document as JsonObject
+    const detected = detectApiSpecVersion(spec)
+
+    mkdirSync(
+      dirname(SWAGGER_SOURCE_PATH),
+      { recursive: true },
+    )
+
+    const temporaryPath =
+      `${SWAGGER_SOURCE_PATH}.tmp`
+
+    writeFileSync(
+      temporaryPath,
+      `${JSON.stringify(spec, null, 2)}\n`,
+      'utf8',
+    )
+
+    renameSync(
+      temporaryPath,
+      SWAGGER_SOURCE_PATH,
+    )
+
+    console.log(
+      [
+        'API specification downloaded successfully',
+        `Format: ${detected.kind}`,
+        `Version: ${detected.version}`,
+        `Bytes: ${Buffer.byteLength(text, 'utf8')}`,
+        `Saved: ${SWAGGER_SOURCE_PATH}`,
+      ].join('\n'),
+    )
+  } finally {
+    clearTimeout(timer)
   }
-
-  const json = await res.json()
-
-  mkdirSync(join(process.cwd(), 'openapi', 'source'), { recursive: true })
-  const outPath = join(process.cwd(), 'openapi', 'source', 'swagger.json')
-  writeFileSync(outPath, JSON.stringify(json, null, 2), 'utf-8')
-
-  console.log(`✅ Saved to ${outPath}`)
 }
 
-download().catch((err) => {
-  console.error(err)
+download().catch((error: unknown) => {
+  console.error(
+    error instanceof Error
+      ? error.message
+      : error,
+  )
+
   process.exit(1)
 })

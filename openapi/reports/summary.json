@@ -1,0 +1,23 @@
+{
+  "sourceUrl": "https://iservice.enchunsi.com/ecsmotojk/swagger/v1/swagger.json",
+  "detectedVersion": {
+    "kind": "swagger-2",
+    "version": "2.0"
+  },
+  "title": "i车保WebApi中间件",
+  "apiVersion": "v1",
+  "basePath": null,
+  "serverUrls": [],
+  "pathCount": 130,
+  "operationCount": 128,
+  "schemaCount": 0,
+  "tagCount": 0,
+  "deprecatedOperationCount": 0,
+  "missingOperationIdCount": 0,
+  "duplicateOperationIds": [],
+  "methods": {
+    "get": 78,
+    "post": 47,
+    "put": 3
+  }
+}

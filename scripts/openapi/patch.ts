@@ -1,40 +1,123 @@
-/**
- * Apply client-compatibility patches to the normalized OpenAPI spec.
- *
- * Each patch must be:
- * 1. Traceable (documented below)
- * 2. Repeatable (idempotent)
- * 3. Explained in plain language
- * 4. Non-behavioral (must not change actual API behavior)
- * 5. Verified against real response fixtures
- *
- * Usage: pnpm api:patch
- */
-import { readFileSync, writeFileSync } from 'fs'
-import { join } from 'path'
+import {
+  OPENAPI_NORMALIZED_PATH,
+} from './constants'
+import {
+  readJsonFile,
+  writeJsonFile,
+  asRecord,
+} from './utils'
+import type { JsonObject } from './types'
 
-type OpenAPIDoc = Record<string, unknown>
+interface OpenApiPatch {
+  id: string
+  description: string
+  apply(document: JsonObject): boolean
+}
 
-const inputPath = join(process.cwd(), 'openapi', 'normalized', 'openapi.json')
-const outputPath = inputPath
+function createOperationId(
+  method: string,
+  path: string,
+): string {
+  const parts = path
+    .split('/')
+    .filter(Boolean)
+    .flatMap((part) =>
+      part
+        .replace(/[{}]/g, '')
+        .split(/[^a-zA-Z0-9]+/)
+        .filter(Boolean),
+    )
 
-const doc = JSON.parse(readFileSync(inputPath, 'utf-8')) as OpenAPIDoc
+  const pascalPath = parts
+    .map(
+      (part) =>
+        part.charAt(0).toUpperCase() +
+        part.slice(1),
+    )
+    .join('')
 
-// -------------------------------------------------------------------------
-// Patch list (add patches here as needed)
-// -------------------------------------------------------------------------
+  return method.toLowerCase() + pascalPath
+}
 
-/*
-  PATCH 001: (Example template — uncomment and adapt)
-  Problem: Endpoint X returns { status: boolean, data: T } but Swagger declares
-           the response as just `object`, breaking type generation.
-  Fix: Refine the response schema to reflect the envelope structure.
+const patches: OpenApiPatch[] = [
+  {
+    id: 'ensure-operationid',
+    description:
+      'Ensure all operations have operationId',
+    apply(doc: JsonObject): boolean {
+      const paths =
+        asRecord(doc.paths) ?? {}
+      let changed = false
 
-  const paths = doc.paths as Record<string, unknown>
-  ...
-*/
+      const httpMethods = new Set([
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete',
+        'options',
+        'head',
+      ])
 
-// -------------------------------------------------------------------------
+      for (const [path, pathItem] of Object.entries(
+        paths,
+      )) {
+        const item = asRecord(pathItem)
+        for (const [method, operation] of Object.entries(
+          item,
+        )) {
+          if (!httpMethods.has(method)) continue
 
-writeFileSync(outputPath, JSON.stringify(doc, null, 2), 'utf-8')
-console.log('✅ Patches applied')
+          const op = asRecord(operation)
+          if (!op.operationId) {
+            op.operationId =
+              createOperationId(
+                method,
+                path,
+              )
+            changed = true
+          }
+        }
+      }
+
+      return changed
+    },
+  },
+]
+
+async function patch(): Promise<void> {
+  const doc =
+    readJsonFile(OPENAPI_NORMALIZED_PATH)
+
+  const applied: string[] = []
+
+  for (const p of patches) {
+    if (p.apply(doc)) {
+      applied.push(p.id)
+    }
+  }
+
+  if (applied.length > 0) {
+    writeJsonFile(
+      OPENAPI_NORMALIZED_PATH,
+      doc,
+    )
+  }
+
+  console.log(
+    [
+      'API Specification Patched',
+      `Applied: ${applied.join(', ') || 'none'}`,
+    ].join('\n'),
+  )
+}
+
+patch().catch((error: unknown) => {
+  console.error(
+    error instanceof Error
+      ? error.message
+      : error,
+  )
+
+  process.exit(1)
+})
