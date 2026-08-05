@@ -1,6 +1,11 @@
 /**
- * Authentication domain types — stable business models
- * Decoupled from Generated DTO and HTTP layer.
+ * Authentication domain contracts.
+ *
+ * Only stable contracts confirmed independently from the backend payload
+ * belong in this file.
+ *
+ * Login commands and user-profile fields remain undefined until real,
+ * sanitized backend responses are captured and reviewed.
  */
 
 export interface AuthSession {
@@ -8,35 +13,11 @@ export interface AuthSession {
   userId: string | null
 }
 
-export interface AuthUser {
-  id: string | null
-  phone: string | null
-  nickname: string | null
-  avatarUrl: string | null
-}
-
-export interface PasswordLoginCommand {
-  phone: string
-  password: string
-  examTypeId?: string
-  system?: string
-  province?: string
-  provinceCode?: string
-}
-
-export interface SmsLoginCommand {
-  phone: string
-  verificationCode: string
-  examTypeId?: string
-  system?: string
-  province?: string
-  provinceCode?: string
-}
-
-export interface SendSmsCommand {
-  phone: string
-}
-
-export interface OneClickLoginCommand {
-  token: string
+export interface AuthContractEvidence {
+  source:
+    | 'swagger'
+    | 'sanitized-response'
+    | 'backend-documentation'
+  capturedAt: string
+  endpoint: string
 }

@@ -8,7 +8,8 @@
 | 1 | UI Foundation | Done | Semantic tokens and shared UI primitives implemented |
 | 2 | Foundation Hardening | Final Verification | Commit `716cf607`; all local quality gates pass |
 | 3 | Swagger / OpenAPI Pipeline | Final Verification | Commit `04b3468`; determinism verified; awaiting GitHub Actions |
-| 4 | Auth Contract Integration | Not Started | Blocked on OpenAPI verification |
+| 4 | Auth Contract Discovery | In Progress | Runtime evidence collection and DTO analysis |
+| 5 | Auth Implementation | Not Started | Blocked on Auth Contract Discovery |
 | 5 | Home & Exam Profile | Not Started | Depends on Auth |
 | 6 | Question Bank & Practice | Not Started | Depends on Home |
 | 7 | Simulation Exam & Results | Not Started | Depends on Question Bank |

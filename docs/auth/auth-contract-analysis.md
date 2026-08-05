@@ -12,7 +12,7 @@ Legacy `/api/exam/**` endpoints are not used in this phase.
 
 ## Endpoint Mapping
 
-### 1. Password Login
+### 1. V2 Login
 
 **Orval Function**: `apiExamV2AppLoginPost`
 
@@ -22,24 +22,27 @@ Legacy `/api/exam/**` endpoints are not used in this phase.
 
 **Request DTO**: `ExaminationManageContractDtoUserUserLoginInput`
 
+| Field | Type | Required | Description | Confirmed |
+|---|---|---:|---|---|
+| code | string | No | Unknown meaning | Requires fixture |
+| system | Enum | No | Client system type | Requires documentation |
+| province | string | No | 省（Province） | Schema documented |
+| provinceCode | string | No | 省 Code | Schema documented |
+| examTypeId | string | No | 科目 ID | Schema documented |
+| iptInviteCode | string | No | Input invite code | Schema documented |
+| terminal | string | No | Terminal identifier | Requires fixture |
+| clientType | Enum | No | Client type | Requires documentation |
+| package | string | No | Package name | Requires fixture |
+
 **Response DTO**: `AcbMiddleWareCoreResultModel`
 
-**Envelope**: Contains `data` field with login result
+**Token Field**: **UNKNOWN** — Must extract from response fixture
 
-**Token Field**: TBD from response fixture
-
-**User ID Field**: TBD from response fixture
-
-**Key Fields**:
-- code (optional)
-- system (optional)
-- province (optional)
-- examTypeId (optional)
-- iptInviteCode (optional)
+**User ID Field**: **UNKNOWN** — Must extract from response fixture
 
 ---
 
-### 2. SMS Login
+### 2. V2 Short Message Login
 
 **Orval Function**: `apiExamV2AppLoginShortMessagePost`
 
@@ -49,13 +52,25 @@ Legacy `/api/exam/**` endpoints are not used in this phase.
 
 **Request DTO**: `ExaminationManageContractDtoUserShortMessageLoginInput`
 
+| Field | Type | Required | Description | Confirmed |
+|---|---|---:|---|---|
+| mobile | string | No | **UNKNOWN** — Phone or mobile identifier | Requires fixture |
+| code | string | No | **UNKNOWN** — Verification code or other | Requires fixture |
+| requestId | string | No | Request identifier | Requires documentation |
+| system | Enum | No | Client system type | Requires documentation |
+| province | string | No | 省（Province） | Schema documented |
+| provinceCode | string | No | 省 Code | Schema documented |
+| examTypeId | string | No | 科目 ID | Schema documented |
+| headImg | string | No | 头像（Avatar） | Schema documented |
+| iptInviteCode | string | No | Input invite code | Schema documented |
+| terminal | string | No | Terminal identifier | Requires fixture |
+| clientType | Enum | No | Client type | Requires documentation |
+
 **Response DTO**: `AcbMiddleWareCoreResultModel`
 
-**Envelope**: Contains `data` field with login result
+**Token Field**: **UNKNOWN** — Must extract from response fixture
 
-**Token Field**: TBD from response fixture
-
-**User ID Field**: TBD from response fixture
+**User ID Field**: **UNKNOWN** — Must extract from response fixture
 
 ---
 
@@ -69,13 +84,51 @@ Legacy `/api/exam/**` endpoints are not used in this phase.
 
 **Query Params**: `ApiExamV2AppLoginSendShortMessageGetParams`
 
+| Field | Type | Required | Description | Confirmed |
+|---|---|---:|---|---|
+| mobile | string | No | **UNKNOWN** — Phone or mobile identifier | Requires fixture |
+
 **Response DTO**: `AcbMiddleWareCoreResultModel`
 
-**Envelope**: Contains `data` field (typically empty for success)
+**Envelope**: Contains `data` field (structure unknown until fixture received)
+
+**Success Indicator**: **UNKNOWN** — Examine response envelope structure from fixture
 
 ---
 
-### 4. Get Current User Info
+### 4. WeChat One-Click Login
+
+**Orval Function**: `apiExamV2AppLoginOneClickLoginPost`
+
+**Method**: POST
+
+**Path**: `/api/examV2/app/login/oneClickLogin`
+
+**Request DTO**: `ExaminationManageContractDtoWeChatOneClickInput`
+
+| Field | Type | Required | Description | Confirmed |
+|---|---|---:|---|---|
+| accessToken | string | No | **UNKNOWN** — WeChat access token or other | Requires fixture |
+| system | Enum | No | Client system type | Requires documentation |
+| mobile | string | No | Mobile or phone identifier | Requires fixture |
+| province | string | No | 省（Province） | Schema documented |
+| provinceCode | string | No | 省 Code | Schema documented |
+| examTypeId | string | No | 科目 ID | Schema documented |
+| headImg | string | No | 头像（Avatar） | Schema documented |
+| iptInviteCode | string | No | Input invite code | Schema documented |
+| version | string | No | Version number | Requires documentation |
+| terminal | string | No | Terminal identifier | Requires fixture |
+| clientType | Enum | No | Client type | Requires documentation |
+
+**Response DTO**: `AcbMiddleWareCoreResultModel`
+
+**Token Field**: **UNKNOWN** — Must extract from response fixture
+
+**User ID Field**: **UNKNOWN** — Must extract from response fixture
+
+---
+
+### 5. Get Current User Info
 
 **Orval Function**: `apiExamV2AppLoginGetUserInfoByTokenGet`
 
@@ -87,13 +140,14 @@ Legacy `/api/exam/**` endpoints are not used in this phase.
 
 **Envelope**: Contains `data` field with user info
 
-**User DTO**: TBD from response fixture
+**User DTO Structure**: **UNKNOWN** — Must extract from response fixture
 
-**Key Fields**:
-- phone (phone number)
-- id (user ID)
-- nickname (nickname)
-- avatarUrl (avatar URL)
+Fields present in response cannot be guessed:
+- Which fields exist
+- Whether phone is present
+- Whether ID is present
+- Whether nickname/avatar are present
+- What types they are
 
 ---
 
