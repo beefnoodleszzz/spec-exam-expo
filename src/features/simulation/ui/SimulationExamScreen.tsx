@@ -56,6 +56,8 @@ export function SimulationExamScreen() {
   )
 
   const remaining = useCountdown(examTypeId || '')
+  
+  const isReadOnly = session?.status !== 'active'
 
   useEffect(() => {
     if (!session || session.status === 'submitted') {
@@ -93,7 +95,7 @@ export function SimulationExamScreen() {
   const question = questions?.[0]
 
   const handleOptionPress = (optionId: string) => {
-    if (!examTypeId || !question || session?.status === 'submit_failed') return
+    if (!examTypeId || !question || isReadOnly) return
     
     const currentAnswerState = session?.answers[question.id] || { answers: [], marked: false, updatedAt: '' }
     let newAnswers = [...currentAnswerState.answers]
@@ -109,13 +111,11 @@ export function SimulationExamScreen() {
     }
     
     useSimulationSessionStore.getState().updateAnswer(examTypeId, question.id, newAnswers)
-    simulationService.scheduleSave(examTypeId)
   }
 
   const handleToggleMark = () => {
-    if (!examTypeId || !question || session?.status === 'submit_failed') return
+    if (!examTypeId || !question || isReadOnly) return
     useSimulationSessionStore.getState().toggleMark(examTypeId, question.id)
-    simulationService.scheduleSave(examTypeId)
   }
 
   if (!examTypeId || !session) {

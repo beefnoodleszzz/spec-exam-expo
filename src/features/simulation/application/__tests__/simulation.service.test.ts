@@ -12,14 +12,6 @@ vi.mock('@/shared/query/query-client', () => ({
   },
 }))
 
-vi.mock('react-native', () => ({
-  AppState: {
-    addEventListener: vi.fn(() => ({
-      remove: vi.fn(),
-    })),
-  },
-}))
-
 describe('SimulationService', () => {
   let service: SimulationService
   let remoteMock: Mocked<SimulationRemoteImpl>
@@ -147,19 +139,33 @@ describe('SimulationService', () => {
     expect(remoteMock.submitPaper).toHaveBeenCalledTimes(1)
   })
 
-  it('should schedule save with debounce', async () => {
+  it('should ignore handleTimeout if status is submit_failed', async () => {
     await service.startExam('exam1')
+    useSimulationSessionStore.getState().updateStatus('exam1', 'submit_failed')
+    service.handleTimeout('exam1')
+    expect(remoteMock.submitPaper).not.toHaveBeenCalled()
+  })
+
+  it('should only automatically submit once on timeout', async () => {
+    await service.startExam('exam1')
+    service.handleTimeout('exam1')
+    expect(useSimulationSessionStore.getState().sessions['exam1']!.status).toBe('submitting')
+    service.handleTimeout('exam1') // second time should be ignored
+    expect(remoteMock.submitPaper).toHaveBeenCalledTimes(1)
+  })
+
+  it('should remain in submit_failed if manual submit fails after timeout', async () => {
+    await service.startExam('exam1')
+    // Set expiry to past to simulate timeout scenario during manual submit
+    useSimulationSessionStore.getState().setSession('exam1', {
+      ...useSimulationSessionStore.getState().sessions['exam1']!,
+      expiresAt: new Date(Date.now() - 1000).toISOString(),
+    })
     
-    // We don't implement full saveProgress on remote as it throws,
-    // but we can check if it calls saveProgress or handles promise.
-    service.scheduleSave('exam1')
-    service.scheduleSave('exam1')
-    service.scheduleSave('exam1')
+    remoteMock.submitPaper.mockRejectedValueOnce(new Error('Network error'))
     
-    // Fast forward timers
-    vi.advanceTimersByTime(1000)
-    
-    // We expect it to try saving but it catches the NotSupportedError internally
-    // As long as it doesn't crash, we're good.
+    await expect(service.submitPaper('exam1', 'manual')).rejects.toThrow()
+    const session = useSimulationSessionStore.getState().sessions['exam1']
+    expect(session!.status).toBe('submit_failed')
   })
 })

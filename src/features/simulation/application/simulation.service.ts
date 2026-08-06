@@ -3,34 +3,11 @@ import { useSimulationSessionStore } from '../state/simulation-session.store'
 import type { SimulationResult } from '../domain/simulation-result.types'
 import { queryClient } from '@/shared/query/query-client'
 import { examScopedQueryKeys } from '@/shared/query/exam-scoped-query-keys'
-import { AppState } from 'react-native'
-import type { AppStateStatus } from 'react-native'
 
 export class SimulationService {
   private remote = new SimulationRemoteImpl()
   private submissionPromises = new Map<string, Promise<SimulationResult>>()
-  private saveTimers = new Map<string, ReturnType<typeof setTimeout>>()
-  private pendingSaves = new Map<string, Promise<void>>()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private appStateSubscription: any = null
-
   constructor() {
-    this.setupAppStateListener()
-  }
-
-  private setupAppStateListener() {
-    this.appStateSubscription = AppState.addEventListener(
-      'change',
-      (nextAppState: AppStateStatus) => {
-        if (nextAppState === 'background' || nextAppState === 'inactive') {
-          // Flush saves for all active sessions
-          const sessions = useSimulationSessionStore.getState().sessions
-          Object.keys(sessions).forEach((examTypeId) => {
-            this.flushSave(examTypeId)
-          })
-        }
-      },
-    )
   }
 
   async startExam(examTypeId: string): Promise<void> {
@@ -104,7 +81,10 @@ export class SimulationService {
         return result
       })
       .catch((error) => {
-        const fallbackStatus = reason === 'timeout' ? 'submit_failed' : 'active'
+        const hasExpired =
+          Date.parse(session.expiresAt) <= Date.now()
+        const fallbackStatus =
+          hasExpired || reason === 'timeout' ? 'submit_failed' : 'active'
         useSimulationSessionStore.getState().updateStatus(examTypeId, fallbackStatus)
         throw error
       })
@@ -118,7 +98,7 @@ export class SimulationService {
 
   handleTimeout(examTypeId: string): void {
     const session = useSimulationSessionStore.getState().sessions[examTypeId]
-    if (!session || (session.status !== 'active' && session.status !== 'submit_failed')) return
+    if (!session || session.status !== 'active') return
 
     useSimulationSessionStore.getState().updateStatus(examTypeId, 'expired')
     this.submitPaper(examTypeId, 'timeout').catch(() => {
@@ -128,36 +108,6 @@ export class SimulationService {
 
   finishExam(examTypeId: string): void {
     useSimulationSessionStore.getState().clearSession(examTypeId)
-  }
-
-  scheduleSave(examTypeId: string): void {
-    if (this.saveTimers.has(examTypeId)) {
-      clearTimeout(this.saveTimers.get(examTypeId)!)
-    }
-    
-    const timer = setTimeout(() => {
-      this.flushSave(examTypeId)
-    }, 800)
-    
-    this.saveTimers.set(examTypeId, timer)
-  }
-
-  async flushSave(examTypeId: string): Promise<void> {
-    if (this.saveTimers.has(examTypeId)) {
-      clearTimeout(this.saveTimers.get(examTypeId)!)
-      this.saveTimers.delete(examTypeId)
-    }
-
-    if (this.pendingSaves.has(examTypeId)) {
-      return this.pendingSaves.get(examTypeId)!
-    }
-
-    const savePromise = Promise.resolve().finally(() => {
-      this.pendingSaves.delete(examTypeId)
-    })
-    
-    this.pendingSaves.set(examTypeId, savePromise)
-    return savePromise
   }
 }
 
