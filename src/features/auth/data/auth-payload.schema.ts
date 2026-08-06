@@ -10,6 +10,12 @@
 import { z } from 'zod'
 import type { AuthUser } from '../domain/auth.types'
 
+function createContractError(message: string): Error {
+  const error = new Error(message)
+  error.name = 'ContractError'
+  return error
+}
+
 /**
  * Login response payload (after envelope unwrapping).
  *
@@ -76,6 +82,32 @@ export type AuthUserPayload = z.infer<
 >
 
 /**
+ * Send SMS response payload.
+ *
+ * Field name variants:
+ * - requestId, requestid, RequestId
+ */
+export const sendShortMessagePayloadSchema =
+  z
+    .object({
+      requestId: z.string().optional(),
+      requestid: z.string().optional(),
+      RequestId: z.string().optional(),
+
+      message: z.string().optional(),
+      bizId: z.string().optional(),
+      code: z
+        .union([z.string(), z.number()])
+        .optional(),
+    })
+    .passthrough()
+
+export type SendShortMessagePayload =
+  z.infer<
+    typeof sendShortMessagePayloadSchema
+  >
+
+/**
  * Extract access token from login payload.
  *
  * Tries multiple field names in order:
@@ -90,7 +122,7 @@ export function extractAccessToken(
     payload.token ?? payload.accesstoken
 
   if (!token || typeof token !== 'string') {
-    throw new Error(
+    throw createContractError(
       'Login succeeded but no access token returned',
     )
   }
@@ -122,6 +154,33 @@ export function extractUserId(
 }
 
 /**
+ * Extract request ID from SMS response payload.
+ *
+ * Tries multiple field name variants.
+ *
+ * Throws if no requestId found.
+ */
+export function extractRequestId(
+  payload: SendShortMessagePayload,
+): string {
+  const requestId =
+    payload.requestId ??
+    payload.requestid ??
+    payload.RequestId
+
+  if (
+    typeof requestId !== 'string' ||
+    requestId.trim() === ''
+  ) {
+    throw createContractError(
+      'Verification response does not contain requestId',
+    )
+  }
+
+  return requestId
+}
+
+/**
  * Map raw user payload to domain AuthUser.
  *
  * Handles field name variants and normalizes to single AuthUser structure.
@@ -138,7 +197,9 @@ export function mapAuthUser(
     phone:
       payload.mobile ?? payload.phone ?? null,
     nickname:
-      payload.nickName ?? payload.nickname ?? null,
+      payload.nickName ??
+      payload.nickname ??
+      null,
     avatarUrl:
       payload.avatarUrl ??
       payload.avatar ??

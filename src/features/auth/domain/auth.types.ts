@@ -35,21 +35,22 @@ export interface AuthUser {
 /**
  * Short message (SMS) login request.
  *
- * User-provided: phone, verificationCode
- * Auto-filled: system, province, examTypeId, etc. via config
+ * User-provided: phone, verificationCode, requestId
+ * App-provided: province, provinceCode, examTypeId, inviteCode
+ *
+ * System-level fields (system, terminal, clientType) auto-injected via config.
  *
  * Evidence: legacy LoginParams (spec-exam-pure login.dto.ts:39)
  */
 export interface ShortMessageLoginCommand {
   phone: string
   verificationCode: string
-  system?: number
+  requestId: string
+
   province?: string
   provinceCode?: string
   examTypeId?: string
   inviteCode?: string
-  terminal?: string
-  clientType?: number
 }
 
 /**
@@ -59,13 +60,11 @@ export interface ShortMessageLoginCommand {
  */
 export interface V2LoginCommand {
   code: string
-  system?: number
+
   province?: string
   provinceCode?: string
   examTypeId?: string
   inviteCode?: string
-  terminal?: string
-  clientType?: number
 }
 
 /**
@@ -77,12 +76,11 @@ export interface V2LoginCommand {
  */
 export interface OneClickLoginCommand {
   accessToken: string
-  system?: number
+
   province?: string
   provinceCode?: string
   examTypeId?: string
-  terminal?: string
-  clientType?: number
+  inviteCode?: string
 }
 
 /**
@@ -92,6 +90,15 @@ export interface OneClickLoginCommand {
  */
 export interface SendShortMessageCommand {
   phone: string
+}
+
+/**
+ * Send SMS verification code result.
+ *
+ * requestId must be passed to login command.
+ */
+export interface SendShortMessageResult {
+  requestId: string
 }
 
 /**

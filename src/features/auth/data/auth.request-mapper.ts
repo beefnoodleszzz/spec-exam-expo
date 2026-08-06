@@ -66,37 +66,32 @@ export function mapShortMessageLogin(
   const dto: Record<string, unknown> = {
     mobile: command.phone,
     code: command.verificationCode,
-    system: (command.system ??
-      config.system) as ExaminationManageContractDtoUserShortMessageLoginInputSystem,
-    terminal:
-      command.terminal ?? config.terminal,
-    clientType: (command.clientType ??
-      config.clientType) as ExaminationManageContractDtoUserShortMessageLoginInputClientType,
+    requestId: command.requestId,
+    system: config.system as ExaminationManageContractDtoUserShortMessageLoginInputSystem,
+    terminal: config.terminal,
+    clientType:
+      config.clientType as ExaminationManageContractDtoUserShortMessageLoginInputClientType,
   }
 
   assignString(
     dto,
     'province',
     command.province,
-    config.province,
   )
   assignString(
     dto,
     'provinceCode',
     command.provinceCode,
-    config.provinceCode,
   )
   assignString(
     dto,
     'examTypeId',
     command.examTypeId,
-    config.examTypeId,
   )
   assignString(
     dto,
     'iptInviteCode',
     command.inviteCode,
-    config.inviteCode,
   )
 
   return dto as ExaminationManageContractDtoUserShortMessageLoginInput
@@ -113,37 +108,31 @@ export function mapV2Login(
 ): ExaminationManageContractDtoUserUserLoginInput {
   const dto: Record<string, unknown> = {
     code: command.code,
-    system: (command.system ??
-      config.system) as ExaminationManageContractDtoUserUserLoginInputSystem,
-    terminal:
-      command.terminal ?? config.terminal,
-    clientType: (command.clientType ??
-      config.clientType) as ExaminationManageContractDtoUserUserLoginInputClientType,
+    system: config.system as ExaminationManageContractDtoUserUserLoginInputSystem,
+    terminal: config.terminal,
+    clientType:
+      config.clientType as ExaminationManageContractDtoUserUserLoginInputClientType,
   }
 
   assignString(
     dto,
     'province',
     command.province,
-    config.province,
   )
   assignString(
     dto,
     'provinceCode',
     command.provinceCode,
-    config.provinceCode,
   )
   assignString(
     dto,
     'examTypeId',
     command.examTypeId,
-    config.examTypeId,
   )
   assignString(
     dto,
     'iptInviteCode',
     command.inviteCode,
-    config.inviteCode,
   )
   assignString(dto, 'package', config.packageName)
 
@@ -161,31 +150,26 @@ export function mapOneClickLogin(
 ): ExaminationManageContractDtoUserUserLoginInput {
   const dto: Record<string, unknown> = {
     code: command.accessToken,
-    system: (command.system ??
-      config.system) as ExaminationManageContractDtoUserUserLoginInputSystem,
-    terminal:
-      command.terminal ?? config.terminal,
-    clientType: (command.clientType ??
-      config.clientType) as ExaminationManageContractDtoUserUserLoginInputClientType,
+    system: config.system as ExaminationManageContractDtoUserUserLoginInputSystem,
+    terminal: config.terminal,
+    clientType:
+      config.clientType as ExaminationManageContractDtoUserUserLoginInputClientType,
   }
 
   assignString(
     dto,
     'province',
     command.province,
-    config.province,
   )
   assignString(
     dto,
     'provinceCode',
     command.provinceCode,
-    config.provinceCode,
   )
   assignString(
     dto,
     'examTypeId',
     command.examTypeId,
-    config.examTypeId,
   )
   assignString(dto, 'package', config.packageName)
 
