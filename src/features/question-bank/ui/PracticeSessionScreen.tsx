@@ -110,14 +110,17 @@ export function PracticeSessionScreen() {
             {question.options.map((opt: QuestionOption) => {
               const isSelected = question.userAnswers.includes(opt.id)
               const hasAnswered = question.userAnswers.length > 0
+              const answerState = currentSession.answers[question.id]
+              const status = answerState?.status
+              
               let optionClass = "flex-row items-center p-4 bg-white rounded-xl mb-3 border border-gray-200"
 
               if (isSelected) {
                 optionClass = "flex-row items-center p-4 bg-primary/10 rounded-xl mb-3 border border-primary"
               }
 
-              // Show correct/wrong if answered
-              if (hasAnswered) {
+              // Show correct/wrong if answered and synced
+              if (hasAnswered && status === 'synced') {
                 const isCorrect = question.correctAnswers.includes(opt.id)
                 if (isCorrect) {
                   optionClass = "flex-row items-center p-4 bg-green-50 rounded-xl mb-3 border border-green-500"
@@ -146,9 +149,21 @@ export function PracticeSessionScreen() {
             })}
           </View>
 
-          {question.userAnswers.length > 0 && question.explanationHtml && (
+          {currentSession.answers[question.id]?.status === 'pending' && (
+            <View className="mb-8 items-center bg-gray-50 p-4 rounded-xl border border-gray-200">
+              <ActivityIndicator size="small" className="mb-2" />
+              <AppText className="text-gray-500">答案提交中...</AppText>
+            </View>
+          )}
+
+          {currentSession.answers[question.id]?.status === 'synced' && question.userAnswers.length > 0 && question.explanationHtml && (
             <View className="p-4 bg-gray-50 rounded-xl mb-8">
-              <AppText className="text-base font-bold mb-2">答案解析</AppText>
+              <View className="flex-row items-center mb-2">
+                <AppText className="text-base font-bold">答案解析</AppText>
+                <AppText className={`ml-3 font-bold ${currentSession.answers[question.id]?.serverCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                  {currentSession.answers[question.id]?.serverCorrect ? '回答正确' : '回答错误'}
+                </AppText>
+              </View>
               <AppText className="text-sm mb-2 text-green-600">
                 正确答案: {question.correctAnswers.join(' ')}
               </AppText>

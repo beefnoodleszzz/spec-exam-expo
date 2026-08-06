@@ -8,7 +8,8 @@ import { subjectSchema } from './subject.schema'
 import { chapterSchema } from './chapter.schema'
 import { questionSchema } from './question.schema'
 import { answerResultSchema } from './answer.schema'
-import { 
+import {
+  mapListChaptersRequest,
   mapCreateOrderPracticeRequest,
   mapCreateRandomPracticeRequest,
   mapListWrongQuestionsRequest,
@@ -26,8 +27,19 @@ import {
   apiExamV2AppSubjectGetSubjectsByIdsPost
 } from '@/shared/api/generated/endpoints/examination-manager-v2/examination-manager-v2'
 
+import { appStore } from '@/shared/auth/app-store'
+import { createContractError } from '@/shared/api/errors/app-error'
+
+function assertCurrentExamType(examTypeId: string): void {
+  const current = appStore.getState().currentExamProfile?.examTypeId
+  if (current !== examTypeId) {
+    throw createContractError('当前请求的考试类型与全局上下文不一致')
+  }
+}
+
 export class QuestionBankRemoteImpl implements QuestionBankRemote {
-  async listSubjects(_examTypeId: string, signal?: AbortSignal): Promise<Subject[]> {
+  async listSubjects(examTypeId: string, signal?: AbortSignal): Promise<Subject[]> {
+    assertCurrentExamType(examTypeId)
     const options = signal ? { signal } : {}
     const res = await apiExamV2AppSubjectGetExamTypeGet({}, options)
     const data = extractGeneratedData(res.data, '获取科目列表')
@@ -51,11 +63,8 @@ export class QuestionBankRemoteImpl implements QuestionBankRemote {
 
   async listChapters(subjectId: string, signal?: AbortSignal): Promise<Chapter[]> {
     const options = signal ? { signal } : {}
-    const res = await apiExamV2AppSubjectGetSubjectGroupGet({ 
-      type: Number(subjectId), 
-      index: 1, 
-      size: 1000 
-    }, options)
+    const req = mapListChaptersRequest(subjectId)
+    const res = await apiExamV2AppSubjectGetSubjectGroupGet(req, options)
     const data = extractGeneratedData(res.data, '获取章节列表')
     
     const parsed = z.array(z.any()).parse(data)

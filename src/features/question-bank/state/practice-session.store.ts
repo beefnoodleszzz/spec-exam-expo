@@ -10,6 +10,9 @@ export interface PracticeAnswer {
   answers: string[]
   status: AnswerSyncStatus
   updatedAt: string
+  serverCorrect?: boolean | null
+  correctAnswers?: string[]
+  explanationHtml?: string | null
 }
 
 export interface PracticeSessionState {
@@ -37,6 +40,7 @@ interface PracticeSessionStore {
     setLoadingQuestion: (loading: boolean) => void
     submitAnswer: (questionId: string, answers: string[], status: AnswerSyncStatus) => void
     updateAnswerStatus: (questionId: string, status: AnswerSyncStatus) => void
+    markAnswerSynced: (payload: { questionId: string, correct: boolean | null, correctAnswers: string[], explanationHtml: string | null }) => void
     clearSession: () => void
     removeInvalidQuestion: (questionId: string) => void
     updateQuestionFavorite: (questionId: string, isFavorite: boolean) => void
@@ -102,6 +106,26 @@ export const usePracticeSessionStore = create<PracticeSessionStore>()(
                 [questionId]: {
                   ...existing,
                   status,
+                  updatedAt: new Date().toISOString()
+                }
+              }
+            }
+          }
+        }),
+
+        markAnswerSynced: ({ questionId, correct, correctAnswers, explanationHtml }) => set((state) => {
+          if (!state.currentSession || !state.currentSession.answers[questionId]) return state
+          return {
+            currentSession: {
+              ...state.currentSession,
+              answers: {
+                ...state.currentSession.answers,
+                [questionId]: {
+                  ...state.currentSession.answers[questionId],
+                  status: 'synced',
+                  serverCorrect: correct,
+                  correctAnswers,
+                  explanationHtml,
                   updatedAt: new Date().toISOString()
                 }
               }

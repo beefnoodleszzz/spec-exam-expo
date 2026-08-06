@@ -156,16 +156,28 @@ export class PracticeService {
         isFavorite: q?.isFavorite ?? false
       })
 
-      store.actions.updateAnswerStatus(questionId, 'synced')
+      const finalCorrectAnswers = result.correctAnswers.length > 0 
+        ? result.correctAnswers 
+        : (q?.correctAnswers ?? [])
+        
+      const finalExplanationHtml = result.explanationHtml 
+        ?? (q?.explanationHtml ?? null)
+
+      store.actions.markAnswerSynced({
+        questionId,
+        correct: result.correct,
+        correctAnswers: finalCorrectAnswers,
+        explanationHtml: finalExplanationHtml
+      })
 
       if (q) {
         let needsUpdate = false
-        if (q.correctAnswers.join(',') !== result.correctAnswers.join(',') && result.correctAnswers.length > 0) {
-          q.correctAnswers = result.correctAnswers
+        if (q.correctAnswers.join(',') !== finalCorrectAnswers.join(',')) {
+          q.correctAnswers = finalCorrectAnswers
           needsUpdate = true
         }
-        if (result.explanationHtml && result.explanationHtml !== q.explanationHtml) {
-          q.explanationHtml = result.explanationHtml
+        if (q.explanationHtml !== finalExplanationHtml) {
+          q.explanationHtml = finalExplanationHtml
           needsUpdate = true
         }
         
