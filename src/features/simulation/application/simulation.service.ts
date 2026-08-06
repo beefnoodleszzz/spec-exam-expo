@@ -7,8 +7,6 @@ import { examScopedQueryKeys } from '@/shared/query/exam-scoped-query-keys'
 export class SimulationService {
   private remote = new SimulationRemoteImpl()
   private submissionPromises = new Map<string, Promise<SimulationResult>>()
-  constructor() {
-  }
 
   async startExam(examTypeId: string): Promise<void> {
     const paper = await this.remote.createPaper(examTypeId)

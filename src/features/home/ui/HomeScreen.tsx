@@ -155,8 +155,7 @@ export function HomeScreen() {
                 if (action.route === 'practice') {
                   router.push('/(protected)/practice');
                 } else if (action.route === 'simulation') {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (router.push as any)('/(protected)/simulation');
+                  router.push('/(protected)/simulation/entry');
                 } else if (action.route === 'questions') {
                   router.push('/(protected)/questions');
                 }

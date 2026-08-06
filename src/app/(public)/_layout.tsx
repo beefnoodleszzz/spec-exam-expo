@@ -13,8 +13,7 @@ export default function PublicLayout() {
   }
 
   if (status === 'authenticated') {
-    // @ts-expect-error - Expo router types aren't fully synced yet
-    return <Redirect href={'/(protected)'} />
+    return <Redirect href="/(protected)/(tabs)" />
   }
 
   return (

@@ -3,11 +3,13 @@ import { View, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { AppScreen, AppText, AppButton } from '@/shared/components';
 import { useUserProfile, useLearningSummary } from '../application/user-center.query';
+import { appStore } from '@/shared/auth/app-store';
 
 export function UserCenterScreen() {
   const router = useRouter();
+  const examTypeId = appStore((state) => state.currentExamProfile?.examTypeId) ?? '';
   const { data: profile, isLoading: isProfileLoading } = useUserProfile();
-  const { data: summary, isLoading: isSummaryLoading } = useLearningSummary();
+  const { data: summary, isLoading: isSummaryLoading } = useLearningSummary(examTypeId);
 
   return (
     <AppScreen>
@@ -48,14 +50,12 @@ export function UserCenterScreen() {
         <View className="space-y-4">
           <AppButton
             variant="outline"
-            // @ts-expect-error - types not generated yet
             onPress={() => router.push('/(protected)/user/profile')}
           >
             Edit Profile
           </AppButton>
           <AppButton
             variant="outline"
-            // @ts-expect-error - types not generated yet
             onPress={() => router.push('/(protected)/settings')}
           >
             Settings

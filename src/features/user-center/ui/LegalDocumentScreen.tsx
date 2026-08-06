@@ -1,22 +1,40 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { WebView } from 'react-native-webview';
+import { z } from 'zod';
 import { AppScreen, AppText } from '@/shared/components';
+import { AppConfig } from '@/shared/config/app.config';
+
+const legalParamsSchema = z.object({
+  type: z.enum(['agreement', 'privacy']),
+});
 
 export function LegalDocumentScreen() {
-  const { type } = useLocalSearchParams<{ type: string }>();
+  const params = useLocalSearchParams();
+  const parsed = legalParamsSchema.safeParse(params);
 
-  // Use WebView for real app, mock it for now
+  if (!parsed.success) {
+    return (
+      <AppScreen>
+        <View className="flex-1 justify-center items-center">
+          <AppText>Invalid document type</AppText>
+        </View>
+      </AppScreen>
+    );
+  }
+
+  const { type } = parsed.data;
+  
+  const endpoint = type === 'agreement' 
+    ? 'pages/specwork_user_agreement.html?title=特种作业' 
+    : 'pages/specwork_private_policy.html?title=特种作业';
+  
+  const url = `${AppConfig.WEB_BASE_URL.replace(/\/+$/, '')}/${endpoint}`;
+
   return (
     <AppScreen>
-      <View className="p-4 flex-1">
-        <AppText className="text-lg font-bold mb-4">
-          {type === 'agreement' ? 'User Agreement' : 'Privacy Policy'}
-        </AppText>
-        <AppText>
-          This is a placeholder for the legal document content. In the real app, this should load the corresponding HTML page via WebView.
-        </AppText>
-      </View>
+      <WebView source={{ uri: url }} className="flex-1" />
     </AppScreen>
   );
 }

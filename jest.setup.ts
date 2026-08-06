@@ -1,4 +1,3 @@
-/* eslint-disable */
 jest.mock('expo-splash-screen', () => ({
   hideAsync: jest.fn(),
   preventAutoHideAsync: jest.fn(),

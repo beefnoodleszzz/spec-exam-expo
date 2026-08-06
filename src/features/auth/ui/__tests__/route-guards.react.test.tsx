@@ -60,7 +60,7 @@ describe('PublicLayout (route guard)', () => {
   it('redirects authenticated users to protected tabs', () => {
     mockStatus = 'authenticated'
     render(React.createElement(PublicLayout))
-    expect(mockRedirect).toHaveBeenCalledWith('/(protected)')
+    expect(mockRedirect).toHaveBeenCalledWith('/(protected)/(tabs)')
   })
 
   it('renders Stack for anonymous users without redirecting', () => {

@@ -10,8 +10,9 @@ export function FeedbackScreen() {
   const [content, setContent] = useState('');
 
   const handleSubmit = () => {
-    if (!content.trim()) return;
-    submitFeedback(content, {
+    const trimmedContent = content.trim();
+    if (!trimmedContent || trimmedContent.length > 500) return;
+    submitFeedback(trimmedContent, {
       onSuccess: () => {
         router.back();
       }
@@ -28,6 +29,7 @@ export function FeedbackScreen() {
           placeholder="Please describe your issue or suggestion"
           multiline
           numberOfLines={4}
+          maxLength={500}
           className="mb-4 h-32"
         />
         <AppButton
