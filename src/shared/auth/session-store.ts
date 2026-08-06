@@ -19,6 +19,7 @@ export interface SessionState {
 
   // Called during bootstrap to restore persisted token
   restoreSession: () => Promise<void>
+  clearSession: () => void
 }
 
 export const sessionStore = create<SessionState>((set) => ({
@@ -29,6 +30,14 @@ export const sessionStore = create<SessionState>((set) => ({
   clearSession: () => set((_state) => {
     import('../../features/question-bank/state/practice-session.store').then(module => {
       module.usePracticeSessionStore.getState().actions.clearSession()
+    }).catch(() => {})
+
+    import('../../features/simulation/state/simulation-session.store').then(module => {
+      module.useSimulationSessionStore.getState().clearAllSessions()
+    }).catch(() => {})
+
+    import('../../shared/query/query-client').then(module => {
+      module.queryClient.clear()
     }).catch(() => {})
     
     return {

@@ -153,11 +153,12 @@ export function HomeScreen() {
               className="w-[30%] mb-4 items-center"
               onPress={() => {
                 if (action.route === 'practice') {
-                  router.push('/(protected)/practice')
+                  router.push('/(protected)/practice');
                 } else if (action.route === 'simulation') {
-                  router.push('/(protected)/simulation')
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (router.push as any)('/(protected)/simulation');
                 } else if (action.route === 'questions') {
-                  router.push('/(protected)/questions')
+                  router.push('/(protected)/questions');
                 }
               }}
             >
