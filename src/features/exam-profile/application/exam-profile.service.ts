@@ -16,6 +16,22 @@ function isSameExamProfile(
   )
 }
 
+async function removeExamScopedQueries(
+  examTypeId: string,
+): Promise<void> {
+  await Promise.all([
+    queryClient.removeQueries({
+      queryKey: examScopedQueryKeys.home(examTypeId),
+    }),
+    queryClient.removeQueries({
+      queryKey: examScopedQueryKeys.subjects(examTypeId),
+    }),
+    queryClient.removeQueries({
+      queryKey: examScopedQueryKeys.practiceRoot(examTypeId),
+    }),
+  ])
+}
+
 export interface ExamProfileService {
   listExamTypes(signal?: AbortSignal): Promise<ExamTypeOption[]>
   selectExamProfile(profile: ExamProfile, signal?: AbortSignal): Promise<void>
@@ -45,18 +61,8 @@ export class ExamProfileServiceImpl implements ExamProfileService {
 
     const oldExamTypeId = currentProfile?.examTypeId
 
-    if (oldExamTypeId && oldExamTypeId !== profile.examTypeId) {
-      await Promise.all([
-        queryClient.removeQueries({
-          queryKey: examScopedQueryKeys.home(oldExamTypeId),
-        }),
-        queryClient.removeQueries({
-          queryKey: examScopedQueryKeys.subjects(oldExamTypeId),
-        }),
-        queryClient.removeQueries({
-          queryKey: examScopedQueryKeys.practiceRoot(oldExamTypeId),
-        }),
-      ])
+    if (oldExamTypeId) {
+      await removeExamScopedQueries(oldExamTypeId)
     }
   }
 
@@ -67,17 +73,7 @@ export class ExamProfileServiceImpl implements ExamProfileService {
     await appStore.getState().clearExamProfile()
 
     if (oldExamTypeId) {
-      await Promise.all([
-        queryClient.removeQueries({
-          queryKey: examScopedQueryKeys.home(oldExamTypeId),
-        }),
-        queryClient.removeQueries({
-          queryKey: examScopedQueryKeys.subjects(oldExamTypeId),
-        }),
-        queryClient.removeQueries({
-          queryKey: examScopedQueryKeys.practiceRoot(oldExamTypeId),
-        }),
-      ])
+      await removeExamScopedQueries(oldExamTypeId)
     }
   }
 }

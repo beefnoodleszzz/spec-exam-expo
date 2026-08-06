@@ -34,7 +34,8 @@ describe('examProfile.service', () => {
     await examProfileService.switchExamProfile({ examTypeId: '1', examTypeName: 'T', province: 'GD', provinceCode: null, inviteCode: null })
     expect(examProfileRemote.registerExamProfile).toHaveBeenCalled()
     expect(appStore.getState().currentExamProfile?.province).toBe('GD')
-    expect(queryClient.removeQueries).not.toHaveBeenCalled()
+    // According to new requirements, changing profile ALWAYS clears cache
+    expect(queryClient.removeQueries).toHaveBeenCalled()
   })
 
   it('switchExamProfile clears exact scoped query keys when ID changes', async () => {
