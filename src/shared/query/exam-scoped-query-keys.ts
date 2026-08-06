@@ -26,4 +26,20 @@ export const examScopedQueryKeys = {
       examTypeId,
     ] as const
   },
+
+  simulationRule(examTypeId: string) {
+    return ['simulationRule', examTypeId] as const
+  },
+
+  simulationPaper(examTypeId: string, paperId: string) {
+    return ['simulationPaper', examTypeId, paperId] as const
+  },
+
+  simulationResult(examTypeId: string, paperId: string) {
+    return ['simulationResult', examTypeId, paperId] as const
+  },
+
+  simulationHistory(examTypeId: string) {
+    return ['simulationHistory', examTypeId] as const
+  },
 }

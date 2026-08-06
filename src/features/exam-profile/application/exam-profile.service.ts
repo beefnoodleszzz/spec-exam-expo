@@ -29,9 +29,20 @@ async function removeExamScopedQueries(
     queryClient.removeQueries({
       queryKey: examScopedQueryKeys.practiceRoot(examTypeId),
     }),
+    queryClient.removeQueries({
+      queryKey: examScopedQueryKeys.simulationRule(examTypeId),
+    }),
+    queryClient.removeQueries({
+      queryKey: ['simulationPaper', examTypeId],
+    }),
+    queryClient.removeQueries({
+      queryKey: ['simulationResult', examTypeId],
+    }),
+    queryClient.removeQueries({
+      queryKey: examScopedQueryKeys.simulationHistory(examTypeId),
+    }),
   ])
 }
-
 export interface ExamProfileService {
   listExamTypes(signal?: AbortSignal): Promise<ExamTypeOption[]>
   selectExamProfile(profile: ExamProfile, signal?: AbortSignal): Promise<void>
