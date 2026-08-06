@@ -1,34 +1,50 @@
 import { questionBankRemote } from '../data/question-bank.remote.impl'
-import type { CreatePracticeInput } from '../data/question-bank.remote'
+import type { PracticeSessionSeed } from '../data/question-bank.remote'
+import type { PracticeSessionState } from '../state/practice-session.store';
 import { usePracticeSessionStore } from '../state/practice-session.store'
-import type { PracticeSession } from '../domain/practice.types'
+import type { PracticeMode } from '../domain/practice.types'
+
+export interface CreatePracticeInput {
+  examTypeId: string
+  subjectId: string
+  chapterId?: string
+  mode: PracticeMode
+}
 
 export class PracticeService {
+  private answerSubmissions = new Map<string, Promise<void>>()
+  private favoriteMutations = new Map<string, Promise<void>>()
+
   async startPractice(input: CreatePracticeInput): Promise<void> {
     if (!input.examTypeId) throw new Error('Missing examTypeId')
 
-    const seed = await questionBankRemote.createPractice(input)
+    let seed: PracticeSessionSeed
+    if (input.mode === 'order') {
+      seed = await questionBankRemote.createOrderPractice(input.examTypeId, input.subjectId, input.chapterId)
+    } else if (input.mode === 'random') {
+      seed = await questionBankRemote.createRandomPractice(input.examTypeId, input.subjectId)
+    } else if (input.mode === 'wrong') {
+      seed = await questionBankRemote.listWrongQuestions(input.examTypeId, input.subjectId)
+    } else {
+      seed = await questionBankRemote.listFavoriteQuestions(input.examTypeId, input.subjectId)
+    }
     
     if (seed.questionIds.length === 0) {
       throw new Error('当前题库没有题目')
     }
 
-    const session: PracticeSession = {
-      sessionId: Date.now().toString(), // local id
+    const session: PracticeSessionState = {
       examTypeId: input.examTypeId,
       subjectId: input.subjectId,
-      chapterId: input.chapterId,
+      ...(input.chapterId ? { chapterId: input.chapterId } : {}),
       mode: input.mode,
       questionIds: seed.questionIds,
       currentIndex: 0,
       answers: {},
-      startedAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      currentQuestionStartedAt: Date.now()
     }
 
     usePracticeSessionStore.getState().actions.startSession(session)
-    
-    // Auto load first question
     await this.ensureQuestionLoaded(session.questionIds[0]!)
   }
 
@@ -40,13 +56,19 @@ export class PracticeService {
       store.actions.setLoadingQuestion(true)
       const question = await questionBankRemote.getQuestion(questionId)
       
-      // If we already have an answer recorded in the session, restore it to the question
       const existingAnswer = store.currentSession?.answers[questionId]
       if (existingAnswer) {
-        question.userAnswers = existingAnswer
+        question.userAnswers = existingAnswer.answers
       }
 
       store.actions.cacheQuestion(question)
+    } catch {
+      store.actions.removeInvalidQuestion(questionId)
+      
+      const session = store.currentSession
+      if (session && session.questionIds.length === 0) {
+        store.actions.clearSession()
+      }
     } finally {
       store.actions.setLoadingQuestion(false)
     }
@@ -91,59 +113,137 @@ export class PracticeService {
   }
 
   async submitAnswer(questionId: string, answers: string[]): Promise<void> {
+    if (this.answerSubmissions.has(questionId)) {
+      return this.answerSubmissions.get(questionId)!
+    }
+
+    const promise = this.doSubmitAnswer(questionId, answers)
+    this.answerSubmissions.set(questionId, promise)
+    
+    try {
+      await promise
+    } finally {
+      this.answerSubmissions.delete(questionId)
+    }
+  }
+
+  private async doSubmitAnswer(questionId: string, answers: string[]): Promise<void> {
     const store = usePracticeSessionStore.getState()
     const session = store.currentSession
     if (!session) return
 
-    // Immediately record locally
-    store.actions.recordAnswer(questionId, answers)
+    store.actions.submitAnswer(questionId, answers, 'pending')
     
-    // Is it wrong?
     const q = store.questionsCache[questionId]
-    const isMistake = q && (
-      q.correctAnswers.length !== answers.length || 
-      !q.correctAnswers.every(a => answers.includes(a))
-    )
+    if (q) {
+      q.userAnswers = answers
+      store.actions.cacheQuestion({ ...q })
+    }
 
-    // Sync to backend
+    const elapsedSeconds = Math.max(1, Math.floor((Date.now() - session.currentQuestionStartedAt) / 1000))
+
     try {
-      await questionBankRemote.submitAnswer({
+      const isMistakeOpt = q ? (
+        q.correctAnswers.length !== answers.length || 
+        !q.correctAnswers.every(a => answers.includes(a))
+      ) : false
+
+      const result = await questionBankRemote.submitExerciseRecord({
         questionId,
         answers,
-        elapsedSeconds: 5, // Ideally track real time per question
-        practiceMode: session.mode,
-        isMistake: isMistake ?? false,
+        elapsedSeconds,
+        isMistake: isMistakeOpt,
         isFavorite: q?.isFavorite ?? false
       })
-    } catch (e) {
-      console.warn('Failed to sync answer to backend', e)
-      // We don't rollback local state for offline resilience
+
+      store.actions.updateAnswerStatus(questionId, 'synced')
+
+      if (q) {
+        let needsUpdate = false
+        if (q.correctAnswers.join(',') !== result.correctAnswers.join(',') && result.correctAnswers.length > 0) {
+          q.correctAnswers = result.correctAnswers
+          needsUpdate = true
+        }
+        if (result.explanationHtml && result.explanationHtml !== q.explanationHtml) {
+          q.explanationHtml = result.explanationHtml
+          needsUpdate = true
+        }
+        
+        if (needsUpdate) {
+          store.actions.cacheQuestion({ ...q })
+        }
+      }
+    } catch {
+      store.actions.updateAnswerStatus(questionId, 'failed')
+    }
+  }
+
+  async retryAnswer(questionId: string): Promise<void> {
+    const store = usePracticeSessionStore.getState()
+    const answerData = store.currentSession?.answers[questionId]
+    if (answerData && answerData.status === 'failed') {
+      await this.submitAnswer(questionId, answerData.answers)
     }
   }
 
   async toggleFavorite(questionId: string): Promise<void> {
+    if (this.favoriteMutations.has(questionId)) {
+      return this.favoriteMutations.get(questionId)!
+    }
+
+    const promise = this.doToggleFavorite(questionId)
+    this.favoriteMutations.set(questionId, promise)
+    
+    try {
+      await promise
+    } finally {
+      this.favoriteMutations.delete(questionId)
+    }
+  }
+
+  private async doToggleFavorite(questionId: string): Promise<void> {
     const store = usePracticeSessionStore.getState()
     const question = store.questionsCache[questionId]
     if (!question) return
 
     const newFavorite = !question.isFavorite
-    
-    // Optistic update
-    store.actions.toggleFavorite(questionId, newFavorite)
+    store.actions.updateQuestionFavorite(questionId, newFavorite)
 
     try {
-      await questionBankRemote.toggleFavorite(questionId, newFavorite)
+      await questionBankRemote.toggleCollection(questionId, newFavorite)
     } catch (e) {
-      console.warn('Failed to toggle favorite', e)
-      // Rollback
-      store.actions.toggleFavorite(questionId, !newFavorite)
+      store.actions.updateQuestionFavorite(questionId, !newFavorite)
+      throw e
     }
   }
 
   async submitSession(): Promise<void> {
-    // Legacy mapping submitted ALL answers upon leaving.
-    // However, our new API syncs them as we go. We might just clear the session.
-    usePracticeSessionStore.getState().actions.endSession()
+    usePracticeSessionStore.getState().actions.clearSession()
+  }
+
+  async resumeSession(): Promise<void> {
+    const store = usePracticeSessionStore.getState()
+    const session = store.currentSession
+    if (!session) return
+
+    // If examTypeId doesn't match the current appStore, clear it
+    const { appStore } = await import('@/shared/auth/app-store')
+    const currentExamProfile = appStore.getState().currentExamProfile
+    if (!currentExamProfile || session.examTypeId !== currentExamProfile.examTypeId) {
+      store.actions.clearSession()
+      return
+    }
+
+    if (session.questionIds.length > 0) {
+      const currentId = session.questionIds[session.currentIndex]
+      if (currentId) {
+        await this.ensureQuestionLoaded(currentId)
+      } else {
+        store.actions.clearSession()
+      }
+    } else {
+      store.actions.clearSession()
+    }
   }
 }
 

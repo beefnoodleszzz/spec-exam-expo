@@ -26,7 +26,17 @@ export const sessionStore = create<SessionState>((set) => ({
   accessToken: null,
   userId: null,
 
-
+  clearSession: () => set((_state) => {
+    import('../../features/question-bank/state/practice-session.store').then(module => {
+      module.usePracticeSessionStore.getState().actions.clearSession()
+    }).catch(() => {})
+    
+    return {
+      status: 'anonymous',
+      accessToken: null,
+      userId: null,
+    }
+  }),
 
   restoreSession: async () => {
     try {

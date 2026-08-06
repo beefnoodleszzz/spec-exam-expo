@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
@@ -6,10 +6,15 @@ import { questionBankQueries } from '../application/queries'
 import { appStore } from '@/shared/auth/app-store'
 import { AppText, AppScreen } from '@/shared/components'
 import type { Subject } from '../domain/subject.types'
+import { practiceService } from '../application/practice.service'
 
 export function SubjectListScreen() {
   const router = useRouter()
   const examTypeId = appStore((state) => state.currentExamProfile?.examTypeId)
+
+  useEffect(() => {
+    practiceService.resumeSession()
+  }, [])
 
   const { data: subjects, isLoading, isError, refetch } = useQuery(
 

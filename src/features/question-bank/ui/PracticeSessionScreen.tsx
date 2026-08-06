@@ -159,6 +159,18 @@ export function PracticeSessionScreen() {
               />
             </View>
           )}
+
+          {currentSession.answers[question.id]?.status === 'failed' && (
+            <View className="mb-8 items-center bg-red-50 p-4 rounded-xl border border-red-200">
+              <AppText className="text-red-600 mb-2">答案提交失败</AppText>
+              <TouchableOpacity
+                onPress={() => practiceService.retryAnswer(question.id)}
+                className="bg-red-500 px-4 py-2 rounded-lg"
+              >
+                <AppText className="text-white">点击重试</AppText>
+              </TouchableOpacity>
+            </View>
+          )}
         </ScrollView>
       )}
 
