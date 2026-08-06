@@ -31,9 +31,9 @@ export function sanitizeError(error: unknown): SafeErrorInfo {
 }
 
 export const logger = {
-  info(event: string, context?: LogContext): void {
+  info(_event: string, _context?: LogContext): void {
     if (__DEV__) {
-      console.log(`[INFO] [${event}]`, context ?? '')
+      // Remove console.log entirely or leave empty if required
     }
   },
 

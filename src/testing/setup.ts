@@ -5,8 +5,7 @@
 import { vi } from 'vitest'
 
 // Define React Native global that logger.ts uses
-// @ts-expect-error — __DEV__ is a React Native global not typed in Node
-globalThis.__DEV__ = true
+;(globalThis as unknown as { __DEV__: boolean }).__DEV__ = true
 
 
 // Mock expo-constants

@@ -46,8 +46,7 @@ describe('SimulationService', () => {
       questionResults: [],
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(service as any).remote = remoteMock
+    ;(service as unknown as { remote: SimulationRemoteImpl }).remote = remoteMock
   })
   
   afterEach(() => {

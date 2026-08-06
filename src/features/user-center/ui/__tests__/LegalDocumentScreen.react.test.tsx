@@ -3,6 +3,8 @@ import { render } from '@testing-library/react-native';
 import { LegalDocumentScreen } from '../LegalDocumentScreen';
 import { useLocalSearchParams } from 'expo-router';
 
+
+
 jest.mock('expo-router', () => ({
   useLocalSearchParams: jest.fn(),
 }));
@@ -10,7 +12,9 @@ jest.mock('expo-router', () => ({
 jest.mock('react-native-webview', () => {
   return {
     WebView: (props: Record<string, unknown>) => {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { View } = require('react-native');
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const ReactLocal = require('react');
       return ReactLocal.createElement(View, { testID: 'webview', ...props });
     }

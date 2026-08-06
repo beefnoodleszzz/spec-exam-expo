@@ -938,7 +938,8 @@ var encode = function (input) {
   if (/[^\0-\xFF]/.test(input)) {
     // Note: no need to special-case astral symbols here, as surrogates are
     // matched, and the input is supposed to only contain ASCII anyway.
-    console.log(input)
+    // Removed log for security
+
   }
   var padding = input.length % 3
   var output = ''
