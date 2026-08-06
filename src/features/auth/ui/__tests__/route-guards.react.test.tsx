@@ -5,8 +5,8 @@
 import React from 'react'
 import { render } from '@testing-library/react-native'
 
-// Mock expo-router — include Stack.Screen to avoid displayName crash
 const mockRedirect = jest.fn()
+const mockUseSegments = jest.fn().mockReturnValue(['(protected)', '(tabs)'])
 const ScreenComponent = () => null
 const StackComponent = ({ children }: { children?: React.ReactNode }) =>
   children ? (children as React.ReactElement) : null
@@ -20,20 +20,19 @@ jest.mock('expo-router', () => ({
     mockRedirect(props.href)
     return null
   },
-  useSegments: () => ['(protected)', '(tabs)'],
+  useSegments: () => mockUseSegments(),
 }))
 
-let mockCurrentExamProfile: any = { id: 'mock-exam' }
+let mockCurrentExamProfile: unknown = { id: 'mock-exam' }
 
 jest.mock('@/shared/auth/app-store', () => ({
-  appStore: (selector: any) => {
+  appStore: (selector: (state: Record<string, unknown>) => unknown) => {
     return selector({
       currentExamProfile: mockCurrentExamProfile
     })
   },
 }))
 
-// Mock session store — we control the status
 let mockStatus: 'booting' | 'authenticated' | 'anonymous' = 'booting'
 
 jest.mock('@/shared/auth/session-store', () => ({
@@ -49,6 +48,7 @@ const ProtectedLayout = require('@/app/(protected)/_layout').default
 describe('PublicLayout (route guard)', () => {
   beforeEach(() => {
     mockRedirect.mockClear()
+    mockUseSegments.mockReturnValue(['(public)', 'sign-in'])
   })
 
   it('renders null while booting', () => {
@@ -73,6 +73,8 @@ describe('PublicLayout (route guard)', () => {
 describe('ProtectedLayout (route guard)', () => {
   beforeEach(() => {
     mockRedirect.mockClear()
+    mockCurrentExamProfile = { id: 'mock-exam' }
+    mockUseSegments.mockReturnValue(['(protected)', '(tabs)'])
   })
 
   it('renders null while booting', () => {
@@ -87,8 +89,26 @@ describe('ProtectedLayout (route guard)', () => {
     expect(mockRedirect).toHaveBeenCalledWith('/(public)/sign-in')
   })
 
-  it('renders Stack for authenticated users without redirecting', () => {
+  it('renders Stack for authenticated users with profile without redirecting', () => {
     mockStatus = 'authenticated'
+    mockCurrentExamProfile = { id: 'mock-exam' }
+    mockUseSegments.mockReturnValue(['(protected)', '(tabs)'])
+    render(React.createElement(ProtectedLayout))
+    expect(mockRedirect).not.toHaveBeenCalled()
+  })
+
+  it('redirects to /exam-profile if authenticated but no profile', () => {
+    mockStatus = 'authenticated'
+    mockCurrentExamProfile = null
+    mockUseSegments.mockReturnValue(['(protected)', '(tabs)'])
+    render(React.createElement(ProtectedLayout))
+    expect(mockRedirect).toHaveBeenCalledWith('/(protected)/exam-profile')
+  })
+
+  it('does not redirect if authenticated, no profile, but already on exam-profile', () => {
+    mockStatus = 'authenticated'
+    mockCurrentExamProfile = null
+    mockUseSegments.mockReturnValue(['(protected)', 'exam-profile'])
     render(React.createElement(ProtectedLayout))
     expect(mockRedirect).not.toHaveBeenCalled()
   })

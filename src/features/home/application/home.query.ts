@@ -1,5 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { homeRemote } from '../data/home.remote.impl'
+import { homeQuickActions } from '../config/home-quick-actions'
 
 export const homeQueryKeys = {
   root: ['home'] as const,
@@ -13,6 +14,12 @@ export const homeQueries = {
   dashboard: (examTypeId: string) =>
     queryOptions({
       queryKey: homeQueryKeys.dashboard(examTypeId),
-      queryFn: ({ signal }) => homeRemote.getDashboard(signal),
+      queryFn: async ({ signal }) => {
+        const data = await homeRemote.getDashboard(signal)
+        return {
+          ...data,
+          quickActions: homeQuickActions,
+        }
+      },
     }),
 }

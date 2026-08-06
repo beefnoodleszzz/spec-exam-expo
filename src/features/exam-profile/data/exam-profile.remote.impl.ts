@@ -8,6 +8,8 @@ import type { ExamProfileRemote } from './exam-profile.remote'
 import type { ExamProfile, ExamTypeOption } from '../domain/exam-profile.types'
 import { examTypeListSchema } from './exam-profile.schema'
 
+import { extractGeneratedData } from '@/shared/api/generated-response'
+
 export class ExamProfileRemoteImpl implements ExamProfileRemote {
   async listExamTypes(signal?: AbortSignal): Promise<ExamTypeOption[]> {
     const options: RequestInit = {}
@@ -20,7 +22,9 @@ export class ExamProfileRemoteImpl implements ExamProfileRemote {
       throw createContractError('获取考试类型失败，未返回数据')
     }
 
-    const parsed = examTypeListSchema.safeParse(response.data)
+    const rawData = extractGeneratedData(response.data, '考试类型')
+
+    const parsed = examTypeListSchema.safeParse(rawData)
     if (!parsed.success) {
       throw createContractError('考试类型数据格式错误', parsed.error)
     }
