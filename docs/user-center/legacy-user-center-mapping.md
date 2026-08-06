@@ -34,5 +34,4 @@
   - 清理缓存 -> 清除 Storage
 - **错题与收藏**
   - 跳转至刷题页的错题模式/收藏模式 (`/(protected)/questions?mode=wrong|favorite`)
-- **注销账号**
-  - 旧项目通过 setting 跳转 logout，这里将在 Settings 增加专门的原生 Delete Account 页面进行二次验证和真实接口调用，或者隐藏。
+  - 旧项目通过 setting 跳转 logout。新项目中 Delete Account UI 已经被隐藏并移除，因为其安全性合约未被验证。

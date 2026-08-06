@@ -6,5 +6,4 @@ export interface IUserCenterRemote {
   getLearningSummary(examTypeId: string): Promise<LearningSummary>;
   updateUserProfile(params: UserProfileUpdate): Promise<UserProfile>;
   submitFeedback(content: string): Promise<void>;
-  deleteAccount(): Promise<void>;
 }

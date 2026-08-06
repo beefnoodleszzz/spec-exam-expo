@@ -1,7 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { UserCenterRemoteImpl } from '../user-center.remote.impl';
 import { extractGeneratedData } from '@/shared/api/generated-response';
-import { apiExamV2AppUserDetailGet } from '@/shared/api/generated/endpoints/examination-manager-v2/examination-manager-v2';
+import { apiExamV2AppUserDetailGet, apiExamV2AppUserUserDataDetailGet } from '@/shared/api/generated/endpoints/examination-manager-v2/examination-manager-v2';
+import { appStore } from '@/shared/auth/app-store';
 
 vi.mock('@/shared/api/generated-response', () => ({
   extractGeneratedData: vi.fn(),
@@ -30,5 +31,27 @@ describe('UserCenterRemoteImpl', () => {
     expect(profile.maskedPhoneNumber).toBe('123****8901');
     expect(apiExamV2AppUserDetailGet).toHaveBeenCalled();
     expect(extractGeneratedData).toHaveBeenCalledWith({}, 'getUserProfile');
+  });
+
+  it('should throw contract error if examTypeId does not match context', async () => {
+    const remote = new UserCenterRemoteImpl();
+    appStore.setState({ currentExamProfile: { examTypeId: 'typeA' } } as never);
+    await expect(remote.getLearningSummary('typeB')).rejects.toMatchObject({ type: 'contract' });
+  });
+
+  it('should get learning summary if examTypeId matches', async () => {
+    const remote = new UserCenterRemoteImpl();
+    appStore.setState({ currentExamProfile: { examTypeId: 'typeA' } } as never);
+    vi.mocked(extractGeneratedData).mockReturnValue({
+      subjectCount: 100,
+      rightCount: 40,
+      accuracy: 50,
+      timeCount: 300,
+    });
+    const summary = await remote.getLearningSummary('typeA');
+    expect(summary.totalQuestionsCount).toBe(100);
+    expect(summary.accuracy).toBe(50);
+    expect(summary.correctQuestionsCount).toBe(40);
+    expect(apiExamV2AppUserUserDataDetailGet).toHaveBeenCalled();
   });
 });

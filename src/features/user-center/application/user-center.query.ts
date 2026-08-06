@@ -40,7 +40,11 @@ export function useUpdateUserProfile() {
             avatarUrl: updatedProfile.avatar ?? store.user.avatarUrl,
           });
         }
-      }).catch(() => {});
+      }).catch((error) => {
+        import('@/shared/logging/logger').then(({ logger, sanitizeError }) => {
+          logger.error('Failed to sync profile update to auth store', { error: sanitizeError(error) });
+        }).catch(() => {});
+      });
     },
   });
 }
@@ -51,8 +55,3 @@ export function useSubmitFeedback() {
   });
 }
 
-export function useDeleteAccount() {
-  return useMutation({
-    mutationFn: () => remote.deleteAccount(),
-  });
-}

@@ -3,37 +3,13 @@ import { View, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import { AppScreen, AppButton } from '@/shared/components';
-import { useDeleteAccount } from '../application/user-center.query';
 import { clearAuthenticatedState } from '@/features/auth/auth.container';
 import { queryClient } from '@/shared/query/query-client';
 
 export function SettingsScreen() {
   const router = useRouter();
-  const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
-
   const handleLogout = async () => {
     await clearAuthenticatedState();
-  };
-
-  const handleDeleteAccount = () => {
-    Alert.alert(
-      'Delete Account',
-      'Are you sure you want to delete your account? This action cannot be undone.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => {
-            deleteAccount(undefined, {
-              onSuccess: async () => {
-                await clearAuthenticatedState();
-              }
-            });
-          }
-        }
-      ]
-    );
   };
 
   const handleClearCache = () => {
@@ -89,12 +65,6 @@ export function SettingsScreen() {
           onPress={handleLogout}
         >
           Logout
-        </AppButton>
-        <AppButton
-          onPress={handleDeleteAccount}
-          disabled={isDeleting}
-        >
-          {isDeleting ? "Deleting..." : "Delete Account"}
         </AppButton>
       </View>
     </AppScreen>
