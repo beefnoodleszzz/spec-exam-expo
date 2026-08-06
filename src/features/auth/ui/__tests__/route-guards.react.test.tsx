@@ -20,10 +20,21 @@ jest.mock('expo-router', () => ({
     mockRedirect(props.href)
     return null
   },
+  useSegments: () => ['(protected)', '(tabs)'],
+}))
+
+let mockCurrentExamProfile: any = { id: 'mock-exam' }
+
+jest.mock('@/shared/auth/app-store', () => ({
+  appStore: (selector: any) => {
+    return selector({
+      currentExamProfile: mockCurrentExamProfile
+    })
+  },
 }))
 
 // Mock session store — we control the status
-let mockStatus = 'booting'
+let mockStatus: 'booting' | 'authenticated' | 'anonymous' = 'booting'
 
 jest.mock('@/shared/auth/session-store', () => ({
   sessionStore: (selector: (s: { status: string }) => unknown) =>

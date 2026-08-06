@@ -6,29 +6,23 @@
  * - Theme mode
  */
 import { create } from 'zustand'
+import type { ExamProfile } from '@/features/exam-profile/domain/exam-profile.types'
 import {
   getAsync,
   setAsync,
   removeAsync,
   AsyncKeys,
 } from '@/shared/persistence/async-storage'
+export type { ExamProfile }
 
 export type ThemeMode = 'light' | 'dark'
 
-export interface ExamProfileSummary {
-  examTypeId: string
-  examTypeName: string
-  regionId?: string
-  regionName?: string
-  subjectId?: string
-  subjectName?: string
-}
 
 export interface AppState {
-  currentExamProfile: ExamProfileSummary | null
+  currentExamProfile: ExamProfile | null
   themeMode: ThemeMode
 
-  setExamProfile: (profile: ExamProfileSummary) => Promise<void>
+  setExamProfile: (profile: ExamProfile) => Promise<void>
   resetExamProfileState: () => void
   removePersistedExamProfile: () => Promise<void>
   clearExamProfile: () => Promise<void>
@@ -59,7 +53,7 @@ export const appStore = create<AppState>((set) => ({
   },
 
   restoreExamProfile: async () => {
-    const profile = await getAsync<ExamProfileSummary>(AsyncKeys.EXAM_PROFILE_SUMMARY)
+    const profile = await getAsync<ExamProfile>(AsyncKeys.EXAM_PROFILE_SUMMARY)
     if (profile) {
       set({ currentExamProfile: profile })
     }

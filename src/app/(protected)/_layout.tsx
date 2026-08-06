@@ -1,5 +1,6 @@
-import { Stack, Redirect } from 'expo-router'
+import { Stack, Redirect, useSegments } from 'expo-router'
 import { sessionStore } from '@/shared/auth/session-store'
+import { appStore } from '@/shared/auth/app-store'
 
 /**
  * Protected group layout — requires authentication.
@@ -7,6 +8,8 @@ import { sessionStore } from '@/shared/auth/session-store'
  */
 export default function ProtectedLayout() {
   const status = sessionStore((s) => s.status)
+  const currentExamProfile = appStore((s) => s.currentExamProfile)
+  const segments = useSegments()
 
   if (status === 'booting') {
     return null
@@ -15,6 +18,13 @@ export default function ProtectedLayout() {
   if (status !== 'authenticated') {
     return <Redirect href="/(public)/sign-in" />
   }
+
+  const inExamProfile = (segments as string[])[1] === 'exam-profile'
+
+  if (!currentExamProfile && !inExamProfile) {
+    return <Redirect href="/(protected)/exam-profile" />
+  }
+
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

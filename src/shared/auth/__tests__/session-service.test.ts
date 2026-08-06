@@ -14,6 +14,9 @@ describe('sessionService (Session Cleanup Coordinator)', () => {
       currentExamProfile: {
         examTypeId: '101',
         examTypeName: '电工操作证',
+        province: null,
+        provinceCode: null,
+        inviteCode: null,
       },
     })
   })
