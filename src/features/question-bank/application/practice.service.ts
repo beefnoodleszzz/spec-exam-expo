@@ -41,6 +41,7 @@ export class PracticeService {
       questionIds: seed.questionIds,
       currentIndex: 0,
       answers: {},
+      draftAnswers: {},
       currentQuestionStartedAt: Date.now()
     }
 
@@ -48,9 +49,9 @@ export class PracticeService {
     await this.ensureQuestionLoaded(session.questionIds[0]!)
   }
 
-  async ensureQuestionLoaded(questionId: string): Promise<void> {
+  async ensureQuestionLoaded(questionId: string): Promise<boolean> {
     const store = usePracticeSessionStore.getState()
-    if (store.questionsCache[questionId]) return
+    if (store.questionsCache[questionId]) return true
 
     try {
       store.actions.setLoadingQuestion(true)
@@ -62,6 +63,7 @@ export class PracticeService {
       }
 
       store.actions.cacheQuestion(question)
+      return true
     } catch {
       store.actions.removeInvalidQuestion(questionId)
       
@@ -69,21 +71,31 @@ export class PracticeService {
       if (session && session.questionIds.length === 0) {
         store.actions.clearSession()
       }
+      return false
     } finally {
       store.actions.setLoadingQuestion(false)
     }
   }
 
   async loadNextQuestion(): Promise<void> {
-    const store = usePracticeSessionStore.getState()
-    const session = store.currentSession
+    let store = usePracticeSessionStore.getState()
+    let session = store.currentSession
     if (!session) return
 
     const nextIndex = session.currentIndex + 1
-    if (nextIndex < session.questionIds.length) {
+    
+    while (nextIndex < session.questionIds.length) {
       const nextId = session.questionIds[nextIndex]!
-      await this.ensureQuestionLoaded(nextId)
-      store.actions.moveToIndex(nextIndex)
+      const loaded = await this.ensureQuestionLoaded(nextId)
+      
+      if (loaded) {
+        store.actions.moveToIndex(nextIndex)
+        return
+      }
+      
+      store = usePracticeSessionStore.getState()
+      session = store.currentSession
+      if (!session) return
     }
   }
 

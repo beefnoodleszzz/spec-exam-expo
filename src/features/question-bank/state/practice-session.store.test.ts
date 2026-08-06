@@ -14,6 +14,7 @@ describe('PracticeSessionStore', () => {
       questionIds: ['q1', 'q2'],
       currentIndex: 0,
       answers: {},
+      draftAnswers: {},
       currentQuestionStartedAt: Date.now()
     }
     usePracticeSessionStore.getState().actions.startSession(session)
@@ -31,6 +32,7 @@ describe('PracticeSessionStore', () => {
       questionIds: ['q1'],
       currentIndex: 0,
       answers: {},
+      draftAnswers: {},
       currentQuestionStartedAt: Date.now()
     }
     usePracticeSessionStore.getState().actions.startSession(session)
@@ -49,6 +51,7 @@ describe('PracticeSessionStore', () => {
       questionIds: ['q1', 'q2'],
       currentIndex: 1,
       answers: {},
+      draftAnswers: {},
       currentQuestionStartedAt: Date.now()
     }
     usePracticeSessionStore.getState().actions.startSession(session)

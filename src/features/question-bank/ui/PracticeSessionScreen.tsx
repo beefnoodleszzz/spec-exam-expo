@@ -44,7 +44,8 @@ export function PracticeSessionScreen() {
 
   const handleOptionPress = (optionId: string) => {
     if (!question) return
-    let newAnswers = [...question.userAnswers]
+    const draft = currentSession.draftAnswers[question.id] || []
+    let newAnswers = [...draft]
     
     if (question.type === 'single' || question.type === 'judge') {
       newAnswers = [optionId]
@@ -56,7 +57,14 @@ export function PracticeSessionScreen() {
       }
     }
     
-    practiceService.submitAnswer(question.id, newAnswers)
+    usePracticeSessionStore.getState().actions.setDraftAnswer(question.id, newAnswers)
+  }
+
+  const handleSubmit = () => {
+    if (!question) return
+    const draft = currentSession.draftAnswers[question.id] || []
+    if (draft.length === 0) return
+    practiceService.submitAnswer(question.id, draft)
   }
 
   const handleToggleFavorite = () => {
@@ -108,10 +116,13 @@ export function PracticeSessionScreen() {
 
           <View className="mb-8">
             {question.options.map((opt: QuestionOption) => {
-              const isSelected = question.userAnswers.includes(opt.id)
-              const hasAnswered = question.userAnswers.length > 0
+              const draft = currentSession.draftAnswers[question.id] || []
+              const isSelected = draft.includes(opt.id) || question.userAnswers.includes(opt.id)
+              
               const answerState = currentSession.answers[question.id]
               const status = answerState?.status
+              
+              const isLocked = status === 'pending' || status === 'synced'
               
               let optionClass = "flex-row items-center p-4 bg-white rounded-xl mb-3 border border-gray-200"
 
@@ -119,9 +130,9 @@ export function PracticeSessionScreen() {
                 optionClass = "flex-row items-center p-4 bg-primary/10 rounded-xl mb-3 border border-primary"
               }
 
-              // Show correct/wrong if answered and synced
-              if (hasAnswered && status === 'synced') {
-                const isCorrect = question.correctAnswers.includes(opt.id)
+              // Show correct/wrong only if synced
+              if (status === 'synced' && answerState) {
+                const isCorrect = answerState.correctAnswers?.includes(opt.id) ?? question.correctAnswers.includes(opt.id)
                 if (isCorrect) {
                   optionClass = "flex-row items-center p-4 bg-green-50 rounded-xl mb-3 border border-green-500"
                 } else if (isSelected && !isCorrect) {
@@ -132,8 +143,8 @@ export function PracticeSessionScreen() {
               return (
                 <TouchableOpacity 
                   key={opt.id} 
-                  onPress={() => !hasAnswered && handleOptionPress(opt.id)}
-                  activeOpacity={hasAnswered ? 1 : 0.7}
+                  onPress={() => !isLocked && handleOptionPress(opt.id)}
+                  activeOpacity={isLocked ? 1 : 0.7}
                   className={optionClass}
                 >
                   <View className={`w-8 h-8 rounded-full items-center justify-center ${isSelected ? 'bg-primary' : 'bg-gray-100'}`}>
@@ -149,6 +160,26 @@ export function PracticeSessionScreen() {
             })}
           </View>
 
+          {(() => {
+            const draft = currentSession.draftAnswers[question.id] || []
+            const answerState = currentSession.answers[question.id]
+            const status = answerState?.status
+            const hasDraft = draft.length > 0
+            const isLocked = status === 'pending' || status === 'synced'
+
+            if (hasDraft && !isLocked) {
+              return (
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  className="bg-primary p-4 rounded-xl items-center mb-8"
+                >
+                  <AppText className="text-white text-base font-bold">提交答案</AppText>
+                </TouchableOpacity>
+              )
+            }
+            return null
+          })()}
+
           {currentSession.answers[question.id]?.status === 'pending' && (
             <View className="mb-8 items-center bg-gray-50 p-4 rounded-xl border border-gray-200">
               <ActivityIndicator size="small" className="mb-2" />
@@ -156,7 +187,7 @@ export function PracticeSessionScreen() {
             </View>
           )}
 
-          {currentSession.answers[question.id]?.status === 'synced' && question.userAnswers.length > 0 && question.explanationHtml && (
+          {currentSession.answers[question.id]?.status === 'synced' && (
             <View className="p-4 bg-gray-50 rounded-xl mb-8">
               <View className="flex-row items-center mb-2">
                 <AppText className="text-base font-bold">答案解析</AppText>
@@ -165,13 +196,19 @@ export function PracticeSessionScreen() {
                 </AppText>
               </View>
               <AppText className="text-sm mb-2 text-green-600">
-                正确答案: {question.correctAnswers.join(' ')}
+                正确答案: {currentSession.answers[question.id]?.correctAnswers?.join(' ') || question.correctAnswers.join(' ')}
               </AppText>
-              <RenderHtml
-                contentWidth={width - 64}
-                source={{ html: question.explanationHtml }}
-                tagsStyles={{ body: { fontSize: 14, lineHeight: 22, color: '#4b5563' } }}
-              />
+              {currentSession.answers[question.id]?.explanationHtml ? (
+                <RenderHtml
+                  contentWidth={width - 64}
+                  source={{ html: currentSession.answers[question.id]?.explanationHtml! }}
+                  tagsStyles={{ body: { fontSize: 14, lineHeight: 22, color: '#4b5563' } }}
+                />
+              ) : (
+                <AppText className="text-sm text-gray-500 mt-2">
+                  暂无答案解析
+                </AppText>
+              )}
             </View>
           )}
 
@@ -179,7 +216,7 @@ export function PracticeSessionScreen() {
             <View className="mb-8 items-center bg-red-50 p-4 rounded-xl border border-red-200">
               <AppText className="text-red-600 mb-2">答案提交失败</AppText>
               <TouchableOpacity
-                onPress={() => practiceService.retryAnswer(question.id)}
+                onPress={handleSubmit}
                 className="bg-red-500 px-4 py-2 rounded-lg"
               >
                 <AppText className="text-white">点击重试</AppText>

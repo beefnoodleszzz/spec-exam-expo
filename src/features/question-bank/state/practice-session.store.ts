@@ -24,6 +24,7 @@ export interface PracticeSessionState {
   questionIds: string[]
   currentIndex: number
   answers: Record<string, PracticeAnswer>
+  draftAnswers: Record<string, string[]>
   
   currentQuestionStartedAt: number
 }
@@ -44,6 +45,7 @@ interface PracticeSessionStore {
     clearSession: () => void
     removeInvalidQuestion: (questionId: string) => void
     updateQuestionFavorite: (questionId: string, isFavorite: boolean) => void
+    setDraftAnswer: (questionId: string, answers: string[]) => void
   }
 }
 
@@ -160,6 +162,19 @@ export const usePracticeSessionStore = create<PracticeSessionStore>()(
               [questionId]: {
                 ...q,
                 isFavorite
+              }
+            }
+          }
+        }),
+
+        setDraftAnswer: (questionId, answers) => set((state) => {
+          if (!state.currentSession) return state
+          return {
+            currentSession: {
+              ...state.currentSession,
+              draftAnswers: {
+                ...state.currentSession.draftAnswers,
+                [questionId]: answers
               }
             }
           }

@@ -67,7 +67,7 @@ describe('PracticeService', () => {
 
   it('should clear session on resume if examTypeId mismatch', async () => {
     usePracticeSessionStore.getState().actions.startSession({
-      examTypeId: 'e1', subjectId: 's1', mode: 'order', questionIds: ['q1'], currentIndex: 0, answers: {}, currentQuestionStartedAt: Date.now()
+      examTypeId: 'e1', subjectId: 's1', mode: 'order', questionIds: ['q1'], currentIndex: 0, answers: {}, draftAnswers: {}, currentQuestionStartedAt: Date.now()
     })
     vi.mocked(appStore.getState).mockReturnValue({ currentExamProfile: { examTypeId: 'different' } } as never)
     
@@ -122,5 +122,23 @@ describe('PracticeService', () => {
     expect(session?.answers['q1']?.status).toBe('synced')
     expect(session?.answers['q1']?.serverCorrect).toBe(false)
     expect(session?.answers['q1']?.explanationHtml).toBe('<p>retry</p>')
+  })
+
+  it('should skip invalid questions in loadNextQuestion', async () => {
+    usePracticeSessionStore.getState().actions.startSession({
+      examTypeId: 'e1', subjectId: 's1', mode: 'order', questionIds: ['q1', 'q2', 'q3'], currentIndex: 0, answers: {}, draftAnswers: {}, currentQuestionStartedAt: Date.now()
+    })
+    // Mock q2 to fail, q3 to succeed
+    vi.mocked(questionBankRemote.getQuestion).mockImplementation(async (id) => {
+      if (id === 'q2') throw new Error('Invalid question')
+      return { id, type: 'single', options: [], correctAnswers: ['A'] } as never
+    })
+    
+    await practiceService.loadNextQuestion()
+    
+    const session = usePracticeSessionStore.getState().currentSession
+    expect(session?.questionIds).toEqual(['q1', 'q3'])
+    expect(session?.currentIndex).toBe(1) // Now pointing to q3
+    expect(usePracticeSessionStore.getState().questionsCache['q3']).toBeDefined()
   })
 })
