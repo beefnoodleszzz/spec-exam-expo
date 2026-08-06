@@ -1,9 +1,8 @@
 import { z } from 'zod'
 
-export const simulationRuleSchema = z.object({
-  examTypeId: z.string(),
-  durationSeconds: z.number().nonnegative(),
-  totalQuestions: z.number().nonnegative(),
-  totalScore: z.number().nullable(),
-  passScore: z.number().nullable(),
-})
+export const simulationRuleDtoSchema = z.object({
+  time: z.number().optional().nullable(),
+  subjectCount: z.number().optional().nullable(),
+}).passthrough()
+
+export type SimulationRuleDto = z.infer<typeof simulationRuleDtoSchema>

@@ -77,51 +77,49 @@ export class PracticeService {
     }
   }
 
-  async loadNextQuestion(): Promise<void> {
+  private async loadValidQuestion(preferredIndex: number, direction: 1 | -1): Promise<boolean> {
     let store = usePracticeSessionStore.getState()
     let session = store.currentSession
-    if (!session) return
+    if (!session) return false
 
-    const nextIndex = session.currentIndex + 1
-    
-    while (nextIndex < session.questionIds.length) {
-      const nextId = session.questionIds[nextIndex]!
-      const loaded = await this.ensureQuestionLoaded(nextId)
+    let currentIndex = preferredIndex
+
+    while (currentIndex >= 0 && currentIndex < session.questionIds.length) {
+      const id = session.questionIds[currentIndex]!
+      const loaded = await this.ensureQuestionLoaded(id)
       
       if (loaded) {
-        store.actions.moveToIndex(nextIndex)
-        return
+        store.actions.moveToIndex(currentIndex)
+        return true
       }
       
       store = usePracticeSessionStore.getState()
       session = store.currentSession
-      if (!session) return
+      if (!session) return false
+
+      if (direction === 1) {
+        // Since ensureQuestionLoaded removes invalid questions, the next question takes the same index
+      } else {
+        currentIndex--
+      }
     }
+    return false
+  }
+
+  async loadNextQuestion(): Promise<void> {
+    const session = usePracticeSessionStore.getState().currentSession
+    if (!session) return
+    await this.loadValidQuestion(session.currentIndex + 1, 1)
   }
 
   async loadPrevQuestion(): Promise<void> {
-    const store = usePracticeSessionStore.getState()
-    const session = store.currentSession
+    const session = usePracticeSessionStore.getState().currentSession
     if (!session) return
-
-    const prevIndex = session.currentIndex - 1
-    if (prevIndex >= 0) {
-      const prevId = session.questionIds[prevIndex]!
-      await this.ensureQuestionLoaded(prevId)
-      store.actions.moveToIndex(prevIndex)
-    }
+    await this.loadValidQuestion(session.currentIndex - 1, -1)
   }
 
   async moveToQuestion(index: number): Promise<void> {
-    const store = usePracticeSessionStore.getState()
-    const session = store.currentSession
-    if (!session) return
-    
-    if (index >= 0 && index < session.questionIds.length) {
-      const id = session.questionIds[index]!
-      await this.ensureQuestionLoaded(id)
-      store.actions.moveToIndex(index)
-    }
+    await this.loadValidQuestion(index, 1)
   }
 
   async submitAnswer(questionId: string, answers: string[]): Promise<void> {
@@ -259,10 +257,8 @@ export class PracticeService {
     }
 
     if (session.questionIds.length > 0) {
-      const currentId = session.questionIds[session.currentIndex]
-      if (currentId) {
-        await this.ensureQuestionLoaded(currentId)
-      } else {
+      const valid = await this.loadValidQuestion(session.currentIndex, 1)
+      if (!valid) {
         store.actions.clearSession()
       }
     } else {

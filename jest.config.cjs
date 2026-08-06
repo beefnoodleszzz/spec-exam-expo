@@ -15,7 +15,7 @@ module.exports = {
   },
 
   transformIgnorePatterns: [
-    'node_modules/(?!(.pnpm|(jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|expo-router|@react-navigation/.*|react-native-svg|nativewind))',
+    'node_modules/(?!(.pnpm|(jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|expo-router|standard-navigation|@react-navigation/.*|react-native-svg|nativewind))',
   ],
 
   collectCoverageFrom: [

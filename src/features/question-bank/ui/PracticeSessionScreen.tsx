@@ -117,10 +117,11 @@ export function PracticeSessionScreen() {
           <View className="mb-8">
             {question.options.map((opt: QuestionOption) => {
               const draft = currentSession.draftAnswers[question.id] || []
-              const isSelected = draft.includes(opt.id) || question.userAnswers.includes(opt.id)
-              
               const answerState = currentSession.answers[question.id]
               const status = answerState?.status
+              
+              const displayedAnswers = status === 'synced' ? (answerState?.answers || []) : draft
+              const isSelected = displayedAnswers.includes(opt.id)
               
               const isLocked = status === 'pending' || status === 'synced'
               

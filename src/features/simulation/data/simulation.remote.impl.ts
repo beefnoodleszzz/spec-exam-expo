@@ -5,10 +5,11 @@ import {
   apiExamV2AppSubjectGetGradeHistoryGet,
 } from '@/shared/api/generated/endpoints/examination-manager-v2/examination-manager-v2'
 import { extractGeneratedData } from '@/shared/api/generated-response'
+import { createContractError } from '@/shared/api/errors/app-error'
+import { z } from 'zod'
 
 import type {
   SimulationRemote,
-  SaveSimulationProgressInput,
   SubmitSimulationPaperInput,
 } from './simulation.remote'
 
@@ -24,7 +25,13 @@ import {
   mapSimulationHistory,
 } from './simulation.request-mapper'
 
+import { simulationPaperDtoSchema } from './simulation-paper.schema'
+import { simulationResultDtoSchema } from './simulation-result.schema'
+import { simulationHistoryDtoSchema } from './simulation-history.schema'
+
 export class SimulationRemoteImpl implements SimulationRemote {
+  supportsRemoteProgressSave = false as const
+
   async getRule(
     examTypeId: string,
     signal?: AbortSignal,
@@ -34,13 +41,22 @@ export class SimulationRemoteImpl implements SimulationRemote {
       { subjectGroupType: 2 },
       options,
     )
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data = extractGeneratedData(
+    const rawData = extractGeneratedData(
       response.data,
       '获取模拟考试规则',
-    ) as any
+    )
 
-    return mapSimulationRule(examTypeId, data)
+    const schema = z.object({
+      time: z.number().optional().nullable(),
+      subjectCount: z.number().optional().nullable(),
+    }).passthrough()
+
+    const parsed = schema.safeParse(rawData)
+    if (!parsed.success) {
+      throw createContractError('获取模拟考试规则数据结构错误', parsed.error)
+    }
+
+    return mapSimulationRule(examTypeId, parsed.data)
   }
 
   async createPaper(
@@ -54,39 +70,22 @@ export class SimulationRemoteImpl implements SimulationRemote {
       { subjectGroupType: 2 },
       options,
     )
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data = extractGeneratedData(
+    const rawData = extractGeneratedData(
       response.data,
       '获取模拟考试试卷',
-    ) as any
+    )
 
-    // Use a random paperId since backend doesn't explicitly return one
-    const paperId = `sim_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
+    const parsed = simulationPaperDtoSchema.safeParse(rawData)
+    if (!parsed.success) {
+      throw createContractError('获取模拟考试试卷数据结构错误', parsed.error)
+    }
 
-    return mapSimulationPaper(paperId, rule, data.dataList || [])
+    const paperId = crypto.randomUUID()
+
+    return mapSimulationPaper(paperId, rule, parsed.data.dataList || [])
   }
 
-  async getPaper(
-    _paperId: string,
-    _signal?: AbortSignal,
-  ): Promise<SimulationPaper> {
-    // In legacy, we do not have an endpoint to fetch an existing paper by ID.
-    // If we reach here, it implies restoring a session, which only requires the
-    // questions already persisted or we just fetch the exam type again.
-    // We'll throw an error and expect the service layer to handle restoring 
-    // from local session storage instead of fetching from remote.
-    throw new Error('Remote fetching of existing paper is not supported in legacy API. Use local session restore.')
-  }
 
-  async saveProgress(
-    _input: SaveSimulationProgressInput,
-    _signal?: AbortSignal,
-  ): Promise<void> {
-    // In legacy, intermediate saving wasn't supported via API.
-    // The requirement states we need local debounce, which is handled in the Service/Store layer.
-    // This remote implementation can be a no-op, or we can resolve it.
-    return Promise.resolve()
-  }
 
   async submitPaper(
     input: SubmitSimulationPaperInput,
@@ -98,16 +97,21 @@ export class SimulationRemoteImpl implements SimulationRemote {
       requestDto,
       options,
     )
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data = extractGeneratedData(
+    const rawData = extractGeneratedData(
       response.data,
       '提交模拟考试试卷',
-    ) as any
+    )
+
+    const parsed = simulationResultDtoSchema.safeParse(rawData)
+    if (!parsed.success) {
+      throw createContractError('提交模拟考试试卷数据结构错误', parsed.error)
+    }
+    const data = parsed.data
 
     return {
       paperId: input.session.paperId,
       score: data.score || 0,
-      totalScore: 0, // Backend doesn't return totalScore here
+      totalScore: null,
       correctCount: data.subjectCorrectCount || 0,
       wrongCount: data.subjectErrorCount || 0,
       unansweredCount:
@@ -119,14 +123,7 @@ export class SimulationRemoteImpl implements SimulationRemote {
     }
   }
 
-  async getResult(
-    _paperId: string,
-    _signal?: AbortSignal,
-  ): Promise<SimulationResult> {
-    // Like getPaper, the legacy backend doesn't provide a direct getResult(paperId) endpoint.
-    // Result is obtained directly from the submitPaper response, or stored locally.
-    throw new Error('Remote fetching of single result is not supported in legacy API. Use local cache or history.')
-  }
+
 
   async listHistory(
     examTypeId: string,
@@ -137,12 +134,16 @@ export class SimulationRemoteImpl implements SimulationRemote {
       { subjectGroupType: 2 },
       options,
     )
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data = extractGeneratedData(
+    const rawData = extractGeneratedData(
       response.data,
       '获取模拟考试历史记录',
-    ) as any
+    )
 
-    return mapSimulationHistory(examTypeId, data)
+    const parsed = simulationHistoryDtoSchema.safeParse(rawData)
+    if (!parsed.success) {
+      throw createContractError('获取模拟考试历史数据结构错误', parsed.error)
+    }
+
+    return mapSimulationHistory(examTypeId, parsed.data)
   }
 }

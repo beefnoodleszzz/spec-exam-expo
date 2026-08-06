@@ -1,7 +1,4 @@
 import type {
-  ExaminationManageContractDtoSubjectVMockExam,
-  ExaminationManageContractDtoSubjectSubjectDto,
-  ExaminationManageContractDtoSubjectVGradeHistory,
   ExaminationManageContractDtoSubjectSubmitExerciseRecordInput,
   ExaminationManageContractDtoSubjectSubjectBase,
 } from '@/shared/api/generated/models'
@@ -10,9 +7,13 @@ import type { SimulationPaper, SimulationQuestionRef } from '../domain/simulatio
 import type { SimulationHistoryItem } from '../domain/simulation-history.types'
 import type { SimulationSession } from '../domain/simulation-session.types'
 
+import type { SimulationRuleDto } from './simulation-rule.schema'
+import type { SimulationPaperDto } from './simulation-paper.schema'
+import type { SimulationHistoryDto } from './simulation-history.schema'
+
 export function mapSimulationRule(
   examTypeId: string,
-  dto: ExaminationManageContractDtoSubjectVMockExam,
+  dto: SimulationRuleDto,
 ): SimulationRule {
   return {
     examTypeId,
@@ -26,7 +27,7 @@ export function mapSimulationRule(
 export function mapSimulationPaper(
   paperId: string,
   rule: SimulationRule,
-  dtos: ExaminationManageContractDtoSubjectSubjectDto[],
+  dtos: NonNullable<NonNullable<SimulationPaperDto['dataList']>[number]>[],
 ): SimulationPaper {
   const questions: SimulationQuestionRef[] = dtos.map((dto, index) => ({
     questionId: dto.id || '',
@@ -74,7 +75,7 @@ export function mapSubmitPaperRequest(
 
 export function mapSimulationHistory(
   examTypeId: string,
-  dto: ExaminationManageContractDtoSubjectVGradeHistory,
+  dto: SimulationHistoryDto,
 ): SimulationHistoryItem[] {
   return (dto.gradeHistories || []).map((history, index) => ({
     resultId: `${examTypeId}-${index}-${history.createTime}`, // Generate stable ID if missing

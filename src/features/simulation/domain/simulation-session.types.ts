@@ -4,6 +4,13 @@ export interface SimulationAnswer {
   updatedAt: string
 }
 
+export type SimulationStatus =
+  | 'active'
+  | 'submitting'
+  | 'submitted'
+  | 'expired'
+  | 'submit_failed'
+
 export interface SimulationSession {
   paperId: string
   examTypeId: string
@@ -13,5 +20,5 @@ export interface SimulationSession {
 
   startedAt: string
   expiresAt: string
-  status: 'active' | 'submitting' | 'submitted' | 'expired'
+  status: SimulationStatus
 }

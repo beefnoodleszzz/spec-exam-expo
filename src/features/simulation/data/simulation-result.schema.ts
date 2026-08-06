@@ -1,20 +1,11 @@
 import { z } from 'zod'
 
-export const simulationResultSchema = z.object({
-  paperId: z.string(),
-  score: z.number().nonnegative(),
-  totalScore: z.number().nonnegative(),
-  correctCount: z.number().nonnegative(),
-  wrongCount: z.number().nonnegative(),
-  unansweredCount: z.number().nonnegative(),
-  passed: z.boolean().nullable(),
-  durationSeconds: z.number().nonnegative(),
-  questionResults: z.array(
-    z.object({
-      questionId: z.string(),
-      userAnswers: z.array(z.string()),
-      isCorrect: z.boolean(),
-      score: z.number().nonnegative(),
-    }),
-  ),
-})
+export const simulationResultDtoSchema = z.object({
+  score: z.number().optional().nullable(),
+  subjectCorrectCount: z.number().optional().nullable(),
+  subjectErrorCount: z.number().optional().nullable(),
+  isPass: z.boolean().optional().nullable(),
+  time: z.number().optional().nullable(),
+}).passthrough()
+
+export type SimulationResultDto = z.infer<typeof simulationResultDtoSchema>

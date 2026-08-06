@@ -13,6 +13,8 @@ export interface SubmitSimulationPaperInput {
 }
 
 export interface SimulationRemote {
+  supportsRemoteProgressSave: false
+
   getRule(
     examTypeId: string,
     signal?: AbortSignal,
@@ -23,23 +25,8 @@ export interface SimulationRemote {
     signal?: AbortSignal,
   ): Promise<SimulationPaper>
 
-  getPaper(
-    paperId: string,
-    signal?: AbortSignal,
-  ): Promise<SimulationPaper>
-
-  saveProgress(
-    input: SaveSimulationProgressInput,
-    signal?: AbortSignal,
-  ): Promise<void>
-
   submitPaper(
     input: SubmitSimulationPaperInput,
-    signal?: AbortSignal,
-  ): Promise<SimulationResult>
-
-  getResult(
-    paperId: string,
     signal?: AbortSignal,
   ): Promise<SimulationResult>
 

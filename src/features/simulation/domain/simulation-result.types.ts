@@ -8,7 +8,7 @@ export interface SimulationQuestionResult {
 export interface SimulationResult {
   paperId: string
   score: number
-  totalScore: number
+  totalScore: number | null
   correctCount: number
   wrongCount: number
   unansweredCount: number

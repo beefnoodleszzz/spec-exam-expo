@@ -3,10 +3,35 @@ import { useSimulationSessionStore } from '../state/simulation-session.store'
 import type { SimulationResult } from '../domain/simulation-result.types'
 import { queryClient } from '@/shared/query/query-client'
 import { examScopedQueryKeys } from '@/shared/query/exam-scoped-query-keys'
+import { AppState } from 'react-native'
+import type { AppStateStatus } from 'react-native'
 
 export class SimulationService {
   private remote = new SimulationRemoteImpl()
-  private submissionPromise: Promise<SimulationResult> | null = null
+  private submissionPromises = new Map<string, Promise<SimulationResult>>()
+  private saveTimers = new Map<string, ReturnType<typeof setTimeout>>()
+  private pendingSaves = new Map<string, Promise<void>>()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private appStateSubscription: any = null
+
+  constructor() {
+    this.setupAppStateListener()
+  }
+
+  private setupAppStateListener() {
+    this.appStateSubscription = AppState.addEventListener(
+      'change',
+      (nextAppState: AppStateStatus) => {
+        if (nextAppState === 'background' || nextAppState === 'inactive') {
+          // Flush saves for all active sessions
+          const sessions = useSimulationSessionStore.getState().sessions
+          Object.keys(sessions).forEach((examTypeId) => {
+            this.flushSave(examTypeId)
+          })
+        }
+      },
+    )
+  }
 
   async startExam(examTypeId: string): Promise<void> {
     const paper = await this.remote.createPaper(examTypeId)
@@ -53,51 +78,51 @@ export class SimulationService {
     )
   }
 
-  async submitPaper(examTypeId: string): Promise<SimulationResult> {
+  async submitPaper(
+    examTypeId: string,
+    reason: 'manual' | 'timeout' = 'manual'
+  ): Promise<SimulationResult> {
     const session = useSimulationSessionStore.getState().sessions[examTypeId]
     if (!session) {
       throw new Error('No active simulation session found')
     }
 
-    if (this.submissionPromise) {
-      return this.submissionPromise
+    if (this.submissionPromises.has(examTypeId)) {
+      return this.submissionPromises.get(examTypeId)!
     }
 
     useSimulationSessionStore.getState().updateStatus(examTypeId, 'submitting')
 
-    this.submissionPromise = this.remote
+    const submissionPromise = this.remote
       .submitPaper({ session })
       .then((result) => {
         useSimulationSessionStore.getState().updateStatus(examTypeId, 'submitted')
         useSimulationSessionStore.getState().setLastResult(result)
-        // Invalidate history query
         queryClient.invalidateQueries({
           queryKey: examScopedQueryKeys.simulationHistory(examTypeId),
         })
         return result
       })
       .catch((error) => {
-        useSimulationSessionStore.getState().updateStatus(examTypeId, 'active')
+        const fallbackStatus = reason === 'timeout' ? 'submit_failed' : 'active'
+        useSimulationSessionStore.getState().updateStatus(examTypeId, fallbackStatus)
         throw error
       })
       .finally(() => {
-        this.submissionPromise = null
+        this.submissionPromises.delete(examTypeId)
       })
 
-    return this.submissionPromise
+    this.submissionPromises.set(examTypeId, submissionPromise)
+    return submissionPromise
   }
 
   handleTimeout(examTypeId: string): void {
     const session = useSimulationSessionStore.getState().sessions[examTypeId]
-    if (!session || session.status !== 'active') return
+    if (!session || (session.status !== 'active' && session.status !== 'submit_failed')) return
 
     useSimulationSessionStore.getState().updateStatus(examTypeId, 'expired')
-    this.submitPaper(examTypeId).catch(() => {
-      // If it fails on timeout, status stays expired, but session is not cleared.
-      // The user will be prompted to retry.
-      // Wait, submitPaper updates status to 'active' on failure.
-      // So if timeout fails, it goes back to active, which triggers timeout again?
-      // Actually, if remaining time is 0, UI should show "Failed to submit, please retry manually".
+    this.submitPaper(examTypeId, 'timeout').catch(() => {
+      // Failed timeout submissions naturally fall into 'submit_failed' status.
     })
   }
 
@@ -105,8 +130,35 @@ export class SimulationService {
     useSimulationSessionStore.getState().clearSession(examTypeId)
   }
 
-  // Debounced auto-save could be implemented here or hooked up in UI using lodash/debounce
-  // calling remote.saveProgress
+  scheduleSave(examTypeId: string): void {
+    if (this.saveTimers.has(examTypeId)) {
+      clearTimeout(this.saveTimers.get(examTypeId)!)
+    }
+    
+    const timer = setTimeout(() => {
+      this.flushSave(examTypeId)
+    }, 800)
+    
+    this.saveTimers.set(examTypeId, timer)
+  }
+
+  async flushSave(examTypeId: string): Promise<void> {
+    if (this.saveTimers.has(examTypeId)) {
+      clearTimeout(this.saveTimers.get(examTypeId)!)
+      this.saveTimers.delete(examTypeId)
+    }
+
+    if (this.pendingSaves.has(examTypeId)) {
+      return this.pendingSaves.get(examTypeId)!
+    }
+
+    const savePromise = Promise.resolve().finally(() => {
+      this.pendingSaves.delete(examTypeId)
+    })
+    
+    this.pendingSaves.set(examTypeId, savePromise)
+    return savePromise
+  }
 }
 
 export const simulationService = new SimulationService()

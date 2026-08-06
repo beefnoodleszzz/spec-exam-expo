@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, ActivityIndicator, Alert, SafeAreaView, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native'
+import { View, ActivityIndicator, Alert, SafeAreaView, TouchableOpacity, ScrollView, useWindowDimensions, AppState } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import RenderHtml from 'react-native-render-html'
@@ -9,6 +9,8 @@ import { AppScreen, AppText, AppButton } from '@/shared/components'
 import { appStore } from '@/shared/auth/app-store'
 import { useSimulationSessionStore } from '../state/simulation-session.store'
 import { simulationService } from '../application/simulation.service'
+import { SimulationAnswerCard } from './SimulationAnswerCard'
+import { SimulationSubmitSheet } from './SimulationSubmitSheet'
 
 import { questionBankRemote } from '@/features/question-bank/data/question-bank.remote.impl'
 import type { QuestionOption } from '@/features/question-bank/domain/question.types'
@@ -17,15 +19,26 @@ function useCountdown(examTypeId: string) {
   const [remaining, setRemaining] = useState(() => simulationService.getRemainingSeconds(examTypeId))
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const updateTime = () => {
       const remainingSeconds = simulationService.getRemainingSeconds(examTypeId)
       setRemaining(remainingSeconds)
       if (remainingSeconds <= 0) {
-        clearInterval(interval)
         simulationService.handleTimeout(examTypeId)
       }
-    }, 1000)
-    return () => clearInterval(interval)
+    }
+
+    const interval = setInterval(updateTime, 1000)
+    
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (nextAppState === 'active') {
+        updateTime()
+      }
+    })
+
+    return () => {
+      clearInterval(interval)
+      subscription.remove()
+    }
   }, [examTypeId])
 
   return remaining
@@ -34,6 +47,8 @@ function useCountdown(examTypeId: string) {
 export function SimulationExamScreen() {
   const router = useRouter()
   const { width } = useWindowDimensions()
+  const [answerCardVisible, setAnswerCardVisible] = useState(false)
+  const [submitSheetVisible, setSubmitSheetVisible] = useState(false)
   const examTypeId = appStore((state) => state.currentExamProfile?.examTypeId)
   
   const session = useSimulationSessionStore(
@@ -45,10 +60,12 @@ export function SimulationExamScreen() {
   useEffect(() => {
     if (!session || session.status === 'submitted') {
       router.replace('/(protected)/simulation/entry')
-    } else if (session.status === 'expired') {
-      Alert.alert('提示', '考试已结束，请交卷', [
-        { text: '交卷', onPress: () => handleSubmit() }
-      ])
+    } else if (session.status === 'expired' || session.status === 'submit_failed') {
+      if (!submitSheetVisible) {
+        Alert.alert('提示', '交卷失败或超时，请重新提交', [
+          { text: '交卷', onPress: () => setSubmitSheetVisible(true) }
+        ])
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.status, router])
@@ -56,18 +73,12 @@ export function SimulationExamScreen() {
   const handleSubmit = async () => {
     if (!examTypeId) return
     try {
-      await simulationService.submitPaper(examTypeId)
+      await simulationService.submitPaper(examTypeId, 'manual')
+      setSubmitSheetVisible(false)
       router.replace('/(protected)/simulation/result')
     } catch {
       Alert.alert('交卷失败', '网络错误，请重试')
     }
-  }
-
-  const confirmSubmit = () => {
-    Alert.alert('确认交卷', '交卷后不可修改，确认交卷吗？', [
-      { text: '取消', style: 'cancel' },
-      { text: '交卷', onPress: handleSubmit, style: 'destructive' }
-    ])
   }
 
   const currentQuestionId = session?.questionIds[session.currentIndex]
@@ -82,7 +93,7 @@ export function SimulationExamScreen() {
   const question = questions?.[0]
 
   const handleOptionPress = (optionId: string) => {
-    if (!examTypeId || !question) return
+    if (!examTypeId || !question || session?.status === 'submit_failed') return
     
     const currentAnswerState = session?.answers[question.id] || { answers: [], marked: false, updatedAt: '' }
     let newAnswers = [...currentAnswerState.answers]
@@ -98,11 +109,13 @@ export function SimulationExamScreen() {
     }
     
     useSimulationSessionStore.getState().updateAnswer(examTypeId, question.id, newAnswers)
+    simulationService.scheduleSave(examTypeId)
   }
 
   const handleToggleMark = () => {
-    if (!examTypeId || !question) return
+    if (!examTypeId || !question || session?.status === 'submit_failed') return
     useSimulationSessionStore.getState().toggleMark(examTypeId, question.id)
+    simulationService.scheduleSave(examTypeId)
   }
 
   if (!examTypeId || !session) {
@@ -116,13 +129,18 @@ export function SimulationExamScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View className="flex-row justify-between p-4 border-b border-gray-200">
-        <AppText className={remaining < 60 ? "text-red-500 font-bold" : "text-black"}>
-          {Math.floor(remaining / 60)}:{(remaining % 60).toString().padStart(2, '0')}
-        </AppText>
+        <View className="flex-row items-center">
+          <AppText className={remaining < 60 ? "text-red-500 font-bold mr-4" : "text-black mr-4"}>
+            {Math.floor(remaining / 60)}:{(remaining % 60).toString().padStart(2, '0')}
+          </AppText>
+          <TouchableOpacity onPress={() => setAnswerCardVisible(true)}>
+            <AppText className="text-blue-600">答题卡</AppText>
+          </TouchableOpacity>
+        </View>
         <AppText>
           {session.currentIndex + 1} / {session.questionIds.length}
         </AppText>
-        <TouchableOpacity onPress={confirmSubmit}>
+        <TouchableOpacity onPress={() => setSubmitSheetVisible(true)}>
           <AppText className="text-blue-600 font-bold">交卷</AppText>
         </TouchableOpacity>
       </View>
@@ -204,6 +222,20 @@ export function SimulationExamScreen() {
           <AppText className={session.currentIndex === session.questionIds.length - 1 ? 'text-gray-400' : 'text-white'}>下一题</AppText>
         </AppButton>
       </View>
+
+      <SimulationAnswerCard
+        examTypeId={examTypeId}
+        visible={answerCardVisible}
+        onClose={() => setAnswerCardVisible(false)}
+      />
+
+      <SimulationSubmitSheet
+        examTypeId={examTypeId}
+        visible={submitSheetVisible}
+        onClose={() => setSubmitSheetVisible(false)}
+        onSubmit={handleSubmit}
+        remainingSeconds={remaining}
+      />
     </SafeAreaView>
   )
 }

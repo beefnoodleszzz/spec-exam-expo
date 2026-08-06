@@ -1,17 +1,11 @@
 import { z } from 'zod'
 
-export const simulationPaperSchema = z.object({
-  paperId: z.string(),
-  title: z.string(),
-  durationSeconds: z.number().nonnegative(),
-  questions: z.array(
+export const simulationPaperDtoSchema = z.object({
+  dataList: z.array(
     z.object({
-      questionId: z.string(),
-      subjectId: z.string().nullable(),
-      score: z.number().nullable(),
-      order: z.number().nonnegative(),
-    }),
-  ),
-  startedAt: z.string().datetime(),
-  expiresAt: z.string().datetime().nullable(),
-})
+      id: z.string().optional().nullable(),
+    }).passthrough()
+  ).optional().nullable()
+}).passthrough()
+
+export type SimulationPaperDto = z.infer<typeof simulationPaperDtoSchema>
