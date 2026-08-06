@@ -26,6 +26,11 @@ export interface AuthServiceDependencies {
   clearUser(): void
 }
 
+function isUnauthorizedError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false
+  return error.name === 'UnauthorizedError'
+}
+
 export class AuthService {
   private activeLogin: Promise<void> | null =
     null
@@ -49,131 +54,84 @@ export class AuthService {
     command: ShortMessageLoginCommand,
     signal?: AbortSignal,
   ): Promise<void> {
-    return this.runLogin(
-      async () => {
-        const session =
-          await this.deps.remote.loginWithShortMessage(
+    return this.runLogin(async () => {
+      await this.completeLogin(
+        () =>
+          this.deps.remote.loginWithShortMessage(
             command,
             signal,
-          )
-
-        if (!session.accessToken) {
-          throw new Error('Login returned no token')
-        }
-
-        await this.deps.persistSession(session)
-
-        try {
-          const user =
-            await this.deps.remote.getCurrentUser(
-              signal,
-            )
-          this.deps.setUser(user)
-        } catch (error) {
-          if (
-            error instanceof Error &&
-            error.name === 'UnauthorizedError'
-          ) {
-            await this.deps.clearSession()
-            throw error
-          }
-
-          console.warn(
-            'Failed to fetch user info after login:',
-            error,
-          )
-        }
-      },
-    )
+          ),
+        signal,
+      )
+    })
   }
 
   async loginWithCode(
     command: V2LoginCommand,
     signal?: AbortSignal,
   ): Promise<void> {
-    return this.runLogin(
-      async () => {
-        const session =
-          await this.deps.remote.loginWithCode(
+    return this.runLogin(async () => {
+      await this.completeLogin(
+        () =>
+          this.deps.remote.loginWithCode(
             command,
             signal,
-          )
-
-        if (!session.accessToken) {
-          throw new Error('Login returned no token')
-        }
-
-        await this.deps.persistSession(session)
-
-        try {
-          const user =
-            await this.deps.remote.getCurrentUser(
-              signal,
-            )
-          this.deps.setUser(user)
-        } catch (error) {
-          if (
-            error instanceof Error &&
-            error.name === 'UnauthorizedError'
-          ) {
-            await this.deps.clearSession()
-            throw error
-          }
-
-          console.warn(
-            'Failed to fetch user info after login:',
-            error,
-          )
-        }
-      },
-    )
+          ),
+        signal,
+      )
+    })
   }
 
   async loginWithOneClick(
     command: OneClickLoginCommand,
     signal?: AbortSignal,
   ): Promise<void> {
-    return this.runLogin(
-      async () => {
-        const session =
-          await this.deps.remote.loginWithOneClick(
+    return this.runLogin(async () => {
+      await this.completeLogin(
+        () =>
+          this.deps.remote.loginWithOneClick(
             command,
             signal,
-          )
-
-        if (!session.accessToken) {
-          throw new Error('Login returned no token')
-        }
-
-        await this.deps.persistSession(session)
-
-        try {
-          const user =
-            await this.deps.remote.getCurrentUser(
-              signal,
-            )
-          this.deps.setUser(user)
-        } catch (error) {
-          if (
-            error instanceof Error &&
-            error.name === 'UnauthorizedError'
-          ) {
-            await this.deps.clearSession()
-            throw error
-          }
-
-          console.warn(
-            'Failed to fetch user info after login:',
-            error,
-          )
-        }
-      },
-    )
+          ),
+        signal,
+      )
+    })
   }
 
   async logout(): Promise<void> {
     await this.deps.clearSession()
     this.deps.clearUser()
+  }
+
+  private async completeLogin(
+    login: () => Promise<AuthSession>,
+    signal?: AbortSignal,
+  ): Promise<void> {
+    const session = await login()
+
+    if (!session.accessToken) {
+      throw new Error('Login returned no token')
+    }
+
+    await this.deps.persistSession(session)
+
+    try {
+      const user =
+        await this.deps.remote.getCurrentUser(
+          signal,
+        )
+      this.deps.setUser(user)
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        await this.deps.clearSession()
+        this.deps.clearUser()
+        throw error
+      }
+
+      console.warn(
+        'Failed to fetch user info after login'
+      )
+    }
   }
 
   private async runLogin(

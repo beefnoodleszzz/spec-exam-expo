@@ -18,6 +18,7 @@ interface SmsLoginState {
 
   sendCodeError: Error | null
   loginError: Error | null
+  agreementAccepted: boolean
 }
 
 type SmsLoginAction =
@@ -32,6 +33,10 @@ type SmsLoginAction =
   | {
       type: 'SET_REQUEST_ID'
       payload: string | null
+    }
+  | {
+      type: 'SET_AGREEMENT_ACCEPTED'
+      payload: boolean
     }
   | {
       type: 'SEND_CODE_START'
@@ -72,6 +77,7 @@ const initialState: SmsLoginState = {
 
   sendCodeError: null,
   loginError: null,
+  agreementAccepted: false,
 }
 
 function reducer(
@@ -93,6 +99,11 @@ function reducer(
       return {
         ...state,
         requestId: action.payload,
+      }
+    case 'SET_AGREEMENT_ACCEPTED':
+      return {
+        ...state,
+        agreementAccepted: action.payload,
       }
     case 'SEND_CODE_START':
       return {
@@ -259,6 +270,16 @@ export function useSmsLogin(
       return
     }
 
+    if (!state.agreementAccepted) {
+      dispatch({
+        type: 'LOGIN_ERROR',
+        payload: new Error(
+          'Please accept the user agreement',
+        ),
+      })
+      return
+    }
+
     dispatch({ type: 'LOGIN_START' })
     abortControllerRef.current = new AbortController()
 
@@ -316,6 +337,11 @@ export function useSmsLogin(
       dispatch({
         type: 'SET_CODE',
         payload: code,
+      }),
+    setAgreementAccepted: (accepted: boolean) =>
+      dispatch({
+        type: 'SET_AGREEMENT_ACCEPTED',
+        payload: accepted,
       }),
   }
 }
