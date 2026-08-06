@@ -5,6 +5,10 @@
  */
 
 import { useReducer, useEffect, useRef } from 'react'
+import {
+  type AppError,
+  createBusinessError,
+} from '@/shared/api/errors/app-error'
 import type { AuthService } from './auth.service'
 
 interface SmsLoginState {
@@ -71,7 +75,7 @@ const initialState: SmsLoginState = {
   verificationCode: '',
   requestId: null,
 
-  countdown: 60,
+  countdown: 0,
   isSendingCode: false,
   isLoggingIn: false,
 
@@ -201,9 +205,7 @@ export function useSmsLogin(
     if (!PHONE_REGEX.test(state.phone)) {
       dispatch({
         type: 'SEND_CODE_ERROR',
-        payload: new Error(
-          'Please enter a valid phone number',
-        ),
+        payload: createBusinessError('请输入正确的手机号'),
       })
       return
     }
@@ -245,9 +247,7 @@ export function useSmsLogin(
     if (!PHONE_REGEX.test(state.phone)) {
       dispatch({
         type: 'LOGIN_ERROR',
-        payload: new Error(
-          'Please enter a valid phone number',
-        ),
+        payload: createBusinessError('请输入正确的手机号'),
       })
       return
     }
@@ -255,7 +255,7 @@ export function useSmsLogin(
     if (!state.verificationCode.trim()) {
       dispatch({
         type: 'LOGIN_ERROR',
-        payload: new Error('Please enter the code'),
+        payload: createBusinessError('请输入验证码'),
       })
       return
     }
@@ -263,9 +263,7 @@ export function useSmsLogin(
     if (!state.requestId) {
       dispatch({
         type: 'LOGIN_ERROR',
-        payload: new Error(
-          'Request ID missing. Please send code again.',
-        ),
+        payload: createBusinessError('请先获取验证码'),
       })
       return
     }
@@ -273,9 +271,7 @@ export function useSmsLogin(
     if (!state.agreementAccepted) {
       dispatch({
         type: 'LOGIN_ERROR',
-        payload: new Error(
-          'Please accept the user agreement',
-        ),
+        payload: createBusinessError('请先阅读并同意用户协议和隐私政策'),
       })
       return
     }

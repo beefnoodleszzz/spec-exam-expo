@@ -21,7 +21,6 @@ import {
   apiExamV2AppLoginShortMessagePost,
   apiExamV2AppLoginPost,
   apiExamV2AppLoginSendShortMessageGet,
-  apiExamV2AppLoginGetUserInfoByTokenGet,
   apiExamV2AppUserDetailGet,
 } from '@/shared/api/generated/endpoints/examination-manager-v2/examination-manager-v2'
 import {
@@ -162,30 +161,12 @@ export class AuthRemoteImpl implements AuthRemote {
   async getCurrentUser(
     signal?: AbortSignal,
   ): Promise<AuthUser> {
-    let response: unknown
-
-    try {
-      response =
-        await apiExamV2AppUserDetailGet(
-          getRequestOptions(signal),
-        )
-    } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message.includes('404')
-      ) {
-        response =
-          await apiExamV2AppLoginGetUserInfoByTokenGet(
-            getRequestOptions(signal),
-          )
-      } else {
-        throw error
-      }
-    }
+    const response = await apiExamV2AppUserDetailGet(
+      getRequestOptions(signal),
+    )
 
     const data = parseEnvelopeData(response)
-    const payload =
-      authUserPayloadSchema.parse(data)
+    const payload = authUserPayloadSchema.parse(data)
     const user = mapAuthUser(payload)
 
     return user

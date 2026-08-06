@@ -1,23 +1,20 @@
 /**
  * Sign-in screen with SMS verification.
  *
- * Primary login interface for the application.
+ * Primary login interface. Uses shared UI components.
+ * Route guard (not this screen) handles redirection after login.
  */
 
-import { useEffect, useRef } from 'react'
-import { View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useRouter } from 'expo-router'
+import { View } from 'react-native'
+import { AppScreen } from '@/shared/components/layout/AppScreen'
+import { AppText } from '@/shared/components/primitives/AppText'
+import { AppInput } from '@/shared/components/forms/AppInput'
+import { AppButton } from '@/shared/components/actions/AppButton'
+import { AppCheckbox } from '@/shared/components/forms/AppCheckbox'
 import { useSmsLogin } from '../application/use-sms-login'
-import { getAuthService } from '../auth.container'
+import { authService } from '../auth.container'
 
 export function SignInScreen() {
-  const router = useRouter()
-  const insets = useSafeAreaInsets()
-  const phoneRef = useRef<TextInput>(null)
-  const codeRef = useRef<TextInput>(null)
-
-  const authService = getAuthService()
   const {
     state,
     setPhone,
@@ -25,205 +22,129 @@ export function SignInScreen() {
     sendCode,
     login,
     setAgreementAccepted,
-  } = useSmsLogin({
-    authService,
-  })
+  } = useSmsLogin({ authService })
 
-  useEffect(() => {
-    if (state.loginError?.name !== 'UnauthorizedError') {
-      return
-    }
-
-    router.replace('/(public)/sign-in')
-  }, [state.loginError, router])
-
+  const PHONE_REGEX = /^1[3-9]\d{9}$/
   const canSendCode =
-    /^1[3-9]\d{9}$/.test(state.phone) &&
+    PHONE_REGEX.test(state.phone) &&
     !state.isSendingCode &&
-    state.countdown === 60
+    state.countdown === 0
 
   const canLogin =
-    /^1[3-9]\d{9}$/.test(state.phone) &&
+    PHONE_REGEX.test(state.phone) &&
     state.verificationCode.trim().length > 0 &&
-    state.requestId &&
+    !!state.requestId &&
     state.agreementAccepted &&
     !state.isLoggingIn
 
-  return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
-      <ScrollView
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingTop: 32 + insets.top,
-          paddingBottom: 32 + insets.bottom,
-        }}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Text style={{
-          fontSize: 28,
-          fontWeight: '700',
-          marginBottom: 24,
-        }}>
-          登录
-        </Text>
+  const sendButtonLabel = state.isSendingCode
+    ? '发送中'
+    : state.countdown > 0
+      ? `${state.countdown}s`
+      : '获取验证码'
 
-        {/* Phone Input */}
-        <View style={{ marginBottom: 16 }}>
-          <Text style={{
-            fontSize: 12,
-            marginBottom: 8,
-            color: '#666',
-          }}>
-            手机号
-          </Text>
-          <TextInput
-            ref={phoneRef}
-            placeholder="输入手机号"
-            keyboardType="phone-pad"
-            maxLength={11}
-            value={state.phone}
-            onChangeText={setPhone}
-            editable={!state.isLoggingIn}
-            style={{
-              borderWidth: 1,
-              borderColor: '#ddd',
-              padding: 12,
-              borderRadius: 8,
-              fontSize: 16,
-            }}
+  return (
+    <AppScreen
+      scrollable
+      keyboardAware
+      safeAreaEdges={['top', 'left', 'right', 'bottom']}
+      contentContainerClassName="py-12 px-6"
+    >
+      {/* Header */}
+      <View className="mb-10">
+        <AppText variant="display" className="mb-2">
+          登录
+        </AppText>
+        <AppText variant="body-secondary" tone="muted">
+          验证手机号，安全快捷登录
+        </AppText>
+      </View>
+
+      {/* Phone Input */}
+      <AppInput
+        label="手机号"
+        placeholder="请输入手机号"
+        keyboardType="phone-pad"
+        maxLength={11}
+        value={state.phone}
+        onChangeText={setPhone}
+        disabled={state.isLoggingIn}
+        accessibilityLabel="手机号输入框"
+        containerClassName="mb-2"
+      />
+
+      {/* Verification Code + Send Button */}
+      <View className="flex-row items-start gap-3 mb-2">
+        <View className="flex-1">
+          <AppInput
+            label="验证码"
+            placeholder="请输入验证码"
+            keyboardType="number-pad"
+            value={state.verificationCode}
+            onChangeText={setCode}
+            disabled={state.isLoggingIn}
+            accessibilityLabel="验证码输入框"
+            containerClassName="mb-0"
           />
         </View>
-
-        {/* Code Input + Send Button */}
-        <View style={{ marginBottom: 16 }}>
-          <Text style={{
-            fontSize: 12,
-            marginBottom: 8,
-            color: '#666',
-          }}>
-            验证码
-          </Text>
-          <View style={{ flexDirection: 'row', gap: 8 }}>
-            <TextInput
-              ref={codeRef}
-              placeholder="输入验证码"
-              keyboardType="number-pad"
-              value={state.verificationCode}
-              onChangeText={setCode}
-              editable={!state.isLoggingIn}
-              style={{
-                flex: 1,
-                borderWidth: 1,
-                borderColor: '#ddd',
-                padding: 12,
-                borderRadius: 8,
-                fontSize: 16,
-              }}
-            />
-            <Pressable
-              onPress={sendCode}
-              disabled={!canSendCode || state.isSendingCode}
-              style={{
-                paddingHorizontal: 16,
-                justifyContent: 'center',
-                backgroundColor: canSendCode ? '#2F5AFF' : '#ccc',
-                borderRadius: 8,
-              }}
-            >
-              <Text style={{
-                color: '#fff',
-                fontSize: 12,
-                fontWeight: '600',
-              }}>
-                {state.isSendingCode
-                  ? '发送中'
-                  : state.countdown < 60
-                    ? `${state.countdown}s`
-                    : '获取验证码'}
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-
-        {/* Error Messages */}
-        {state.sendCodeError && (
-          <View style={{
-            padding: 12,
-            backgroundColor: '#ffebee',
-            borderRadius: 8,
-            marginBottom: 16,
-          }}>
-            <Text style={{ color: '#c62828', fontSize: 12 }}>
-              {state.sendCodeError.message}
-            </Text>
-          </View>
-        )}
-
-        {state.loginError && (
-          <View style={{
-            padding: 12,
-            backgroundColor: '#ffebee',
-            borderRadius: 8,
-            marginBottom: 16,
-          }}>
-            <Text style={{ color: '#c62828', fontSize: 12 }}>
-              {state.loginError.message}
-            </Text>
-          </View>
-        )}
-
-        {/* Agreement Checkbox */}
-        <View style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginBottom: 20,
-        }}>
-          <Pressable
-            onPress={() => setAgreementAccepted(!state.agreementAccepted)}
-            style={{
-              width: 20,
-              height: 20,
-              borderWidth: 1,
-              borderColor: '#2F5AFF',
-              borderRadius: 4,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginRight: 8,
-              backgroundColor: state.agreementAccepted ? '#2F5AFF' : 'white',
-            }}
+        <View className="pt-[26px]">
+          <AppButton
+            variant={canSendCode ? 'secondary' : 'ghost'}
+            size="md"
+            disabled={state.isSendingCode || state.countdown > 0}
+            loading={state.isSendingCode}
+            onPress={() => void sendCode()}
+            accessibilityLabel="发送验证码"
           >
-            {state.agreementAccepted && (
-              <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold' }}>✓</Text>
-            )}
-          </Pressable>
-          <Text style={{ fontSize: 12, color: '#666' }}>
-            我已阅读并同意用户协议和隐私政策
-          </Text>
+            {sendButtonLabel}
+          </AppButton>
         </View>
+      </View>
 
-        {/* Login Button */}
-        <Pressable
-          onPress={login}
-          disabled={!canLogin}
-          style={{
-            padding: 14,
-            backgroundColor: canLogin ? '#2F5AFF' : '#ccc',
-            borderRadius: 8,
-            alignItems: 'center',
-          }}
+      {/* Send Code Error */}
+      {state.sendCodeError && (
+        <AppText
+          variant="caption"
+          tone="danger"
+          className="mb-4 -mt-1"
+          accessibilityRole="alert"
         >
-          <Text style={{
-            color: '#fff',
-            fontWeight: '700',
-            fontSize: 16,
-          }}>
-            {state.isLoggingIn ? '登录中...' : '登录'}
-          </Text>
-        </Pressable>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          {state.sendCodeError.message}
+        </AppText>
+      )}
+
+      {/* Login Error */}
+      {state.loginError && (
+        <AppText
+          variant="caption"
+          tone="danger"
+          className="mb-4"
+          accessibilityRole="alert"
+        >
+          {state.loginError.message}
+        </AppText>
+      )}
+
+      {/* Agreement Checkbox */}
+      <AppCheckbox
+        checked={state.agreementAccepted}
+        onChange={setAgreementAccepted}
+        label="我已阅读并同意用户协议和隐私政策"
+        className="mb-6"
+      />
+
+      {/* Login Button */}
+      <AppButton
+        variant="primary"
+        size="lg"
+        fullWidth
+        disabled={state.isLoggingIn}
+        loading={state.isLoggingIn}
+        onPress={() => void login()}
+        accessibilityLabel="登录按钮"
+      >
+        登录
+      </AppButton>
+    </AppScreen>
   )
 }

@@ -3,11 +3,14 @@
  *
  * Stores current user information separate from session.
  * Persisted to AsyncStorage (non-sensitive data only).
+ * Validated via Zod on restore to prevent silent contract coercion.
  */
 
 import { create } from 'zustand'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { AuthUser } from '../domain/auth.types'
+import { persistedAuthUserSchema } from './auth-user.persistence.schema'
+import { logger, sanitizeError } from '@/shared/logging/logger'
 
 const STORAGE_KEY = 'auth-user-profile'
 
@@ -35,11 +38,9 @@ export const useAuthUserStore = create<AuthUserStoreState>(
 
     setUser(user: AuthUser) {
       set({ user, status: 'ready' })
-      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(user)).catch(
-        (err) => {
-          console.warn('Failed to persist user profile:', err)
-        },
-      )
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(user)).catch(() => {
+        logger.warn('auth_user_persist_failed')
+      })
     },
 
     setError() {
@@ -48,22 +49,40 @@ export const useAuthUserStore = create<AuthUserStoreState>(
 
     clearUser() {
       set({ user: null, status: 'idle' })
-      AsyncStorage.removeItem(STORAGE_KEY).catch((err) => {
-        console.warn('Failed to clear user profile:', err)
+      AsyncStorage.removeItem(STORAGE_KEY).catch(() => {
+        logger.warn('auth_user_clear_failed')
       })
     },
 
     async restoreFromStorage() {
+      set({ status: 'loading' })
       try {
         const data = await AsyncStorage.getItem(STORAGE_KEY)
-        if (data) {
-          const user = JSON.parse(data) as AuthUser
-          set({ user, status: 'ready' })
-        } else {
+        if (!data) {
           set({ status: 'idle' })
+          return
         }
+
+        let parsed: unknown
+        try {
+          parsed = JSON.parse(data)
+        } catch {
+          await AsyncStorage.removeItem(STORAGE_KEY)
+          set({ user: null, status: 'error' })
+          return
+        }
+
+        const result = persistedAuthUserSchema.safeParse(parsed)
+
+        if (!result.success) {
+          await AsyncStorage.removeItem(STORAGE_KEY)
+          set({ user: null, status: 'error' })
+          return
+        }
+
+        set({ user: result.data, status: 'ready' })
       } catch (err) {
-        console.warn('Failed to restore user profile:', err)
+        logger.warn('auth_user_restore_failed', { error: sanitizeError(err) })
         set({ status: 'error' })
       }
     },

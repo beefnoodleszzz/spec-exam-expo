@@ -15,25 +15,24 @@ import type {
   V2LoginCommand,
 } from '../domain/auth.types'
 import type { AuthRemote } from '../data/auth.remote'
+import {
+  isUnauthorizedError,
+  createContractError,
+} from '@/shared/api/errors/app-error'
+import type { AppError } from '@/shared/api/errors/app-error'
+import { logger } from '@/shared/logging/logger'
 
 export interface AuthServiceDependencies {
   remote: AuthRemote
-  persistSession(
-    session: AuthSession,
-  ): Promise<void>
+  persistSession(session: AuthSession): Promise<void>
   clearSession(): Promise<void>
   setUser(user: AuthUser): void
   clearUser(): void
-}
-
-function isUnauthorizedError(error: unknown): boolean {
-  if (!(error instanceof Error)) return false
-  return error.name === 'UnauthorizedError'
+  onUserRestoreError?: (error: unknown) => void
 }
 
 export class AuthService {
-  private activeLogin: Promise<void> | null =
-    null
+  private activeLogin: Promise<void> | null = null
   private deps: AuthServiceDependencies
 
   constructor(deps: AuthServiceDependencies) {
@@ -44,10 +43,7 @@ export class AuthService {
     command: SendShortMessageCommand,
     signal?: AbortSignal,
   ): Promise<SendShortMessageResult> {
-    return this.deps.remote.sendShortMessage(
-      command,
-      signal,
-    )
+    return this.deps.remote.sendShortMessage(command, signal)
   }
 
   async loginWithShortMessage(
@@ -56,12 +52,7 @@ export class AuthService {
   ): Promise<void> {
     return this.runLogin(async () => {
       await this.completeLogin(
-        () =>
-          this.deps.remote.loginWithShortMessage(
-            command,
-            signal,
-          ),
-        signal,
+        () => this.deps.remote.loginWithShortMessage(command, signal),
       )
     })
   }
@@ -72,12 +63,7 @@ export class AuthService {
   ): Promise<void> {
     return this.runLogin(async () => {
       await this.completeLogin(
-        () =>
-          this.deps.remote.loginWithCode(
-            command,
-            signal,
-          ),
-        signal,
+        () => this.deps.remote.loginWithCode(command, signal),
       )
     })
   }
@@ -88,12 +74,7 @@ export class AuthService {
   ): Promise<void> {
     return this.runLogin(async () => {
       await this.completeLogin(
-        () =>
-          this.deps.remote.loginWithOneClick(
-            command,
-            signal,
-          ),
-        signal,
+        () => this.deps.remote.loginWithOneClick(command, signal),
       )
     })
   }
@@ -105,21 +86,17 @@ export class AuthService {
 
   private async completeLogin(
     login: () => Promise<AuthSession>,
-    signal?: AbortSignal,
   ): Promise<void> {
     const session = await login()
 
     if (!session.accessToken) {
-      throw new Error('Login returned no token')
+      throw createContractError('Login succeeded but no access token returned')
     }
 
     await this.deps.persistSession(session)
 
     try {
-      const user =
-        await this.deps.remote.getCurrentUser(
-          signal,
-        )
+      const user = await this.deps.remote.getCurrentUser()
       this.deps.setUser(user)
     } catch (error) {
       if (isUnauthorizedError(error)) {
@@ -128,15 +105,15 @@ export class AuthService {
         throw error
       }
 
-      console.warn(
-        'Failed to fetch user info after login'
-      )
+      if (this.deps.onUserRestoreError) {
+        this.deps.onUserRestoreError(error)
+      } else {
+        logger.warn('auth_user_fetch_failed_after_login')
+      }
     }
   }
 
-  private async runLogin(
-    task: () => Promise<void>,
-  ): Promise<void> {
+  private async runLogin(task: () => Promise<void>): Promise<void> {
     if (this.activeLogin) {
       return this.activeLogin
     }
@@ -148,3 +125,6 @@ export class AuthService {
     return this.activeLogin
   }
 }
+
+// Re-export AppError for use by auth consumers
+export type { AppError }
