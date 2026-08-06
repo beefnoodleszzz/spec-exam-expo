@@ -7,7 +7,6 @@
 import { create } from 'zustand'
 import {
   getSecure,
-  setSecure,
   SecureKeys,
 } from '@/shared/persistence/secure-storage'
 
@@ -18,8 +17,6 @@ export interface SessionState {
   accessToken: string | null
   userId: string | null
 
-  // Called when login succeeds
-  setSession: (params: { token: string; userId: string }) => Promise<void>
   // Called during bootstrap to restore persisted token
   restoreSession: () => Promise<void>
 }
@@ -29,11 +26,7 @@ export const sessionStore = create<SessionState>((set) => ({
   accessToken: null,
   userId: null,
 
-  setSession: async ({ token, userId }) => {
-    await setSecure(SecureKeys.ACCESS_TOKEN, token)
-    await setSecure(SecureKeys.USER_ID, userId)
-    set({ status: 'authenticated', accessToken: token, userId })
-  },
+
 
   restoreSession: async () => {
     try {

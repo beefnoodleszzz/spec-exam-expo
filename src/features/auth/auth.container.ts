@@ -8,7 +8,7 @@
  */
 
 import { sessionStore } from '@/shared/auth/session-store'
-import { clearAllSessionData } from '@/shared/auth/session-service'
+import { clearAllSessionData, persist as persistSessionService } from '@/shared/auth/session-service'
 import { useAuthUserStore } from './state/auth-user.store'
 import { AuthRemoteImpl } from './data/auth.remote.impl'
 import { AuthService } from './application/auth.service'
@@ -23,10 +23,15 @@ export const authService: IAuthService = new AuthService({
   remote: authRemote,
 
   persistSession: async (session) => {
-    // Persist to SecureStore and update in-memory store atomically
-    await sessionStore.getState().setSession({
-      token: session.accessToken,
+    await persistSessionService({
+      accessToken: session.accessToken,
       userId: session.userId ?? '',
+    })
+
+    sessionStore.setState({
+      accessToken: session.accessToken,
+      userId: session.userId ?? '',
+      status: 'authenticated',
     })
   },
 

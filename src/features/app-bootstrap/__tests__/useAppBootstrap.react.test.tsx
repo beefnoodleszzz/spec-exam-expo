@@ -5,11 +5,7 @@ import { useAppBootstrap } from '../hooks/useAppBootstrap'
 import { sessionStore } from '@/shared/auth/session-store'
 import { appStore } from '@/shared/auth/app-store'
 import { logger } from '@/shared/logging/logger'
-import { registerUnauthorizedHandler } from '@/shared/auth/session-service'
 
-jest.mock('@/shared/auth/session-service', () => ({
-  registerUnauthorizedHandler: jest.fn(),
-}))
 
 jest.mock('@/shared/logging/logger', () => ({
   logger: {
@@ -70,9 +66,6 @@ describe('useAppBootstrap', () => {
     expect(result.current.status).toBe('running')
 
     await waitFor(() => {
-      expect(registerUnauthorizedHandler)
-        .toHaveBeenCalledTimes(1)
-
       expect(restoreSession)
         .toHaveBeenCalledTimes(1)
 

@@ -8,6 +8,7 @@ import { useReducer, useEffect, useRef } from 'react'
 import {
   type AppError,
   createBusinessError,
+  isAppError,
 } from '@/shared/api/errors/app-error'
 import type { AuthService } from './auth.service'
 
@@ -20,8 +21,8 @@ interface SmsLoginState {
   isSendingCode: boolean
   isLoggingIn: boolean
 
-  sendCodeError: Error | null
-  loginError: Error | null
+  sendCodeError: AppError | null
+  loginError: AppError | null
   agreementAccepted: boolean
 }
 
@@ -51,7 +52,7 @@ type SmsLoginAction =
     }
   | {
       type: 'SEND_CODE_ERROR'
-      payload: Error | null
+      payload: AppError | null
     }
   | {
       type: 'COUNTDOWN'
@@ -64,7 +65,7 @@ type SmsLoginAction =
     }
   | {
       type: 'LOGIN_ERROR'
-      payload: Error | null
+      payload: AppError | null
     }
   | {
       type: 'RESET'
@@ -235,10 +236,9 @@ export function useSmsLogin(
     } catch (error) {
       dispatch({
         type: 'SEND_CODE_ERROR',
-        payload:
-          error instanceof Error
-            ? error
-            : new Error('Failed to send code'),
+        payload: isAppError(error)
+          ? error
+          : createBusinessError(error instanceof Error ? error.message : '发送验证码失败'),
       })
     }
   }
@@ -296,10 +296,9 @@ export function useSmsLogin(
     } catch (error) {
       dispatch({
         type: 'LOGIN_ERROR',
-        payload:
-          error instanceof Error
-            ? error
-            : new Error('Login failed'),
+        payload: isAppError(error)
+          ? error
+          : createBusinessError(error instanceof Error ? error.message : '登录失败'),
       })
     }
   }

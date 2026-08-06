@@ -3,7 +3,6 @@ import * as SplashScreen from 'expo-splash-screen'
 import { sessionStore } from '@/shared/auth/session-store'
 import { appStore } from '@/shared/auth/app-store'
 import {
-  registerUnauthorizedHandler,
   clearAllSessionData,
 } from '@/shared/auth/session-service'
 import { useAuthUserStore } from '@/features/auth/state/auth-user.store'
@@ -61,8 +60,6 @@ export function useAppBootstrap() {
     }
 
     try {
-      registerUnauthorizedHandler()
-
       // Restore session from SecureStore + exam profile concurrently
       await Promise.all([restoreSession(), restoreExamProfile()])
 

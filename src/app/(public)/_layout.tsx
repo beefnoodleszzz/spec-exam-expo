@@ -8,10 +8,12 @@ import { sessionStore } from '@/shared/auth/session-store'
 export default function PublicLayout() {
   const status = sessionStore((s) => s.status)
 
-  if (status === 'booting') return null
+  if (status === 'booting') {
+    return null
+  }
 
   if (status === 'authenticated') {
-    return <Redirect href="/(protected)/(tabs)" />
+    return <Redirect href="/(protected)" />
   }
 
   return (

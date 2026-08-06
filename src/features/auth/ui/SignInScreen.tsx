@@ -30,13 +30,6 @@ export function SignInScreen() {
     !state.isSendingCode &&
     state.countdown === 0
 
-  const canLogin =
-    PHONE_REGEX.test(state.phone) &&
-    state.verificationCode.trim().length > 0 &&
-    !!state.requestId &&
-    state.agreementAccepted &&
-    !state.isLoggingIn
-
   const sendButtonLabel = state.isSendingCode
     ? '发送中'
     : state.countdown > 0

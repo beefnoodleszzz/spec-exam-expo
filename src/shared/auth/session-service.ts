@@ -11,9 +11,8 @@
 import { sessionStore } from './session-store'
 import { appStore } from './app-store'
 import { queryClient } from '@/shared/query/query-client'
-import { clearSecureCredentials } from '@/shared/persistence/secure-storage'
+import { clearSecureCredentials, setSecure, SecureKeys } from '@/shared/persistence/secure-storage'
 import { clearUserAsyncData } from '@/shared/persistence/async-storage'
-import { setUnauthorizedHandler } from '@/shared/api/client/request'
 import { logger, sanitizeError } from '@/shared/logging/logger'
 
 let cleanupPromise: Promise<void> | null = null
@@ -53,6 +52,11 @@ async function performCleanup(): Promise<void> {
   })
 }
 
+export async function persist(session: { accessToken: string; userId: string }): Promise<void> {
+  await setSecure(SecureKeys.ACCESS_TOKEN, session.accessToken)
+  await setSecure(SecureKeys.USER_ID, session.userId)
+}
+
 /**
  * Execute complete session cleanup with single-flight promise lock.
  */
@@ -66,16 +70,4 @@ export function clearAllSessionData(): Promise<void> {
   })
 
   return cleanupPromise
-}
-
-export function handleUnauthorizedEvent(): void {
-  void clearAllSessionData()
-}
-
-/**
- * Register unauthorized callback into HTTP client transport.
- * Call this during app bootstrap.
- */
-export function registerUnauthorizedHandler(): void {
-  setUnauthorizedHandler(handleUnauthorizedEvent)
 }

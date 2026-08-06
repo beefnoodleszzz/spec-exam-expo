@@ -26,7 +26,7 @@ jest.mock('@/shared/components/layout/AppScreen', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { ScrollView } = require('react-native')
   return {
-    AppScreen: ({ children }: { children: mockReact.ReactNode }) =>
+    AppScreen: ({ children }: { children: React.ReactNode }) =>
       mockReact.createElement(ScrollView, { testID: 'screen' }, children),
   }
 })
@@ -42,7 +42,7 @@ jest.mock('@/shared/components/primitives/AppText', () => {
       children,
       accessibilityRole,
     }: {
-      children: mockReact.ReactNode
+      children: React.ReactNode
       accessibilityRole?: string
     }) => mockReact.createElement(Text, { accessibilityRole }, children),
   }
@@ -97,7 +97,7 @@ jest.mock('@/shared/components/actions/AppButton', () => {
       loading,
       accessibilityLabel,
     }: {
-      children: mockReact.ReactNode
+      children: React.ReactNode
       onPress?: () => void
       disabled?: boolean
       loading?: boolean

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { sessionStore } from '../session-store'
 import { appStore } from '../app-store'
-import { clearAllSessionData, handleUnauthorizedEvent } from '../session-service'
+import { clearAllSessionData } from '../session-service'
 
 describe('sessionService (Session Cleanup Coordinator)', () => {
   beforeEach(() => {
@@ -28,14 +28,6 @@ describe('sessionService (Session Cleanup Coordinator)', () => {
     expect(sessionState.accessToken).toBeNull()
     expect(sessionState.userId).toBeNull()
     expect(appState.currentExamProfile).toBeNull()
-  })
-
-  it('handleUnauthorizedEvent synchronously marks session as anonymous', () => {
-    handleUnauthorizedEvent()
-
-    const sessionState = sessionStore.getState()
-    expect(sessionState.status).toBe('anonymous')
-    expect(sessionState.accessToken).toBeNull()
   })
 
   it('deduplicates concurrent clearAllSessionData calls using single-flight promise lock', () => {
