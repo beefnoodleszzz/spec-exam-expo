@@ -1,11 +1,4 @@
 {
   "schemaVersion": "1.0.0",
-  "features": [
-    {
-      "name": "Login"
-    },
-    {
-      "name": "SimulationTestComponent"
-    }
-  ]
+  "features": []
 }
