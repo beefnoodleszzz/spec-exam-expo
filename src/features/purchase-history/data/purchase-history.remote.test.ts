@@ -58,7 +58,7 @@ describe('PurchaseHistoryRemoteImpl', () => {
     vi.mocked(extractGeneratedData).mockReturnValue([{ examTypeName: 'Test' }]);
     
     const remote = new PurchaseHistoryRemoteImpl();
-    await expect(remote.getPurchaseHistoryList()).rejects.toThrow('Missing purchase history item id');
+    await expect(remote.getPurchaseHistoryList()).rejects.toThrow('Invalid purchase history item format');
   });
 
   it('should get and map purchase history list', async () => {

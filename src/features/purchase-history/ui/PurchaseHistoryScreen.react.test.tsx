@@ -101,4 +101,67 @@ describe('PurchaseHistoryScreen', () => {
     expect(getByText('¥10.00')).toBeTruthy();
     expect(queryByText('订单号: null')).toBeFalsy();
   });
+
+  it('should render exact format for amount=0', () => {
+    const mockItem = {
+      id: '3',
+      examTypeName: 'Free Exam',
+      amount: 0,
+      originalAmount: null,
+      createTime: null,
+      orderNumber: null,
+      month: null,
+      stateText: null,
+    } satisfies PurchaseHistoryItem;
+
+    jest.mocked(usePurchaseHistoryListQuery).mockReturnValue({
+      isLoading: false,
+      isError: false,
+      isRefetching: false,
+      data: [mockItem],
+      refetch: jest.fn(),
+    } as unknown as ReturnType<typeof usePurchaseHistoryListQuery>);
+
+    const { getByText } = render(<PurchaseHistoryScreen />);
+    expect(getByText('Free Exam')).toBeTruthy();
+    expect(getByText('¥0.00')).toBeTruthy();
+  });
+
+  it('should trigger exactly one refetch on error retry', () => {
+    const refetchMock = jest.fn();
+    jest.mocked(usePurchaseHistoryListQuery).mockReturnValue({
+      isLoading: false,
+      isError: true,
+      isRefetching: false,
+      data: undefined,
+      refetch: refetchMock,
+    } as unknown as ReturnType<typeof usePurchaseHistoryListQuery>);
+
+    const { getByText } = render(<PurchaseHistoryScreen />);
+    const retryButton = getByText('点击重试');
+    
+    // Simulate press
+    retryButton.props.onPress();
+    
+    expect(refetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('should trigger refetch on pull-to-refresh', () => {
+    const refetchMock = jest.fn();
+    jest.mocked(usePurchaseHistoryListQuery).mockReturnValue({
+      isLoading: false,
+      isError: false,
+      isRefetching: false,
+      data: [],
+      refetch: refetchMock,
+    } as unknown as ReturnType<typeof usePurchaseHistoryListQuery>);
+
+    const { getByTestId } = render(<PurchaseHistoryScreen />);
+    
+    // Test pull to refresh
+    const flatList = getByTestId('purchase-history-list');
+    flatList.props.onRefresh();
+    
+    expect(refetchMock).toHaveBeenCalledTimes(1);
+  });
 });

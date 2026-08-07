@@ -87,6 +87,7 @@ export function PurchaseHistoryScreen() {
   return (
     <AppScreen safeAreaEdges={['bottom']} className="bg-gray-50">
       <FlatList
+        testID="purchase-history-list"
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}

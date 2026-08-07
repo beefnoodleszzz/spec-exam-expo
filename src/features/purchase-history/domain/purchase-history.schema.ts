@@ -1,20 +1,35 @@
-import type { ExaminationManageContractDtoUserUserOrderBase } from '@/shared/api/generated/models';
+import { z } from 'zod';
 import type { PurchaseHistoryItem } from './purchase-history.types';
 import { createContractError } from '@/shared/api/errors/app-error';
 
-export function mapToPurchaseHistoryItem(dto: ExaminationManageContractDtoUserUserOrderBase): PurchaseHistoryItem {
-  if (!dto.id || dto.id === '') {
-    throw createContractError('Missing purchase history item id');
+export const rawPurchaseHistoryItemSchema = z.object({
+  id: z.string().min(1),
+  examTypeName: z.string().nullable().optional(),
+  amount: z.number().nullable().optional(),
+  originalAmount: z.number().nullable().optional(),
+  createTime: z.string().nullable().optional(),
+  orderNumber: z.string().nullable().optional(),
+  month: z.number().nullable().optional(),
+  stateText: z.string().nullable().optional(),
+});
+
+export function mapToPurchaseHistoryItem(dto: unknown): PurchaseHistoryItem {
+  const result = rawPurchaseHistoryItemSchema.safeParse(dto);
+
+  if (!result.success) {
+    throw createContractError('Invalid purchase history item format');
   }
 
+  const validDto = result.data;
+
   return {
-    id: dto.id,
-    examTypeName: dto.examTypeName ?? null,
-    amount: dto.amount ?? null,
-    originalAmount: dto.originalAmount ?? null,
-    createTime: dto.createTime ?? null,
-    orderNumber: dto.orderNumber ?? null,
-    month: dto.month ?? null,
-    stateText: dto.stateText ?? null,
+    id: validDto.id,
+    examTypeName: validDto.examTypeName ?? null,
+    amount: validDto.amount ?? null,
+    originalAmount: validDto.originalAmount ?? null,
+    createTime: validDto.createTime ?? null,
+    orderNumber: validDto.orderNumber ?? null,
+    month: validDto.month ?? null,
+    stateText: validDto.stateText ?? null,
   };
 }

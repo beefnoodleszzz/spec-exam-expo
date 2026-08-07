@@ -25,11 +25,7 @@ const cleanupTasks = [
 
 async function performCleanup(): Promise<void> {
   // 1. Immediately invalidate in-memory session status
-  sessionStore.setState({
-    status: 'anonymous',
-    accessToken: null,
-    userId: null,
-  })
+  sessionStore.getState().clearSession()
 
   // 2. Immediately clear in-memory Exam Profile
   appStore.getState().resetExamProfileState()

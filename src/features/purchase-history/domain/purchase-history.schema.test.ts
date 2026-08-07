@@ -44,7 +44,7 @@ describe('mapToPurchaseHistoryItem', () => {
     const dto: ExaminationManageContractDtoUserUserOrderBase = {
       examTypeName: 'Test',
     };
-    expect(() => mapToPurchaseHistoryItem(dto)).toThrow('Missing purchase history item id');
+    expect(() => mapToPurchaseHistoryItem(dto)).toThrow('Invalid purchase history item format');
   });
 
   it('should throw ContractError when id is empty string', () => {
@@ -52,6 +52,6 @@ describe('mapToPurchaseHistoryItem', () => {
       id: '',
       examTypeName: 'Test',
     };
-    expect(() => mapToPurchaseHistoryItem(dto)).toThrow('Missing purchase history item id');
+    expect(() => mapToPurchaseHistoryItem(dto)).toThrow('Invalid purchase history item format');
   });
 });
