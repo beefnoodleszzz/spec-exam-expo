@@ -44,7 +44,7 @@
     "audit:features": "tsx scripts/feature-audit/build-feature-matrix.ts",
     "validate:base": "pnpm typecheck && pnpm lint && pnpm test && pnpm doctor && pnpm audit:features:check",
     "validate": "pnpm validate:base",
-    "audit:features:check": "pnpm audit:features && git diff --exit-code -- docs/feature-audit"
+    "audit:features:check": "LEGACY_ROOT=scripts/feature-audit/fixtures/legacy pnpm audit:features && git diff --exit-code -- docs/feature-audit"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.1.1",

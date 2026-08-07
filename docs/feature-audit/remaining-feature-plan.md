@@ -2,4 +2,6 @@
 
 Schema Version: 1.0.0
 
-No remaining implementation phases.
+Plan for remaining implementation:
+
+- [ ] Phase 10A+: SimulationTestComponent

@@ -1,1 +1,7 @@
-{"Login":"IMPLEMENTED","SimulationTestComponent":"IMPLEMENT"}
+{
+  "Home": "IMPLEMENT",
+  "Search": "IMPLEMENT",
+  "mine": "IMPLEMENTED",
+  "Login": "IMPLEMENTED",
+  "SimulationTestComponent": "IMPLEMENT"
+}
