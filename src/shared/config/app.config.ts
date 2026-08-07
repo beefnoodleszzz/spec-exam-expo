@@ -13,8 +13,8 @@ const extra = Constants.expoConfig?.extra as {
 }
 
 const APP_VARIANT = extra?.APP_VARIANT ?? 'development'
-const API_BASE_URL = extra?.API_BASE_URL ?? 'https://ifch.i-cbao.com/ecsmotojk/api/'
-const WEB_BASE_URL = extra?.WEB_BASE_URL ?? 'https://fch.i-cbao.com/ecsmotojkweb/'
+const API_BASE_URL = APP_VARIANT === 'production' ? extra?.API_BASE_URL : (extra?.API_BASE_URL ?? 'https://ifch.i-cbao.com/ecsmotojk/api/')
+const WEB_BASE_URL = APP_VARIANT === 'production' ? extra?.WEB_BASE_URL : (extra?.WEB_BASE_URL ?? 'https://fch.i-cbao.com/ecsmotojkweb/')
 
 if (!API_BASE_URL) {
   throw new Error('AppConfig: API_BASE_URL is missing')

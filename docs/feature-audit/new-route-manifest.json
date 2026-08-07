@@ -1,0 +1,137 @@
+[
+  {
+    "file": "+not-found.tsx",
+    "protected": false,
+    "public": false
+  },
+  {
+    "file": "_layout.tsx",
+    "protected": false,
+    "public": false
+  },
+  {
+    "file": "index.tsx",
+    "protected": false,
+    "public": false
+  },
+  {
+    "file": "(protected)/_layout.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(public)/_layout.tsx",
+    "protected": false,
+    "public": true
+  },
+  {
+    "file": "(public)/sign-in.tsx",
+    "protected": false,
+    "public": true
+  },
+  {
+    "file": "(public)/sms-login.tsx",
+    "protected": false,
+    "public": true
+  },
+  {
+    "file": "dev/ui.tsx",
+    "protected": false,
+    "public": false
+  },
+  {
+    "file": "(protected)/(tabs)/_layout.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/(tabs)/index.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/(tabs)/me.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/(tabs)/profile.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/(tabs)/search.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/exam-profile/index.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/practice/_layout.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/practice/chapters.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/practice/index.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/practice/session.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/questions/index.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/settings/feedback.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/settings/index.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/settings/legal.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/simulation/entry.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/simulation/exam.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/simulation/history.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/simulation/result.tsx",
+    "protected": true,
+    "public": false
+  },
+  {
+    "file": "(protected)/user/profile.tsx",
+    "protected": true,
+    "public": false
+  }
+]

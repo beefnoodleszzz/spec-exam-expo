@@ -57,10 +57,11 @@ const VARIANTS: Record<AppVariant, VariantConfig> = {
 }
 
 const variant = VARIANTS[APP_VARIANT]
+const resolvedVariant = { ...variant }
 
 if (APP_VARIANT === 'production') {
-  const apiBaseUrl = process.env.API_BASE_URL || variant.apiBaseUrl;
-  const webBaseUrl = process.env.WEB_BASE_URL || variant.webBaseUrl;
+  const apiBaseUrl = process.env.API_BASE_URL;
+  const webBaseUrl = process.env.WEB_BASE_URL;
 
   if (!apiBaseUrl || !webBaseUrl) {
     throw new Error('Production environment requires explicit API_BASE_URL and WEB_BASE_URL');
@@ -72,21 +73,21 @@ if (APP_VARIANT === 'production') {
     throw new Error('Production environment rejects localhost and HTTP URLs for WEB_BASE_URL');
   }
 
-  variant.apiBaseUrl = apiBaseUrl;
-  variant.webBaseUrl = webBaseUrl;
+  resolvedVariant.apiBaseUrl = apiBaseUrl;
+  resolvedVariant.webBaseUrl = webBaseUrl;
 }
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: variant.name,
-  slug: variant.slug,
+  name: resolvedVariant.name,
+  slug: resolvedVariant.slug,
   version: '1.0.0',
   orientation: 'portrait',
-  scheme: variant.scheme,
+  scheme: resolvedVariant.scheme,
   userInterfaceStyle: 'light',
   icon: './assets/icon.png',
   ios: {
-    bundleIdentifier: variant.iosBundleIdentifier,
+    bundleIdentifier: resolvedVariant.iosBundleIdentifier,
     supportsTablet: false,
     infoPlist: {
       NSLocationWhenInUseUsageDescription: '用于选择当前考试地区',
@@ -94,7 +95,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
   },
   android: {
-    package: variant.androidPackage,
+    package: resolvedVariant.androidPackage,
     adaptiveIcon: {
       foregroundImage: './assets/android-icon-foreground.png',
       backgroundImage: './assets/android-icon-background.png',
@@ -124,15 +125,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   extra: {
     APP_VARIANT,
-    API_BASE_URL: variant.apiBaseUrl,
-    MAP_BASE_URL: variant.mapBaseUrl,
-    WEB_BASE_URL: variant.webBaseUrl,
-    WECHAT_APP_ID: variant.wechatAppId,
+    API_BASE_URL: resolvedVariant.apiBaseUrl,
+    MAP_BASE_URL: resolvedVariant.mapBaseUrl,
+    WEB_BASE_URL: resolvedVariant.webBaseUrl,
+    WECHAT_APP_ID: resolvedVariant.wechatAppId,
     /** Legacy backend signature protocol salt */
     LEGACY_CHECK_KEY: '80306f4370b39fd5630ad0529f77adb6',
     UNIVERSAL_LINK_IOS: 'https://fch.i-cbao.com/specialworker/',
     eas: {
-      projectId: variant.easProjectId,
+      projectId: resolvedVariant.easProjectId,
     },
   },
 })
