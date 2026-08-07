@@ -29,7 +29,6 @@ This is a full rewrite of the legacy `spec-exam-pure` React Native app (RN 0.66)
 - expo-secure-store
 - @react-native-async-storage/async-storage
 - Vitest
-- Maestro (E2E)
 
 ## Environment Requirements
 - Node.js (>= 18.x recommended)

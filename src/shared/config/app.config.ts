@@ -24,8 +24,16 @@ if (!WEB_BASE_URL) {
   throw new Error('AppConfig: WEB_BASE_URL is missing')
 }
 
-if (APP_VARIANT === 'production' && (API_BASE_URL.includes('localhost') || WEB_BASE_URL.includes('localhost'))) {
-  throw new Error('AppConfig: Production environment cannot use localhost')
+if (APP_VARIANT === 'production') {
+  if (!API_BASE_URL || !WEB_BASE_URL) {
+    throw new Error('AppConfig: API_BASE_URL and WEB_BASE_URL are required in production')
+  }
+  if (API_BASE_URL.startsWith('http://') || WEB_BASE_URL.startsWith('http://')) {
+    throw new Error('AppConfig: Production environment cannot use http://')
+  }
+  if (API_BASE_URL.includes('localhost') || WEB_BASE_URL.includes('localhost')) {
+    throw new Error('AppConfig: Production environment cannot use localhost')
+  }
 }
 
 export const AppConfig = {

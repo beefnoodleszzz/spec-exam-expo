@@ -1,20 +1,37 @@
 # Remaining Feature Plan
 
-Based on the feature audit, the following features remain to be addressed, segmented into manageable phases.
+## Phase 8: Search, Notes, Favorites
+- **Business Loop**: Allow users to search for topics, take notes, and manage their favorite questions.
+- **Involved Pages**: `search`, `wrong-topic-collection-component`, `my-idea-component`
+- **Involved APIs**: `searchQuestions`, `getFavorites`, `addFavorite`
+- **Dependencies**: Authentication, Practice Core
+- **Exclusions**: Advanced text search filtering
+- **Acceptance Criteria**: Users can search, favorite, and view notes.
+- **Expected Commit Title**: `feat(search): implement search and favorites`
 
-## Phase 10A: UI Polish & Core User Flows
-- Implement standard user profile settings (name, avatar, basic preferences).
-- Polish the "Mine" (Profile) screen layout.
-- Finalize the authentication loops (including handling Apple Login if supported).
-- Ensure all screens properly handle loading, error, and empty states.
+## Phase 9: Membership & Payment
+- **Business Loop**: Allow users to purchase VIP access.
+- **Involved Pages**: `my-vip-component`, `order-to-practice-component`
+- **Involved APIs**: `buyVip`, `getOrderStatus`
+- **Dependencies**: Authentication
+- **Exclusions**: Apple Pay integration (Deferred)
+- **Acceptance Criteria**: Users can view VIP status and generate order.
+- **Expected Commit Title**: `feat(payment): implement VIP checkout`
 
-## Phase 10B: Hiding Unsupported / Incomplete Features
-- Implement UI toggles or completely remove entry points for **VIP / Membership**.
-- Hide **Wallet** and **Payment** related buttons from the profile screen.
-- Mark **Notices** and **Version Update** as `NOT SUPPORTED` in code, ensuring no broken UI interactions.
+## Phase 10: Wallet, Invitation, Profile
+- **Business Loop**: Manage wallet balances, refer friends, and update user info.
+- **Involved Pages**: `my-wallet-component`, `invite-user-component`, `user-info-component`, `withdrawal-component`
+- **Involved APIs**: `getWallet`, `inviteUser`, `withdraw`
+- **Dependencies**: Payment
+- **Exclusions**: Custom avatar upload
+- **Acceptance Criteria**: Users can view wallet balance and submit withdrawal request.
+- **Expected Commit Title**: `feat(profile): implement wallet and invites`
 
-## Phase 11: Production Readiness
-- Complete E2E testing for all core routes.
-- Address TestFlight / Play Store deployment prerequisites.
-- Validate environment configurations in a production build.
-- Perform a final review against legacy behavioral requirements.
+## Phase 11: WebView & Release
+- **Business Loop**: Surface legal pages and polish for release.
+- **Involved Pages**: `simple-webview-component`, `user-agreement-component`
+- **Involved APIs**: N/A
+- **Dependencies**: All prior phases
+- **Exclusions**: Device testing (Deferred)
+- **Acceptance Criteria**: All webviews render correctly.
+- **Expected Commit Title**: `feat(release): finalize webviews and release prep`
