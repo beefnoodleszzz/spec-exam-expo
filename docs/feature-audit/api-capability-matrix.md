@@ -2,4 +2,5 @@
 
 Schema Version: 1.0.0
 
-Data mapped between endpoints and features
+Canonical data:
+feature-matrix.json

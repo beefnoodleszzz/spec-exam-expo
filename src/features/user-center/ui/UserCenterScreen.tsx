@@ -60,6 +60,12 @@ export function UserCenterScreen() {
           >
             Settings
           </AppButton>
+          <AppButton
+            variant="outline"
+            onPress={() => router.push('/(protected)/user/purchase-history' as never)}
+          >
+            Purchase History
+          </AppButton>
         </View>
       </ScrollView>
     </AppScreen>

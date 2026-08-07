@@ -220,6 +220,14 @@
       "public": false,
       "type": "page",
       "reachable": []
+    },
+    {
+      "routePath": "/(protected)/user/purchase-history",
+      "file": "(protected)/user/purchase-history.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
     }
   ]
 }

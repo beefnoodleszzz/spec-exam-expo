@@ -23,7 +23,7 @@
   "MoreComponent": "HIDE",
   "MyProjectComponent": "HIDE",
   "MyWalletComponent": "HIDE",
-  "BuyHistoryComponent": "IMPLEMENT",
+  "BuyHistoryComponent": "IMPLEMENTED",
   "QuickStartComponent": "IMPLEMENTED",
   "SettingComponent": "IMPLEMENTED",
   "InputInviteCodeComponent": "HIDE",

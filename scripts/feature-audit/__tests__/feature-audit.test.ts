@@ -56,9 +56,7 @@ describe('Feature Audit Extractors', () => {
     // Instead of overriding everything, we will test the real buildFeatureMatrix function in e2e
     // Let's just catch error to see if it works
     try {
-        buildFeatureMatrix(outDir);
-    } catch(e) {
-        // ignore
+      expect(() => buildFeatureMatrix(outDir)).not.toThrow();
     } finally {
         fs.rmSync(outDir, { recursive: true, force: true });
     }

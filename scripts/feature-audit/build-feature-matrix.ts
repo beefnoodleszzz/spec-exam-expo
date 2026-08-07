@@ -58,9 +58,9 @@ export function buildFeatureMatrix(outDir?: string) {
   fs.writeFileSync(path.join(docsDir, 'legacy-feature-manifest.json'), JSON.stringify({ schemaVersion, features: legacyFeatures }, null, 2));
   fs.writeFileSync(path.join(docsDir, 'feature-matrix.json'), JSON.stringify({ schemaVersion, matrix }, null, 2));
 
-  fs.writeFileSync(path.join(docsDir, 'generated-api-manifest.md'), `# Generated API Manifest\n\nSchema Version: ${schemaVersion}\n\n\`\`\`json\n${JSON.stringify(generatedApi, null, 2)}\n\`\`\``);
-  fs.writeFileSync(path.join(docsDir, 'legacy-feature-inventory.md'), `# Legacy Feature Inventory\n\nSchema Version: ${schemaVersion}\n\n- VIP Payment Loops: Validated\n- REUSE states mapped`);
-  fs.writeFileSync(path.join(docsDir, 'api-capability-matrix.md'), `# API Capability Matrix\n\nSchema Version: ${schemaVersion}\n\nData mapped between endpoints and features`);
+  fs.writeFileSync(path.join(docsDir, 'generated-api-manifest.md'), `# Generated API Manifest\n\nSchema Version: ${schemaVersion}\n\nCanonical data:\ngenerated-api-manifest.json`);
+  fs.writeFileSync(path.join(docsDir, 'legacy-feature-inventory.md'), `# Legacy Feature Inventory\n\nSchema Version: ${schemaVersion}\n\nCanonical data:\nfeature-matrix.json`);
+  fs.writeFileSync(path.join(docsDir, 'api-capability-matrix.md'), `# API Capability Matrix\n\nSchema Version: ${schemaVersion}\n\nCanonical data:\nfeature-matrix.json`);
   
   const implementItems = matrix.filter(m => m.conclusion === 'IMPLEMENT');
   let planContent = `# Remaining Feature Plan\n\nSchema Version: ${schemaVersion}\n\n`;

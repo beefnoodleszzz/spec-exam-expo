@@ -2,5 +2,5 @@
 
 Schema Version: 1.0.0
 
-- VIP Payment Loops: Validated
-- REUSE states mapped
+Canonical data:
+feature-matrix.json

@@ -2,8 +2,17 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Project, SyntaxKind, VariableDeclaration } from 'ts-morph';
 
+export interface GeneratedEndpointManifest {
+  name: string;
+  method: string;
+  path: string;
+  summary: string;
+  responseType: string;
+  sourceFile: string;
+}
+
 export function extractGeneratedApi(endpointsDir: string) {
-  const endpoints: any[] = [];
+  const endpoints: GeneratedEndpointManifest[] = [];
   if (!fs.existsSync(endpointsDir)) return endpoints;
 
   const project = new Project();
