@@ -62,7 +62,7 @@ export function UserCenterScreen() {
           </AppButton>
           <AppButton
             variant="outline"
-            onPress={() => router.push('/(protected)/user/purchase-history' as never)}
+            onPress={() => router.push('/(protected)/user/purchase-history')}
           >
             Purchase History
           </AppButton>

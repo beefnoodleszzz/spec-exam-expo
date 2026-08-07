@@ -3,13 +3,14 @@ import type { PurchaseHistoryRemote } from './purchase-history.remote';
 import { mapToPurchaseHistoryItem } from '../domain/purchase-history.schema';
 import type { PurchaseHistoryItem } from '../domain/purchase-history.types';
 import { extractGeneratedData } from '@/shared/api/generated-response';
+import { createContractError } from '@/shared/api/errors/app-error';
 
 export class PurchaseHistoryRemoteImpl implements PurchaseHistoryRemote {
   async getPurchaseHistoryList(): Promise<PurchaseHistoryItem[]> {
     const response = await apiExamV2AppOrderUserBuyRecordListGet();
     const dataList = extractGeneratedData(response.data, '获取购买记录');
     if (!Array.isArray(dataList)) {
-      return [];
+      throw createContractError('Failed to parse purchase history list: expected array');
     }
     return dataList.map(mapToPurchaseHistoryItem);
   }

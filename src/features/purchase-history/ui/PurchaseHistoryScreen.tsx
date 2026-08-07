@@ -3,31 +3,53 @@ import { View, FlatList, ActivityIndicator } from 'react-native';
 import { usePurchaseHistoryListQuery } from '../application/purchase-history.query';
 import type { PurchaseHistoryItem } from '../domain/purchase-history.types';
 import { AppScreen, AppText } from '@/shared/components';
+import { formatDate } from '@/shared/utils/date-formatter';
 
 export function PurchaseHistoryScreen() {
-  const { data, isLoading, isError, refetch } = usePurchaseHistoryListQuery();
+  const { data, isLoading, isError, isRefetching, refetch } = usePurchaseHistoryListQuery();
 
   const renderItem = ({ item }: { item: PurchaseHistoryItem }) => {
-    // Basic date formatting (assuming YYYY-MM-DDTHH:mm:ss or similar from API)
-    const formattedTime = item.createTime.replace('T', ' ').substring(0, 16);
+    const formattedTime = formatDate(item.createTime);
     
+    let monthText = null;
+    if (item.month === -1) {
+      monthText = '永久';
+    } else if (item.month && item.month > 0) {
+      monthText = `${item.month}个月`;
+    }
+
+    const hasOriginalAmount = typeof item.originalAmount === 'number' && typeof item.amount === 'number' && item.originalAmount !== item.amount;
+
     return (
       <View className="bg-white p-4 mb-3 rounded-lg flex-row justify-between items-center shadow-sm">
         <View className="flex-1 mr-4">
           <AppText className="text-base font-medium text-gray-900 mb-1" numberOfLines={1}>
             {item.examTypeName}
+            {monthText ? ` (${monthText})` : ''}
+            {item.stateText ? ` - ${item.stateText}` : ''}
           </AppText>
-          <AppText className="text-xs text-gray-500">
-            订单号: {item.orderNumber}
-          </AppText>
-          <AppText className="text-xs text-gray-500">
-            {formattedTime}
-          </AppText>
+          {item.orderNumber ? (
+            <AppText className="text-xs text-gray-500">
+              订单号: {item.orderNumber}
+            </AppText>
+          ) : null}
+          {formattedTime ? (
+            <AppText className="text-xs text-gray-500">
+              {formattedTime}
+            </AppText>
+          ) : null}
         </View>
         <View className="items-end">
-          <AppText className="text-lg font-semibold text-red-500">
-            ¥{item.amount.toFixed(2)}
-          </AppText>
+          {hasOriginalAmount ? (
+            <AppText className="text-xs text-gray-400 line-through">
+              ¥{item.originalAmount!.toFixed(2)}
+            </AppText>
+          ) : null}
+          {typeof item.amount === 'number' ? (
+            <AppText className="text-lg font-semibold text-red-500">
+              ¥{item.amount.toFixed(2)}
+            </AppText>
+          ) : null}
         </View>
       </View>
     );
@@ -56,7 +78,7 @@ export function PurchaseHistoryScreen() {
       <AppScreen safeAreaEdges={['bottom']}>
         <View className="flex-1 justify-center items-center">
           <AppText className="text-red-500 mb-4">加载失败，请稍后重试</AppText>
-          <AppText className="text-blue-500" onPress={() => refetch()}>点击重试</AppText>
+          <AppText className="text-blue-500" onPress={() => void refetch()}>点击重试</AppText>
         </View>
       </AppScreen>
     );
@@ -70,6 +92,8 @@ export function PurchaseHistoryScreen() {
         renderItem={renderItem}
         ListEmptyComponent={renderEmpty}
         contentContainerStyle={{ padding: 16 }}
+        refreshing={!!(isRefetching && !isLoading)}
+        onRefresh={() => void refetch()}
       />
     </AppScreen>
   );
