@@ -1,137 +1,225 @@
-[
-  {
-    "file": "+not-found.tsx",
-    "protected": false,
-    "public": false
-  },
-  {
-    "file": "_layout.tsx",
-    "protected": false,
-    "public": false
-  },
-  {
-    "file": "index.tsx",
-    "protected": false,
-    "public": false
-  },
-  {
-    "file": "(protected)/_layout.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(public)/_layout.tsx",
-    "protected": false,
-    "public": true
-  },
-  {
-    "file": "(public)/sign-in.tsx",
-    "protected": false,
-    "public": true
-  },
-  {
-    "file": "(public)/sms-login.tsx",
-    "protected": false,
-    "public": true
-  },
-  {
-    "file": "dev/ui.tsx",
-    "protected": false,
-    "public": false
-  },
-  {
-    "file": "(protected)/(tabs)/_layout.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/(tabs)/index.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/(tabs)/me.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/(tabs)/profile.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/(tabs)/search.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/exam-profile/index.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/practice/_layout.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/practice/chapters.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/practice/index.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/practice/session.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/questions/index.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/settings/feedback.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/settings/index.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/settings/legal.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/simulation/entry.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/simulation/exam.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/simulation/history.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/simulation/result.tsx",
-    "protected": true,
-    "public": false
-  },
-  {
-    "file": "(protected)/user/profile.tsx",
-    "protected": true,
-    "public": false
-  }
-]
+{
+  "schemaVersion": "1.0.0",
+  "routes": [
+    {
+      "routePath": "/_layout",
+      "file": "_layout.tsx",
+      "protected": false,
+      "public": false,
+      "type": "layout",
+      "reachable": []
+    },
+    {
+      "routePath": "/+not-found",
+      "file": "+not-found.tsx",
+      "protected": false,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "",
+      "file": "index.tsx",
+      "protected": false,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/_layout",
+      "file": "(protected)/_layout.tsx",
+      "protected": true,
+      "public": false,
+      "type": "layout",
+      "reachable": []
+    },
+    {
+      "routePath": "/(public)/_layout",
+      "file": "(public)/_layout.tsx",
+      "protected": false,
+      "public": true,
+      "type": "layout",
+      "reachable": []
+    },
+    {
+      "routePath": "/(public)/sign-in",
+      "file": "(public)/sign-in.tsx",
+      "protected": false,
+      "public": true,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(public)/sms-login",
+      "file": "(public)/sms-login.tsx",
+      "protected": false,
+      "public": true,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/dev/ui",
+      "file": "dev/ui.tsx",
+      "protected": false,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/(tabs)/_layout",
+      "file": "(protected)/(tabs)/_layout.tsx",
+      "protected": true,
+      "public": false,
+      "type": "layout",
+      "reachable": [
+        "index",
+        "search",
+        "profile"
+      ]
+    },
+    {
+      "routePath": "/(protected)/(tabs)",
+      "file": "(protected)/(tabs)/index.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/(tabs)/me",
+      "file": "(protected)/(tabs)/me.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/(tabs)/profile",
+      "file": "(protected)/(tabs)/profile.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/(tabs)/search",
+      "file": "(protected)/(tabs)/search.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/exam-profile",
+      "file": "(protected)/exam-profile/index.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/practice/_layout",
+      "file": "(protected)/practice/_layout.tsx",
+      "protected": true,
+      "public": false,
+      "type": "layout",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/practice/chapters",
+      "file": "(protected)/practice/chapters.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/practice",
+      "file": "(protected)/practice/index.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/practice/session",
+      "file": "(protected)/practice/session.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/questions",
+      "file": "(protected)/questions/index.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/settings/feedback",
+      "file": "(protected)/settings/feedback.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/settings",
+      "file": "(protected)/settings/index.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/settings/legal",
+      "file": "(protected)/settings/legal.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/simulation/entry",
+      "file": "(protected)/simulation/entry.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/simulation/exam",
+      "file": "(protected)/simulation/exam.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/simulation/history",
+      "file": "(protected)/simulation/history.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/simulation/result",
+      "file": "(protected)/simulation/result.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    },
+    {
+      "routePath": "/(protected)/user/profile",
+      "file": "(protected)/user/profile.tsx",
+      "protected": true,
+      "public": false,
+      "type": "page",
+      "reachable": []
+    }
+  ]
+}

@@ -1,3 +1,1032 @@
 # Generated API Manifest
 
-[]
+Schema Version: 1.0.0
+
+```json
+[
+  {
+    "name": "apiCacheManagerPluginTestCacheByDbIndexGet",
+    "method": "GET",
+    "path": "/api/CacheManagerPlugin/TestCache/${dbIndex}",
+    "summary": "",
+    "responseType": "apiCacheManagerPluginTestCacheByDbIndexGetResponse",
+    "sourceFile": "cache-manager-plugin.ts"
+  },
+  {
+    "name": "apiExamV2AppWalletUserAssetsInfoGet",
+    "method": "GET",
+    "path": "/api/examV2/app/wallet/userAssetsInfo",
+    "summary": "我的钱包统计 (累计金额和提现金额)",
+    "responseType": "apiExamV2AppWalletUserAssetsInfoGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppWalletQueryUserCashOutRecordListGet",
+    "method": "GET",
+    "path": "/api/examV2/app/wallet/queryUserCashOutRecordList",
+    "summary": "查询用户的提现明细列表",
+    "responseType": "apiExamV2AppWalletQueryUserCashOutRecordListGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppWalletUserApplyCashOutGet",
+    "method": "GET",
+    "path": "/api/examV2/app/wallet/userApplyCashOut",
+    "summary": "申请提现",
+    "responseType": "apiExamV2AppWalletUserApplyCashOutGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppWalletVerifyCashOutPost",
+    "method": "POST",
+    "path": "/api/examV2/app/wallet/verifyCashOut",
+    "summary": "提现审核",
+    "responseType": "apiExamV2AppWalletVerifyCashOutPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppWalletUserAssetsRecordInComeListGet",
+    "method": "GET",
+    "path": "/api/examV2/app/wallet/userAssetsRecordInComeList",
+    "summary": "我的钱包的收入明细",
+    "responseType": "apiExamV2AppWalletUserAssetsRecordInComeListGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2ComputerExamGet",
+    "method": "GET",
+    "path": "/api/examV2/ComputerExam",
+    "summary": "",
+    "responseType": "apiExamV2ComputerExamGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppHomeGet",
+    "method": "GET",
+    "path": "/api/examV2/app/home",
+    "summary": "特种考试首页",
+    "responseType": "apiExamV2AppHomeGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppInformationQueryInformationPagedListPost",
+    "method": "POST",
+    "path": "/api/examV2/app/information/queryInformationPagedList",
+    "summary": "资讯列表",
+    "responseType": "apiExamV2AppInformationQueryInformationPagedListPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppInformationQueryInformationDetailGet",
+    "method": "GET",
+    "path": "/api/examV2/app/information/queryInformationDetail",
+    "summary": "资讯详情",
+    "responseType": "apiExamV2AppInformationQueryInformationDetailGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppInsertFeedBackPost",
+    "method": "POST",
+    "path": "/api/examV2/app/insertFeedBack",
+    "summary": "意见反馈",
+    "responseType": "apiExamV2AppInsertFeedBackPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppQueryFeedbackPagedListGet",
+    "method": "GET",
+    "path": "/api/examV2/app/queryFeedbackPagedList",
+    "summary": "我的反馈列表",
+    "responseType": "apiExamV2AppQueryFeedbackPagedListGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppLoginPost",
+    "method": "POST",
+    "path": "/api/examV2/app/login",
+    "summary": "登录",
+    "responseType": "apiExamV2AppLoginPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppLoginShortMessagePost",
+    "method": "POST",
+    "path": "/api/examV2/app/login/shortMessage",
+    "summary": "短信登录",
+    "responseType": "apiExamV2AppLoginShortMessagePostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppLoginSendShortMessageGet",
+    "method": "GET",
+    "path": "/api/examV2/app/login/sendShortMessage",
+    "summary": "发送验证码",
+    "responseType": "apiExamV2AppLoginSendShortMessageGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppLoginOneClickLoginPost",
+    "method": "POST",
+    "path": "/api/examV2/app/login/oneClickLogin",
+    "summary": "一键登录",
+    "responseType": "apiExamV2AppLoginOneClickLoginPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppLoginGetUserInfoByTokenGet",
+    "method": "GET",
+    "path": "/api/examV2/app/login/getUserInfoByToken",
+    "summary": "根据token获取用户信息",
+    "responseType": "apiExamV2AppLoginGetUserInfoByTokenGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2VersionVerifyGet",
+    "method": "GET",
+    "path": "/api/examV2/versionVerify",
+    "summary": "版本号",
+    "responseType": "apiExamV2VersionVerifyGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppLoginGetUserTerminalPost",
+    "method": "POST",
+    "path": "/api/examV2/app/login/getUserTerminal",
+    "summary": "",
+    "responseType": "apiExamV2AppLoginGetUserTerminalPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2TestGet",
+    "method": "GET",
+    "path": "/api/examV2/test",
+    "summary": "",
+    "responseType": "apiExamV2TestGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2TestEncryptGet",
+    "method": "GET",
+    "path": "/api/examV2/testEncrypt",
+    "summary": "",
+    "responseType": "apiExamV2TestEncryptGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2TestDecryptPost",
+    "method": "POST",
+    "path": "/api/examV2/testDecrypt",
+    "summary": "",
+    "responseType": "apiExamV2TestDecryptPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2Get",
+    "method": "GET",
+    "path": "/api/examV2",
+    "summary": "",
+    "responseType": "apiExamV2GetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2FenCiGet",
+    "method": "GET",
+    "path": "/api/examV2/FenCi",
+    "summary": "",
+    "responseType": "apiExamV2FenCiGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppNoteInsertNotePost",
+    "method": "POST",
+    "path": "/api/examV2/app/note/insertNote",
+    "summary": "新增笔记",
+    "responseType": "apiExamV2AppNoteInsertNotePostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppNoteDeleteUserNoteGet",
+    "method": "GET",
+    "path": "/api/examV2/app/note/deleteUserNote",
+    "summary": "删除用户笔记",
+    "responseType": "apiExamV2AppNoteDeleteUserNoteGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppNoteQueryNotePagedListPost",
+    "method": "POST",
+    "path": "/api/examV2/app/note/queryNotePagedList",
+    "summary": "题目的所有笔记",
+    "responseType": "apiExamV2AppNoteQueryNotePagedListPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppNoteQueryUserNotePagedListPost",
+    "method": "POST",
+    "path": "/api/examV2/app/note/queryUserNotePagedList",
+    "summary": "我的笔记列表",
+    "responseType": "apiExamV2AppNoteQueryUserNotePagedListPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppNoteDeleteNoteGet",
+    "method": "GET",
+    "path": "/api/examV2/app/note/deleteNote",
+    "summary": "删除笔记",
+    "responseType": "apiExamV2AppNoteDeleteNoteGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppNoteInsertNoteLikeGet",
+    "method": "GET",
+    "path": "/api/examV2/app/note/insertNoteLike",
+    "summary": "点赞",
+    "responseType": "apiExamV2AppNoteInsertNoteLikeGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppNoteCancelNoteLikeGet",
+    "method": "GET",
+    "path": "/api/examV2/app/note/cancelNoteLike",
+    "summary": "取消点赞",
+    "responseType": "apiExamV2AppNoteCancelNoteLikeGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppOrderInsertUserOrderPost",
+    "method": "POST",
+    "path": "/api/examV2/app/order/insertUserOrder",
+    "summary": "新增我的科目（我的订单）",
+    "responseType": "apiExamV2AppOrderInsertUserOrderPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppOrderMyCourseGet",
+    "method": "GET",
+    "path": "/api/examV2/app/order/myCourse",
+    "summary": "我的科目列表",
+    "responseType": "apiExamV2AppOrderMyCourseGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppOrderChangeCourseGet",
+    "method": "GET",
+    "path": "/api/examV2/app/order/changeCourse",
+    "summary": "切换科目(设置默认科目)",
+    "responseType": "apiExamV2AppOrderChangeCourseGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppOrderDeleteCourseGet",
+    "method": "GET",
+    "path": "/api/examV2/app/order/deleteCourse",
+    "summary": "清除科目",
+    "responseType": "apiExamV2AppOrderDeleteCourseGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppOrderUserBuyRecordListGet",
+    "method": "GET",
+    "path": "/api/examV2/app/order/userBuyRecordList",
+    "summary": "购买记录列表",
+    "responseType": "apiExamV2AppOrderUserBuyRecordListGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppOrderMyInviteRecordPagedListGet",
+    "method": "GET",
+    "path": "/api/examV2/app/order/myInviteRecordPagedList",
+    "summary": "我的邀请成绩列表",
+    "responseType": "apiExamV2AppOrderMyInviteRecordPagedListGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppOrderAssetsHorseRaceLampListGet",
+    "method": "GET",
+    "path": "/api/examV2/app/order/assetsHorseRaceLampList",
+    "summary": "跑马灯",
+    "responseType": "apiExamV2AppOrderAssetsHorseRaceLampListGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppPayWeChatPaySimplePost",
+    "method": "POST",
+    "path": "/api/examV2/app/pay/weChatPaySimple",
+    "summary": "唤起支付",
+    "responseType": "apiExamV2AppPayWeChatPaySimplePostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppPayNotifyPost",
+    "method": "POST",
+    "path": "/api/examV2/app/pay/notify",
+    "summary": "支付回调",
+    "responseType": "apiExamV2AppPayNotifyPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppRuleOpenMembershipGet",
+    "method": "GET",
+    "path": "/api/examV2/app/rule/openMembership",
+    "summary": "开通会员",
+    "responseType": "apiExamV2AppRuleOpenMembershipGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSearchQueryEsSubjectListGet",
+    "method": "GET",
+    "path": "/api/examV2/app/search/queryEsSubjectList",
+    "summary": "搜题",
+    "responseType": "apiExamV2AppSearchQueryEsSubjectListGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2InsertExamTypePost",
+    "method": "POST",
+    "path": "/api/examV2/insertExamType",
+    "summary": "",
+    "responseType": "apiExamV2InsertExamTypePostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2UpdateExamTypePost",
+    "method": "POST",
+    "path": "/api/examV2/updateExamType",
+    "summary": "",
+    "responseType": "apiExamV2UpdateExamTypePostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2DeleteExamTypeGet",
+    "method": "GET",
+    "path": "/api/examV2/deleteExamType",
+    "summary": "",
+    "responseType": "apiExamV2DeleteExamTypeGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2ExamTypeListGet",
+    "method": "GET",
+    "path": "/api/examV2/examTypeList",
+    "summary": "",
+    "responseType": "apiExamV2ExamTypeListGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2ExcelImportSubjectPost",
+    "method": "POST",
+    "path": "/api/examV2/excelImportSubject",
+    "summary": "",
+    "responseType": "apiExamV2ExcelImportSubjectPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2InsertSubjectGroupPost",
+    "method": "POST",
+    "path": "/api/examV2/insertSubjectGroup",
+    "summary": "",
+    "responseType": "apiExamV2InsertSubjectGroupPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectResetSubjectGroupPut",
+    "method": "PUT",
+    "path": "/api/examV2/app/subject/resetSubjectGroup",
+    "summary": "重置学习状态",
+    "responseType": "apiExamV2AppSubjectResetSubjectGroupPutResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGetSubjectGroupGet",
+    "method": "GET",
+    "path": "/api/examV2/app/subject/getSubjectGroup",
+    "summary": "获取套题列表",
+    "responseType": "apiExamV2AppSubjectGetSubjectGroupGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGetSubjectsByGroupPost",
+    "method": "POST",
+    "path": "/api/examV2/app/subject/getSubjectsByGroup",
+    "summary": "获取套题题目内容",
+    "responseType": "apiExamV2AppSubjectGetSubjectsByGroupPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGetExamTypeGet",
+    "method": "GET",
+    "path": "/api/examV2/app/subject/getExamType",
+    "summary": "",
+    "responseType": "apiExamV2AppSubjectGetExamTypeGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGetMockExamGet",
+    "method": "GET",
+    "path": "/api/examV2/app/subject/getMockExam",
+    "summary": "获取模拟考试介绍",
+    "responseType": "apiExamV2AppSubjectGetMockExamGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGetSubjectsTypeDataGet",
+    "method": "GET",
+    "path": "/api/examV2/app/subject/getSubjectsTypeData",
+    "summary": "获取易错题题目类型数量",
+    "responseType": "apiExamV2AppSubjectGetSubjectsTypeDataGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGetSubjectsStaticsPost",
+    "method": "POST",
+    "path": "/api/examV2/app/subject/getSubjectsStatics",
+    "summary": "获取错题/收藏统计",
+    "responseType": "apiExamV2AppSubjectGetSubjectsStaticsPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGetSubjectsPost",
+    "method": "POST",
+    "path": "/api/examV2/app/subject/getSubjects",
+    "summary": "获取练习题目",
+    "responseType": "apiExamV2AppSubjectGetSubjectsPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectSubmitExerciseRecordPut",
+    "method": "PUT",
+    "path": "/api/examV2/app/subject/submitExerciseRecord",
+    "summary": "提交答题记录",
+    "responseType": "apiExamV2AppSubjectSubmitExerciseRecordPutResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGetGradeHistoryGet",
+    "method": "GET",
+    "path": "/api/examV2/app/subject/getGradeHistory",
+    "summary": "查看成绩表",
+    "responseType": "apiExamV2AppSubjectGetGradeHistoryGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGetSubjectsByIdsPost",
+    "method": "POST",
+    "path": "/api/examV2/app/subject/getSubjectsByIds",
+    "summary": "",
+    "responseType": "apiExamV2AppSubjectGetSubjectsByIdsPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppSubjectGroupTestPut",
+    "method": "PUT",
+    "path": "/api/examV2/app/subject/GroupTest",
+    "summary": "",
+    "responseType": "apiExamV2AppSubjectGroupTestPutResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2QuerySubjectPagedListPost",
+    "method": "POST",
+    "path": "/api/examV2/querySubjectPagedList",
+    "summary": "",
+    "responseType": "apiExamV2QuerySubjectPagedListPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2QuerySubjectGroupPagedListPost",
+    "method": "POST",
+    "path": "/api/examV2/querySubjectGroupPagedList",
+    "summary": "",
+    "responseType": "apiExamV2QuerySubjectGroupPagedListPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2QuerySubjectPagedListByGroupIdPost",
+    "method": "POST",
+    "path": "/api/examV2/querySubjectPagedListByGroupId",
+    "summary": "",
+    "responseType": "apiExamV2QuerySubjectPagedListByGroupIdPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2GenerateCertificateGet",
+    "method": "GET",
+    "path": "/api/examV2/generateCertificate",
+    "summary": "",
+    "responseType": "apiExamV2GenerateCertificateGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2SubjectListGet",
+    "method": "GET",
+    "path": "/api/examV2/SubjectList",
+    "summary": "",
+    "responseType": "apiExamV2SubjectListGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2UpdateSubjectPost",
+    "method": "POST",
+    "path": "/api/examV2/UpdateSubject",
+    "summary": "",
+    "responseType": "apiExamV2UpdateSubjectPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppUserUserDataDetailGet",
+    "method": "GET",
+    "path": "/api/examV2/app/user/userDataDetail",
+    "summary": "“我的”界面",
+    "responseType": "apiExamV2AppUserUserDataDetailGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppUserUpdateUserPost",
+    "method": "POST",
+    "path": "/api/examV2/app/user/updateUser",
+    "summary": "更新个人信息",
+    "responseType": "apiExamV2AppUserUpdateUserPostResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppUserDeleteUserGet",
+    "method": "GET",
+    "path": "/api/examV2/app/user/deleteUser",
+    "summary": "删除用户",
+    "responseType": "apiExamV2AppUserDeleteUserGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppUserDetailGet",
+    "method": "GET",
+    "path": "/api/examV2/app/user/detail",
+    "summary": "用户详情",
+    "responseType": "apiExamV2AppUserDetailGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppUserCheckInviteCodeGet",
+    "method": "GET",
+    "path": "/api/examV2/app/user/checkInviteCode",
+    "summary": "验证邀请码",
+    "responseType": "apiExamV2AppUserCheckInviteCodeGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppUserSetExamTimeGet",
+    "method": "GET",
+    "path": "/api/examV2/app/user/setExamTime",
+    "summary": "设置考试倒计时",
+    "responseType": "apiExamV2AppUserSetExamTimeGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppUserFileInInviteCodeGet",
+    "method": "GET",
+    "path": "/api/examV2/app/user/fileInInviteCode",
+    "summary": "填写邀请码",
+    "responseType": "apiExamV2AppUserFileInInviteCodeGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamV2AppUserExamTimeDayGet",
+    "method": "GET",
+    "path": "/api/examV2/app/user/examTimeDay",
+    "summary": "当前用户设置的考试时间计算值",
+    "responseType": "apiExamV2AppUserExamTimeDayGetResponse",
+    "sourceFile": "examination-manager-v2.ts"
+  },
+  {
+    "name": "apiExamHomeChairGet",
+    "method": "GET",
+    "path": "/api/exam/homeChair",
+    "summary": "少儿主持首页",
+    "responseType": "apiExamHomeChairGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryGroupPagedListPost",
+    "method": "POST",
+    "path": "/api/exam/queryGroupPagedList",
+    "summary": "组列表",
+    "responseType": "apiExamQueryGroupPagedListPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryTopicPagedListPost",
+    "method": "POST",
+    "path": "/api/exam/queryTopicPagedList",
+    "summary": "题列表",
+    "responseType": "apiExamQueryTopicPagedListPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamInsertRelationPost",
+    "method": "POST",
+    "path": "/api/exam/insertRelation",
+    "summary": "",
+    "responseType": "apiExamInsertRelationPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamHomeGet",
+    "method": "GET",
+    "path": "/api/exam/home",
+    "summary": "首页",
+    "responseType": "apiExamHomeGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryQuestionsPost",
+    "method": "POST",
+    "path": "/api/exam/queryQuestions",
+    "summary": "题库列表",
+    "responseType": "apiExamQueryQuestionsPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryExerciseLearnStatisticsPost",
+    "method": "POST",
+    "path": "/api/exam/queryExerciseLearnStatistics",
+    "summary": "顺序练习刷题率统计信息",
+    "responseType": "apiExamQueryExerciseLearnStatisticsPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryUserWrongInfoListGet",
+    "method": "GET",
+    "path": "/api/exam/queryUserWrongInfoList",
+    "summary": "我的错题库",
+    "responseType": "apiExamQueryUserWrongInfoListGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryUserCollectInfoListGet",
+    "method": "GET",
+    "path": "/api/exam/queryUserCollectInfoList",
+    "summary": "我的收藏库",
+    "responseType": "apiExamQueryUserCollectInfoListGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryKmyMockListPost",
+    "method": "POST",
+    "path": "/api/exam/queryKmyMockList",
+    "summary": "科目一模拟题列表",
+    "responseType": "apiExamQueryKmyMockListPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryKmsMockListPost",
+    "method": "POST",
+    "path": "/api/exam/QueryKmsMockList",
+    "summary": "科目四模拟题列表",
+    "responseType": "apiExamQueryKmsMockListPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryLearningDataGet",
+    "method": "GET",
+    "path": "/api/exam/QueryLearningData",
+    "summary": "用户学习数据",
+    "responseType": "apiExamQueryLearningDataGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryHistoryResultDataGet",
+    "method": "GET",
+    "path": "/api/exam/queryHistoryResultData",
+    "summary": "历史成绩",
+    "responseType": "apiExamQueryHistoryResultDataGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamDeveloperModeGet",
+    "method": "GET",
+    "path": "/api/exam/developerMode",
+    "summary": "开发者模式",
+    "responseType": "apiExamDeveloperModeGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamLoginGet",
+    "method": "GET",
+    "path": "/api/exam/login",
+    "summary": "",
+    "responseType": "apiExamLoginGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamShortMessageLoginGet",
+    "method": "GET",
+    "path": "/api/exam/shortMessageLogin",
+    "summary": "",
+    "responseType": "apiExamShortMessageLoginGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamSendShortMessageGet",
+    "method": "GET",
+    "path": "/api/exam/sendShortMessage",
+    "summary": "发送验证码",
+    "responseType": "apiExamSendShortMessageGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamDeleteUserGet",
+    "method": "GET",
+    "path": "/api/exam/deleteUser",
+    "summary": "删除用户",
+    "responseType": "apiExamDeleteUserGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamDetailGet",
+    "method": "GET",
+    "path": "/api/exam/detail",
+    "summary": "用户详情",
+    "responseType": "apiExamDetailGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamWxOneClickLoginPost",
+    "method": "POST",
+    "path": "/api/exam/wxOneClickLogin",
+    "summary": "一键登录",
+    "responseType": "apiExamWxOneClickLoginPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamGetUserInfoByTokenGet",
+    "method": "GET",
+    "path": "/api/exam/getUserInfoByToken",
+    "summary": "根据token获取用户信息",
+    "responseType": "apiExamGetUserInfoByTokenGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamVersionVerifyGet",
+    "method": "GET",
+    "path": "/api/exam/versionVerify",
+    "summary": "",
+    "responseType": "apiExamVersionVerifyGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamGetUserTerminalPost",
+    "method": "POST",
+    "path": "/api/exam/getUserTerminal",
+    "summary": "",
+    "responseType": "apiExamGetUserTerminalPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamSendWxPublicPost",
+    "method": "POST",
+    "path": "/api/exam/sendWxPublic",
+    "summary": "",
+    "responseType": "apiExamSendWxPublicPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamInsertUserBuryingPointGet",
+    "method": "GET",
+    "path": "/api/exam/insertUserBuryingPoint",
+    "summary": "",
+    "responseType": "apiExamInsertUserBuryingPointGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamJointLoginGet",
+    "method": "GET",
+    "path": "/api/exam/jointLogin",
+    "summary": "",
+    "responseType": "apiExamJointLoginGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamVideoGet",
+    "method": "GET",
+    "path": "/api/exam/Video",
+    "summary": "",
+    "responseType": "apiExamVideoGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamAddQuestionGet",
+    "method": "GET",
+    "path": "/api/exam/AddQuestion",
+    "summary": "",
+    "responseType": "apiExamAddQuestionGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamInsertMotoOrderGet",
+    "method": "GET",
+    "path": "/api/exam/insertMotoOrder",
+    "summary": "创建摩托车订单",
+    "responseType": "apiExamInsertMotoOrderGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryUserMotoOrderGet",
+    "method": "GET",
+    "path": "/api/exam/queryUserMotoOrder",
+    "summary": "查询用户摩托车订单列表",
+    "responseType": "apiExamQueryUserMotoOrderGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamCreateOrderOldUserGet",
+    "method": "GET",
+    "path": "/api/exam/createOrderOldUser",
+    "summary": "",
+    "responseType": "apiExamCreateOrderOldUserGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamMotoWeChatPayPost",
+    "method": "POST",
+    "path": "/api/exam/motoWeChatPay",
+    "summary": "摩托车微信APP支付",
+    "responseType": "apiExamMotoWeChatPayPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamMotoPayNotifyPost",
+    "method": "POST",
+    "path": "/api/exam/motoPayNotify",
+    "summary": "摩托车支付回调",
+    "responseType": "apiExamMotoPayNotifyPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryVipRuleListGet",
+    "method": "GET",
+    "path": "/api/exam/queryVipRuleList",
+    "summary": "",
+    "responseType": "apiExamQueryVipRuleListGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamInsertOrderPost",
+    "method": "POST",
+    "path": "/api/exam/insertOrder",
+    "summary": "/新增订单",
+    "responseType": "apiExamInsertOrderPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamOrderPagedListPost",
+    "method": "POST",
+    "path": "/api/exam/orderPagedList",
+    "summary": "订单列表",
+    "responseType": "apiExamOrderPagedListPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamOrderTopicListGet",
+    "method": "GET",
+    "path": "/api/exam/orderTopicList",
+    "summary": "订单详情列表",
+    "responseType": "apiExamOrderTopicListGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamOrderDetailGet",
+    "method": "GET",
+    "path": "/api/exam/orderDetail",
+    "summary": "订单详情",
+    "responseType": "apiExamOrderDetailGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamWeChatPayPost",
+    "method": "POST",
+    "path": "/api/exam/weChatPay",
+    "summary": "微信APP支付",
+    "responseType": "apiExamWeChatPayPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamPayNotifyPost",
+    "method": "POST",
+    "path": "/api/exam/payNotify",
+    "summary": "支付回调",
+    "responseType": "apiExamPayNotifyPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamSubmitPost",
+    "method": "POST",
+    "path": "/api/exam/submit",
+    "summary": "提交",
+    "responseType": "apiExamSubmitPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamInsertTemporaryGet",
+    "method": "GET",
+    "path": "/api/exam/InsertTemporary",
+    "summary": "",
+    "responseType": "apiExamInsertTemporaryGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamUpdateTemporaryGet",
+    "method": "GET",
+    "path": "/api/exam/UpdateTemporary",
+    "summary": "",
+    "responseType": "apiExamUpdateTemporaryGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryHtmlGet",
+    "method": "GET",
+    "path": "/api/exam/queryHtml",
+    "summary": "",
+    "responseType": "apiExamQueryHtmlGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryTeacherPagedListPost",
+    "method": "POST",
+    "path": "/api/exam/queryTeacherPagedList",
+    "summary": "老师信息列表",
+    "responseType": "apiExamQueryTeacherPagedListPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamTeacherDetailGet",
+    "method": "GET",
+    "path": "/api/exam/teacherDetail",
+    "summary": "老师详情",
+    "responseType": "apiExamTeacherDetailGetResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiExamQueryTeacherGroupPagedListPost",
+    "method": "POST",
+    "path": "/api/exam/queryTeacherGroupPagedList",
+    "summary": "查询老师执教课程列表",
+    "responseType": "apiExamQueryTeacherGroupPagedListPostResponse",
+    "sourceFile": "examination-plugin.ts"
+  },
+  {
+    "name": "apiWebApiConfigExceptionGet",
+    "method": "GET",
+    "path": "/api/WebApiConfig/Exception",
+    "summary": "",
+    "responseType": "apiWebApiConfigExceptionGetResponse",
+    "sourceFile": "system-data.ts"
+  },
+  {
+    "name": "apiWebApiConfigGetSystemRuntimeNameSpaceGet",
+    "method": "GET",
+    "path": "/api/WebApiConfig/GetSystemRuntimeNameSpace",
+    "summary": "",
+    "responseType": "apiWebApiConfigGetSystemRuntimeNameSpaceGetResponse",
+    "sourceFile": "system-data.ts"
+  },
+  {
+    "name": "apiWebApiConfigSystemRuntimeNameSpacePost",
+    "method": "POST",
+    "path": "/api/WebApiConfig/SystemRuntimeNameSpace",
+    "summary": "",
+    "responseType": "apiWebApiConfigSystemRuntimeNameSpacePostResponse",
+    "sourceFile": "system-data.ts"
+  },
+  {
+    "name": "apiWebApiConfigGetWebApiUrlByKeynameGet",
+    "method": "GET",
+    "path": "/api/WebApiConfig/GetWebApiUrl/${keyname}",
+    "summary": "",
+    "responseType": "apiWebApiConfigGetWebApiUrlByKeynameGetResponse",
+    "sourceFile": "system-data.ts"
+  },
+  {
+    "name": "apiWebApiConfigGetContainerNameGet",
+    "method": "GET",
+    "path": "/api/WebApiConfig/GetContainerName",
+    "summary": "",
+    "responseType": "apiWebApiConfigGetContainerNameGetResponse",
+    "sourceFile": "system-data.ts"
+  },
+  {
+    "name": "apiWebApiConfigConfigChangedNoticeByPluginIdGet",
+    "method": "GET",
+    "path": "/api/WebApiConfig/ConfigChangedNotice/${pluginId}",
+    "summary": "",
+    "responseType": "apiWebApiConfigConfigChangedNoticeByPluginIdGetResponse",
+    "sourceFile": "web-api-config.ts"
+  },
+  {
+    "name": "apiWebApiDocGet",
+    "method": "GET",
+    "path": "/api/WebApiDoc",
+    "summary": "",
+    "responseType": "apiWebApiDocGetResponse",
+    "sourceFile": "web-api-doc.ts"
+  }
+]
+```

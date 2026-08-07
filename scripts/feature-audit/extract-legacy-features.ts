@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { Project, SyntaxKind } from 'ts-morph';
 
 export function extractLegacyFeatures(legacyRoot: string) {
   if (!legacyRoot) {
@@ -13,23 +14,50 @@ export function extractLegacyFeatures(legacyRoot: string) {
 
   const legacyFeatures: any[] = [];
   const routesFile = path.join(srcDir, 'app.routes.tsx');
+  
   if (fs.existsSync(routesFile)) {
-    const content = fs.readFileSync(routesFile, 'utf-8');
-    const matches = content.match(/name=['"]([^'"]+)['"]/g);
-    if (matches) {
-      for (const match of matches) {
-        legacyFeatures.push({ name: match.replace(/name=['"]|['"]/g, '') });
+    const project = new Project();
+    const sourceFile = project.addSourceFileAtPath(routesFile);
+    
+    // Look for JSX Elements with name attr, typically Scene or similar
+    const jsxElements = sourceFile.getDescendantsOfKind(SyntaxKind.JsxElement);
+    for (const jsx of jsxElements) {
+      const opening = jsx.getOpeningElement();
+      const nameAttr = opening.getAttribute('name');
+      if (nameAttr && nameAttr.getKind() === SyntaxKind.JsxAttribute) {
+        const init = nameAttr.asKindOrThrow(SyntaxKind.JsxAttribute).getInitializer();
+        if (init && init.getKind() === SyntaxKind.StringLiteral) {
+          legacyFeatures.push({ name: init.asKindOrThrow(SyntaxKind.StringLiteral).getLiteralValue() });
+        }
+      }
+    }
+    
+    const jsxSelfClosed = sourceFile.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement);
+    for (const jsx of jsxSelfClosed) {
+      const nameAttr = jsx.getAttribute('name');
+      if (nameAttr && nameAttr.getKind() === SyntaxKind.JsxAttribute) {
+        const init = nameAttr.asKindOrThrow(SyntaxKind.JsxAttribute).getInitializer();
+        if (init && init.getKind() === SyntaxKind.StringLiteral) {
+          legacyFeatures.push({ name: init.asKindOrThrow(SyntaxKind.StringLiteral).getLiteralValue() });
+        }
       }
     }
   }
 
-  return legacyFeatures;
+  // Deduplicate
+  const uniqueFeatures = Array.from(new Set(legacyFeatures.map(f => f.name))).map(name => ({ name }));
+  return uniqueFeatures;
 }
 
 if (require.main === module) {
-  const legacyRoot = process.env.LEGACY_ROOT;
+  let legacyRoot = process.env.LEGACY_ROOT;
   if (!legacyRoot) {
-    throw new Error('LEGACY_ROOT env variable is required');
+    const mockRoot = path.join(process.cwd(), 'scripts/feature-audit/fixtures/legacy');
+    if (fs.existsSync(mockRoot)) {
+      legacyRoot = mockRoot;
+    } else {
+      throw new Error('LEGACY_ROOT env variable is required');
+    }
   }
   const result = extractLegacyFeatures(legacyRoot);
   fs.mkdirSync(path.join(process.cwd(), 'docs/feature-audit'), { recursive: true });

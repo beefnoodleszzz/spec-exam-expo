@@ -11,6 +11,7 @@ export default defineConfig({
       'src/**/*.test.tsx',
       'scripts/openapi/**/*.test.ts',
       'scripts/auth/**/*.test.ts',
+      'scripts/feature-audit/**/*.test.ts',
     ],
     exclude: [
       'src/**/*.react.test.ts',
