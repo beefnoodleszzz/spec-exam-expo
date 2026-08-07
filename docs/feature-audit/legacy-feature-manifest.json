@@ -2,10 +2,384 @@
   "schemaVersion": "1.0.0",
   "features": [
     {
-      "name": "Login"
+      "featureId": "Splash",
+      "name": "Splash",
+      "legacyRoute": "Splash",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
     },
     {
-      "name": "SimulationTestComponent"
+      "featureId": "Home1",
+      "name": "Home1",
+      "legacyRoute": "Home1",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "Home2",
+      "name": "Home2",
+      "legacyRoute": "Home2",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "Home",
+      "name": "Home",
+      "legacyRoute": "Home",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "DoExamMain",
+      "name": "DoExamMain",
+      "legacyRoute": "DoExamMain",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "ChooseCity",
+      "name": "ChooseCity",
+      "legacyRoute": "ChooseCity",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "Login",
+      "name": "Login",
+      "legacyRoute": "Login",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "LoginIndex",
+      "name": "LoginIndex",
+      "legacyRoute": "LoginIndex",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "SubjectChoose",
+      "name": "SubjectChoose",
+      "legacyRoute": "SubjectChoose",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "ChooseTheSubjectComponent",
+      "name": "ChooseTheSubjectComponent",
+      "legacyRoute": "ChooseTheSubjectComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "ChooseTheSubjectComponentLogin",
+      "name": "ChooseTheSubjectComponentLogin",
+      "legacyRoute": "ChooseTheSubjectComponentLogin",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "RegisterForExamination",
+      "name": "RegisterForExamination",
+      "legacyRoute": "RegisterForExamination",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "UserAgreementComponent",
+      "name": "UserAgreementComponent",
+      "legacyRoute": "UserAgreementComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "SimpleWebview",
+      "name": "SimpleWebview",
+      "legacyRoute": "SimpleWebview",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "Search",
+      "name": "Search",
+      "legacyRoute": "Search",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "OrderToPracticeComponent",
+      "name": "OrderToPracticeComponent",
+      "legacyRoute": "OrderToPracticeComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "WrongTopicSetComponent",
+      "name": "WrongTopicSetComponent",
+      "legacyRoute": "WrongTopicSetComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "WrongTopicCollectionComponent",
+      "name": "WrongTopicCollectionComponent",
+      "legacyRoute": "WrongTopicCollectionComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "TheTranscriptComponent",
+      "name": "TheTranscriptComponent",
+      "legacyRoute": "TheTranscriptComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "ExamScoreComponent",
+      "name": "ExamScoreComponent",
+      "legacyRoute": "ExamScoreComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "SimulationTestComponent",
+      "name": "SimulationTestComponent",
+      "legacyRoute": "SimulationTestComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "MoreComponent",
+      "name": "MoreComponent",
+      "legacyRoute": "MoreComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "MyProjectComponent",
+      "name": "MyProjectComponent",
+      "legacyRoute": "MyProjectComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "MyWalletComponent",
+      "name": "MyWalletComponent",
+      "legacyRoute": "MyWalletComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "BuyHistoryComponent",
+      "name": "BuyHistoryComponent",
+      "legacyRoute": "BuyHistoryComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "QuickStartComponent",
+      "name": "QuickStartComponent",
+      "legacyRoute": "QuickStartComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "SettingComponent",
+      "name": "SettingComponent",
+      "legacyRoute": "SettingComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "InputInviteCodeComponent",
+      "name": "InputInviteCodeComponent",
+      "legacyRoute": "InputInviteCodeComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "AboutComponent",
+      "name": "AboutComponent",
+      "legacyRoute": "AboutComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "UserInfoComponent",
+      "name": "UserInfoComponent",
+      "legacyRoute": "UserInfoComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "ChangeNicknameComponent",
+      "name": "ChangeNicknameComponent",
+      "legacyRoute": "ChangeNicknameComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "ChangePhoneComponent",
+      "name": "ChangePhoneComponent",
+      "legacyRoute": "ChangePhoneComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "InviteUserComponent",
+      "name": "InviteUserComponent",
+      "legacyRoute": "InviteUserComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "MyVipComponent",
+      "name": "MyVipComponent",
+      "legacyRoute": "MyVipComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "WithdrawalComponent",
+      "name": "WithdrawalComponent",
+      "legacyRoute": "WithdrawalComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "SetTimeComponent",
+      "name": "SetTimeComponent",
+      "legacyRoute": "SetTimeComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "ChangeSexComponent",
+      "name": "ChangeSexComponent",
+      "legacyRoute": "ChangeSexComponent",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
+    },
+    {
+      "featureId": "mine",
+      "name": "mine",
+      "legacyRoute": "mine",
+      "legacyPage": "",
+      "legacyServiceFiles": [],
+      "legacyApiLiterals": [],
+      "entryFiles": [],
+      "platformConstraints": []
     }
   ]
 }

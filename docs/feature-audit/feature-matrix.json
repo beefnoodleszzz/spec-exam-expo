@@ -2,12 +2,156 @@
   "schemaVersion": "1.0.0",
   "matrix": [
     {
+      "legacyName": "Splash",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "Home1",
+      "conclusion": "REUSE"
+    },
+    {
+      "legacyName": "Home2",
+      "conclusion": "REUSE"
+    },
+    {
+      "legacyName": "Home",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "DoExamMain",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "ChooseCity",
+      "conclusion": "NOT_SUPPORTED"
+    },
+    {
       "legacyName": "Login",
       "conclusion": "IMPLEMENTED"
     },
     {
+      "legacyName": "LoginIndex",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "SubjectChoose",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "ChooseTheSubjectComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "ChooseTheSubjectComponentLogin",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "RegisterForExamination",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "UserAgreementComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "SimpleWebview",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "Search",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "OrderToPracticeComponent",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "WrongTopicSetComponent",
+      "conclusion": "REUSE"
+    },
+    {
+      "legacyName": "WrongTopicCollectionComponent",
+      "conclusion": "REUSE"
+    },
+    {
+      "legacyName": "TheTranscriptComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "ExamScoreComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
       "legacyName": "SimulationTestComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "MoreComponent",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "MyProjectComponent",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "MyWalletComponent",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "BuyHistoryComponent",
       "conclusion": "IMPLEMENT"
+    },
+    {
+      "legacyName": "QuickStartComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "SettingComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "InputInviteCodeComponent",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "AboutComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "UserInfoComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "ChangeNicknameComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "ChangePhoneComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "InviteUserComponent",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "MyVipComponent",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "WithdrawalComponent",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "SetTimeComponent",
+      "conclusion": "HIDE"
+    },
+    {
+      "legacyName": "ChangeSexComponent",
+      "conclusion": "IMPLEMENTED"
+    },
+    {
+      "legacyName": "mine",
+      "conclusion": "IMPLEMENTED"
     }
   ]
 }

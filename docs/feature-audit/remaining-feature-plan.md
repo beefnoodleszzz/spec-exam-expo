@@ -4,4 +4,4 @@ Schema Version: 1.0.0
 
 Plan for remaining implementation:
 
-- [ ] Phase 10A+: SimulationTestComponent
+- [ ] Phase 10A+: BuyHistoryComponent
