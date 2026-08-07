@@ -58,6 +58,24 @@ const VARIANTS: Record<AppVariant, VariantConfig> = {
 
 const variant = VARIANTS[APP_VARIANT]
 
+if (APP_VARIANT === 'production') {
+  const apiBaseUrl = process.env.API_BASE_URL || variant.apiBaseUrl;
+  const webBaseUrl = process.env.WEB_BASE_URL || variant.webBaseUrl;
+
+  if (!apiBaseUrl || !webBaseUrl) {
+    throw new Error('Production environment requires explicit API_BASE_URL and WEB_BASE_URL');
+  }
+  if (apiBaseUrl.includes('localhost') || apiBaseUrl.startsWith('http://')) {
+    throw new Error('Production environment rejects localhost and HTTP URLs for API_BASE_URL');
+  }
+  if (webBaseUrl.includes('localhost') || webBaseUrl.startsWith('http://')) {
+    throw new Error('Production environment rejects localhost and HTTP URLs for WEB_BASE_URL');
+  }
+
+  variant.apiBaseUrl = apiBaseUrl;
+  variant.webBaseUrl = webBaseUrl;
+}
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: variant.name,
