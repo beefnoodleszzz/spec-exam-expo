@@ -150,7 +150,7 @@ export function extractGeneratedApi(endpointsDir: string) {
   }
   
   if (!foundKnownEndpoint && endpoints.some(e => e.sourceFile.includes('examination-manager-v2'))) {
-    // throw new Error('Could not find known endpoint: apiExamV2AppSearchQueryEsSubjectListGet');
+    throw new Error('Could not find known endpoint: apiExamV2AppSearchQueryEsSubjectListGet');
   }
 
   return endpoints;

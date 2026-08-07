@@ -13,11 +13,12 @@ export function extractLegacyFeatures(legacyRoot: string) {
   }
 
   const legacyFeatures: any[] = [];
-  const routesFile = path.join(srcDir, 'app.routes.tsx');
-  
-  if (fs.existsSync(routesFile)) {
-    const project = new Project();
-    const sourceFile = project.addSourceFileAtPath(routesFile);
+  const project = new Project();
+  project.addSourceFilesAtPaths(path.join(srcDir, '**/app.routes.tsx'));
+  const sourceFiles = project.getSourceFiles();
+
+  if (sourceFiles.length > 0) {
+    const sourceFile = sourceFiles[0];
     
     // Look for JSX Elements with name attr, typically Scene or similar
     const jsxElements = sourceFile.getDescendantsOfKind(SyntaxKind.JsxElement);

@@ -4,7 +4,7 @@ import { extractGeneratedApi } from './extract-generated-api';
 import { extractNewRoutes } from './extract-new-routes';
 import { extractLegacyFeatures } from './extract-legacy-features';
 
-export function buildFeatureMatrix() {
+export function buildFeatureMatrix(outDir?: string) {
   const generatedApiDir = path.join(process.cwd(), 'src/shared/api/generated/endpoints');
   const newRoutesDir = path.join(process.cwd(), 'src/app');
   let legacyRoot = process.env.LEGACY_ROOT;
@@ -22,7 +22,7 @@ export function buildFeatureMatrix() {
   const newRoutes = extractNewRoutes(newRoutesDir);
   const legacyFeatures = extractLegacyFeatures(legacyRoot);
 
-  const docsDir = path.join(process.cwd(), 'docs/feature-audit');
+  const docsDir = outDir || path.join(process.cwd(), 'docs/feature-audit');
   fs.mkdirSync(docsDir, { recursive: true });
 
   const decisionsPath = path.join(docsDir, 'feature-decisions.json');
@@ -74,7 +74,7 @@ export function buildFeatureMatrix() {
   }
   fs.writeFileSync(path.join(docsDir, 'remaining-feature-plan.md'), planContent);
 
-  console.log('Feature audit manifests and markdown documents successfully generated in docs/feature-audit/');
+  console.log(`Feature audit manifests and markdown documents successfully generated in ${docsDir}`);
 }
 
 if (require.main === module) {
